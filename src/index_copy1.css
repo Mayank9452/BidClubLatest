@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================
+   Pink–Orange Gaming Design System
+   ========================================= */
+
+@layer base {
+
+  /* ================= Fonts ================= */
+  @font-face {
+    font-family: "Atom Sans";
+    src: url("/fonts/Atom_Sans_Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Atom Sans";
+    src: url("/fonts/Atom_Sans_Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Atom Sans";
+    src: url("/fonts/Atom_Sans_Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* ================= Theme Tokens ================= */
+  :root {
+    /* Backgrounds */
+    --background: 330deg 71.62% 29.46% / 90%;
+    --foreground: 0 0% 98%;
+
+    --card: 330 30% 14%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 330 30% 14%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Primary – Hot Pink */
+    --primary: 330 90% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary – Orange */
+    --secondary: 24 95% 55%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Accent – Pink → Orange Blend */
+    --accent: 345 85% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Muted */
+    --muted: 330 15% 25%;
+    --muted-foreground: 330 10% 70%;
+
+    /* Borders & Inputs */
+    --border: 330 20% 25%;
+    --input: 330 20% 25%;
+    --ring: 24 95% 55%;
+
+    /* Destructive */
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Radius */
+    --radius: 1rem;
+
+    /* ================= Gradients ================= */
+    --gradient-pink: linear-gradient(135deg, hsl(330 90% 60%), hsl(345 85% 65%));
+    --gradient-orange: linear-gradient(135deg, hsl(24 95% 55%), hsl(38 100% 60%));
+    --gradient-pink-orange: linear-gradient(
+      135deg,
+      hsl(330 90% 60%),
+      hsl(345 85% 65%),
+      hsl(24 95% 55%)
+    );
+
+    --gradient-dark: linear-gradient(
+      135deg,
+      hsl(330 35% 10%),
+      hsl(330 40% 18%)
+    );
+
+    /* ================= Glass ================= */
+    --glass-bg: hsla(330, 30%, 18%, 0.75);
+    --glass-border: hsla(0, 0%, 100%, 0.12);
+
+    /* ================= Shadows ================= */
+    --shadow-glow-pink: 0 0 25px hsla(330, 90%, 60%, 0.35);
+    --shadow-glow-orange: 0 0 25px hsla(24, 95%, 55%, 0.35);
+    --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.45);
+
+    /* ================= Transitions ================= */
+    --transition-smooth: all 0.3s ease;
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  /* ================= Base Styles ================= */
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground overflow-x-hidden;
+    font-family: "Atom Sans", sans-serif;
+  }
+}
+
+/* =========================================
+   Utilities
+   ========================================= */
+@layer utilities {
+
+  /* Gradients */
+  .gradient-pink {
+    background: var(--gradient-pink);
+  }
+
+  .gradient-orange {
+    background: var(--gradient-orange);
+  }
+
+  .gradient-pink-orange {
+    background: var(--gradient-pink-orange);
+  }
+
+  .gradient-dark {
+    background: var(--gradient-dark);
+  }
+
+  /* Text Gradients */
+  .text-gradient-pink {
+    background: var(--gradient-pink);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-orange {
+    background: var(--gradient-orange);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-pink-orange {
+    background: var(--gradient-pink-orange);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Glass Cards */
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+  }
+
+  /* Glow Effects */
+  .glow-pink {
+    box-shadow: var(--shadow-glow-pink);
+  }
+
+  .glow-orange {
+    box-shadow: var(--shadow-glow-orange);
+  }
+
+  .card-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Animations */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* Mobile Container */
+  .mobile-container {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    position: relative;
+  }
+}
+
+/* =========================================
+   Components
+   ========================================= */
+@layer components {
+
+  /* Primary Button */
+  .btn-primary {
+    @apply text-white font-semibold px-5 py-3 rounded-xl transition-bounce;
+    background: var(--gradient-pink-orange);
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.1);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+
+  /* Secondary Button */
+  .btn-secondary {
+    @apply text-white font-semibold px-5 py-3 rounded-xl transition-smooth;
+    background: var(--gradient-pink);
+  }
+
+  /* Loader */
+  .loader {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 4px solid hsla(0, 0%, 100%, 0.2);
+    border-top-color: hsl(330 90% 60%);
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
