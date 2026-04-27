@@ -61,13 +61,22 @@ export default function LeaderboardNew({
 
     const combined = [...(data.top_3 || []), ...(data.others || [])];
 
-    return combined.map((user: any) => ({
-      id: user.user_id,
-      name: `User ${user.user_id}`, // fallback name
-      phone: maskMSISDN(`${user.user_phone}`),
-      score: Number(user.points),
-      bids: user.bidsCount || Math.floor(Math.random() * 900) + 100, // random 100–999
-    }));
+    return combined.map((user: any) => {
+      let avatarIndex = (Number(user.user_id) % 25) + 1;
+      // If avatarIndex > 15, generate random number between 1-15
+      if (avatarIndex > 15) {
+        avatarIndex = Math.floor(Math.random() * 15) + 1;
+      }
+
+      return {
+        id: user.user_id,
+        name: `User ${user.user_id}`, // fallback name
+        phone: maskMSISDN(`${user.user_phone}`),
+        score: Number(user.points),
+        bids: user.bidsCount || Math.floor(Math.random() * 900) + 100, // random 100–999
+        avatar: `${avatarIndex}.png`,
+      };
+    });
   };
 
   const users =
@@ -154,7 +163,8 @@ export default function LeaderboardNew({
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="group relative flex items-center justify-between p-4 bg-gradient-to-r from-indigo-100 to-purple-100 hover:from-indigo-200 hover:to-purple-200 rounded-[1.5rem] transition-all duration-300 shadow-sm"
+                className="group relative flex items-center justify-between p-4 bg-gradient-to-r from-indigo-100 via-purple-200 to-indigo-100 
+hover:from-indigo-200 hover:via-purple-300 hover:to-indigo-200 rounded-[1.5rem] transition-all duration-300 shadow-sm"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-6 text-center font-black text-slate-800 group-hover:text-slate-900 transition-colors">
@@ -172,7 +182,7 @@ export default function LeaderboardNew({
                   >
                     <div className="w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center p-0.5">
                       <img
-                        src={`https://bidblast.club/assets/frontend/users/${index + 1}.png`}
+                        src={`/assets/users/${user.avatar}`}
                         alt={user.name}
                         className="w-full h-full"
                       />
@@ -190,11 +200,11 @@ export default function LeaderboardNew({
                 <div className="text-right">
                   <div className="text-right">
                     <div className="flex items-center justify-end gap-1 text-sm font-bold text-slate-900">
-                      <div className="relative h-8 w-8 ">
+                      <div className="relative ">
                         <img
                           src="/assets/images/diamond3.png"
                           alt="diamond"
-                          className="h-7 w-7 object-cover"
+                          className="h-6 w-6 object-cover"
                         />
 
                         {/* premium shimmer */}
@@ -283,28 +293,46 @@ export default function LeaderboardNew({
 function PodiumItem({ user, rank, type, delay }: any) {
   const { t } = useLanguage();
   const styles = {
-    gold: {
-      ring: "bg-gradient-to-tr from-yellow-300 via-yellow-400 to-amber-500",
-      badge: "bg-yellow-400 text-white",
-      podium: "from-yellow-300 via-yellow-400 to-amber-500",
-      glow: "shadow-yellow-300/30",
-      text: "text-yellow-600",
+  gold: {
+    ring: {
+      background:
+        "linear-gradient(135deg, hsl(45, 85%, 35%), hsl(48, 95%, 75%), hsl(45, 85%, 35%))",
     },
-    silver: {
-      ring: "bg-gradient-to-tr from-gray-300 via-gray-400 to-gray-500",
-      badge: "bg-gray-400 text-white",
-      podium: "from-gray-300 via-gray-400 to-gray-500",
-      glow: "shadow-gray-300/10",
-      text: "text-gray-600",
+    badge: "bg-yellow-500 text-white",
+    podium: {
+      background:
+        "linear-gradient(135deg, hsl(45, 85%, 35%), hsl(48, 95%, 75%), hsl(45, 85%, 35%))",
     },
-    bronze: {
-      ring: "bg-gradient-to-tr from-orange-300 via-orange-400 to-amber-700",
-      badge: "bg-orange-400 text-white",
-      podium: "from-orange-300 via-orange-400 to-amber-700",
-      glow: "shadow-orange-300/50",
-      text: "text-orange-600",
+    glow: "shadow-yellow-500/40",
+    text: "text-yellow-500",
+  },
+  silver: {
+    ring: {
+      background:
+        "linear-gradient(135deg, hsl(0, 0%, 55%), hsl(0, 0%, 90%), hsl(0, 0%, 55%))",
     },
-  };
+    badge: "bg-gray-500 text-white",
+    podium: {
+      background:
+        "linear-gradient(135deg, hsl(0, 0%, 55%), hsl(0, 0%, 90%), hsl(0, 0%, 55%))",
+    },
+    glow: "shadow-gray-400/30",
+    text: "text-gray-500",
+  },
+  bronze: {
+    ring: {
+      background:
+        "linear-gradient(135deg, hsl(25, 70%, 35%), hsl(30, 80%, 65%), hsl(25, 70%, 35%))",
+    },
+    badge: "bg-orange-500 text-white",
+    podium: {
+      background:
+        "linear-gradient(135deg, hsl(25, 70%, 35%), hsl(30, 80%, 65%), hsl(25, 70%, 35%))",
+    },
+    glow: "shadow-orange-500/40",
+    text: "text-orange-500",
+  },
+};
 
   const current = styles[type];
 
@@ -317,13 +345,16 @@ function PodiumItem({ user, rank, type, delay }: any) {
     >
       {/* Avatar */}
       <div className="relative mb-4">
-        <div
+        {/* <div
           className={`w-16 h-16 rounded-xl p-[2px] ${current.ring} shadow-xl ${current.glow} transition-transform duration-500 group-hover:scale-110`}
-        >
+        > */}
+        <div
+  style={current.ring}
+  className={`w-16 h-16 rounded-xl p-[2px] shadow-xl ${current.glow}`}
+>
           <div className="bg-white rounded-xl w-full h-full flex items-center justify-center overflow-hidden">
             <img
-              src={`https://bidblast.club/assets/frontend/users/${Math.floor(Math.random() * 10) + 1
-                }.png`}
+              src={`/assets/users/${user.avatar}`}
               alt="user"
               className="w-12 h-12"
             />
@@ -350,7 +381,7 @@ function PodiumItem({ user, rank, type, delay }: any) {
         </p>
         <div className="text-right">
           <div className="flex items-center justify-center gap-1 text-sm font-bold text-indigo-600">
-            <div className="relative h-8 w-8 ">
+            <div className="relative ">
               <img
                 src="/assets/images/diamond3.png"
                 alt="diamond"
@@ -381,7 +412,8 @@ function PodiumItem({ user, rank, type, delay }: any) {
         animate={{
           height: type === "gold" ? 110 : type === "silver" ? 80 : 60,
         }}
-        className={`w-full rounded-t-[1.5rem] bg-gradient-to-b ${current.podium} border-x border-t border-white/30 shadow-inner`}
+        style={current.podium}
+  className="w-full rounded-t-[1.5rem] border-x border-t border-white/30 shadow-inner"
       />
     </motion.div>
   );

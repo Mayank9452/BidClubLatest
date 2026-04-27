@@ -7,16 +7,16 @@ import { useLanguage } from "./context/LanguageContext";
 
 interface PopupBannerForDuplicateSetProps {
   isShow: boolean;
-  duplicateSetIndex?: number | string;
+  duplicateSets?: { [key: string]: { number: string; set: string }[] };
   onConfirm: () => void;
 }
 
 const PopupBannerForDuplicateSet = ({
   isShow,
-  duplicateSetIndex = 2,
+  duplicateSets,
   onConfirm,
 }: PopupBannerForDuplicateSetProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   if (!isShow) return null;
 
   const handleClose = () => {
@@ -64,7 +64,7 @@ const PopupBannerForDuplicateSet = ({
           className="w-full text-center relative z-10"
         >
           {/* Warning Visual */}
-          <div className="relative mb-8 flex justify-center">
+          <div className="relative mb-4 flex justify-center">
             <motion.div
               animate={{
                 y: [-4, 4, -4],
@@ -85,11 +85,6 @@ const PopupBannerForDuplicateSet = ({
                     className="w-full h-full object-cover relative z-10"
                     alt="Duplicate Warning"
                   />
-
-                  {/* Error Indicator Overlay */}
-                  {/* <div className="absolute top-2 right-2 z-20 bg-red-600 rounded-full p-1 shadow-lg">
-                    <AlertCircle className="w-4 h-4 text-white" />
-                  </div> */}
                 </div>
               </div>
             </motion.div>
@@ -99,9 +94,41 @@ const PopupBannerForDuplicateSet = ({
             {t.duplicateSetNumbers}
           </h2>
 
-          <p className="text-[12px] leading-relaxed text-slate-300 font-semibold tracking-[0.5px]">
-            {t.duplicateSetMessage.replace("{0}", String(duplicateSetIndex))}
-          </p>
+          <div className="max-h-[150px] overflow-y-auto pr-2 custom-scrollbar space-y-2 mb-6">
+            {duplicateSets && Object.entries(duplicateSets).map(([batchNum, details]) => (
+              details.map((item, idx) => (
+                <div
+                  key={`${batchNum}-${idx}`}
+                  className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3 group hover:bg-white/20 transition-all"
+                >
+                  <div className="flex flex-col items-start gap-0.5">
+                    <span className="text-xs text-pink-400 font-bold uppercase tracking-wider tracking-[1px]">
+                      {t.set} {batchNum}
+                    </span>
+                    <p className="text-[10px] text-white font-semibold text-left tracking-[1px]">
+                      {language === "en" ? (
+                        <>
+                          {t.number} <span className="text-yellow-400 font-black">{item.number}</span> {t.isPresentInSet} {t.set} {batchNum}
+                        </>
+                      ) : (
+                        <>
+                          {t.number} <span className="text-yellow-400 font-black">{item.number}</span> သည် {t.set} {batchNum} {t.isPresentInSet}
+                        </>
+                      )}
+                    </p>
+                  </div>
+                  {/* <div className="w-8 h-8 rounded-lg bg-red-500/20 border border-red-500/40 flex items-center justify-center flex-shrink-0">
+                    <AlertCircle className="w-4 h-4 text-red-500" />
+                  </div> */}
+                </div>
+              ))
+            ))}
+            {!duplicateSets && (
+              <p className="text-[12px] leading-relaxed text-slate-300 font-semibold tracking-[0.5px]">
+                {t.duplicateSetMessage || "Duplicate numbers found in existing sets."}
+              </p>
+            )}
+          </div>
 
           <div className="mt-8">
             <Button

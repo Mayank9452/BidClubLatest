@@ -41,7 +41,7 @@ export default function VideoSection() {
               });
             }}
           >
-            <span className="bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2.5 rounded-xl text-sm transition-colors duration-150 shadow-md active:shadow-lg flex px-6 tracking-[0.5px]">
+            <span className="bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2.5 rounded-xl text-sm transition-colors duration-150 shadow-md active:shadow-lg flex px-6 tracking-[1px]">
               {t.getDetails}
             </span>
           </button>

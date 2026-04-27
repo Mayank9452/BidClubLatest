@@ -175,15 +175,24 @@ export default function ActivitySlider({ updatedData }) {
   useEffect(() => {
     if (!Array.isArray(updatedData)) return;
 
-    const formatted: Activity[] = updatedData.map((item: any, index: number) => ({
-      id: index + 1,
-      user: maskMSISDN(item.user_phone),
-      message: `${maskMSISDN(item.user_phone)} ${t.placedBid}`,
-      user_phone: maskMSISDN(item.user_phone),
-      newMessage: Math.floor(Math.random() * 10) + 1 % 2 === 0 ? t.placedBid : t.playerWonBid,
-      time: t.justNow,
-      avatar: item.user_image, // ✅ from API
-    }));
+    const formatted: Activity[] = updatedData.map((item: any, index: number) => {
+      // Calculate avatar index from user_id or index
+      let avatarIndex = (Number(item.user_id || index) % 25) + 1;
+      // If avatarIndex > 15, generate random number between 1-15
+      if (avatarIndex > 15) {
+        avatarIndex = Math.floor(Math.random() * 15) + 1;
+      }
+
+      return {
+        id: index + 1,
+        user: maskMSISDN(item.user_phone),
+        message: `${maskMSISDN(item.user_phone)} ${t.placedBid}`,
+        user_phone: maskMSISDN(item.user_phone),
+        newMessage: Math.floor(Math.random() * 10) + 1 % 2 === 0 ? t.placedBid : t.playerWonBid,
+        time: t.justNow,
+        avatar: `${avatarIndex}.png`, // Apply avatar logic
+      };
+    });
 
     setActivityList(formatted);
   }, [updatedData, t]);
@@ -193,12 +202,6 @@ export default function ActivitySlider({ updatedData }) {
     "from-rose-500 to-orange-500",
     "from-violet-600 to-pink-500",
   ];
-
-  // Generate consistent avatar for each activity
-  const getAvatarSeed = (activityId: number) => {
-    const seeds = ["alex", "sarah", "mike", "emma", "john", "lisa", "david", "sophie", "chris", "anna"];
-    return seeds[activityId % seeds.length];
-  };
 
   return (
     <div className="relative w-full overflow-hidden py-2 -mt-[4.5rem]">
@@ -213,7 +216,6 @@ export default function ActivitySlider({ updatedData }) {
       <div className="flex gap-4 animate-[slide-right_30s_linear_infinite] whitespace-nowrap px-4 w-max">
         {[...activityList, ...activityList].map((activity, index) => {
           const gradientClass = gradientStyles[index % gradientStyles.length];
-          const avatarSeed = getAvatarSeed(activity.id);
 
           return (
             <div
@@ -234,7 +236,7 @@ export default function ActivitySlider({ updatedData }) {
                       <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-sm p-0.5 border-2 border-white/30 shadow-lg">
                         <div className="w-full h-full rounded-lg overflow-hidden bg-white">
                           <img
-                            src={`https://bidblast.club/assets/frontend/users/${activity.avatar}`}
+                            src={`/assets/users/${activity.avatar}`}
                             alt="User avatar"
                             className="w-full h-full"
                           />
@@ -247,7 +249,7 @@ export default function ActivitySlider({ updatedData }) {
                       <h3 className="text-[12px] font-bold text-white leading-tight whitespace-normal break-words w-full">
                         {activity.user_phone}
                       </h3>
-                      <p className="text-[10px] font-semibold text-white/90 tracking-[0.5px] italic whitespace-normal break-words w-full leading-tight mt-0.5">
+                      <p className="text-[11px] font-semibold text-white/90 tracking-[0.5px] italic whitespace-normal break-words w-full leading-tight mt-0.5">
                         {activity.newMessage}
                       </p>
                     </div>

@@ -96,8 +96,8 @@ export const translations: any = {
     dailyBid: "Daily Bid",
     weeklyBid: "Weekly Bid",
 
-    fastPacedAction: "⚡ Fast-paced action",
-    strategicGameplay: "🎯 Strategic gameplay",
+    fastPacedAction: "Fast-paced action",
+    strategicGameplay: "Strategic gameplay",
 
     totalCycles: "Total Cycles",
     perCycle: "Per Cycle",
@@ -165,6 +165,9 @@ export const translations: any = {
     duplicateSetNumbers: "Duplicate Set Numbers",
     duplicateSetMessage: "You have already placed this set of numbers in previous Set - {0} of this Bid.",
     enterUniqueNumber: "Enter Unique Number",
+    isPresentInSet: "is already present in",
+    set: "Set",
+    number: "Number",
     areYouSure: "Are you sure ?",
     confirmUnsubscribeMessage: "You want to unsubscribe from Bidblast service. You'll be unable to access the service after termination.",
 
@@ -277,8 +280,8 @@ export const translations: any = {
     dailyBid: "နေ့စဉ် လေလံ",
     weeklyBid: "အပတ်စဉ် လေလံ",
 
-    fastPacedAction: "⚡ မြန်ဆန်သော ကစားနည်း",
-    strategicGameplay: "🎯 မဟာဗျူဟာအခြေပြု ကစားနည်း",
+    fastPacedAction: "မြန်ဆန်သော ကစားနည်း",
+    strategicGameplay: "မဟာဗျူဟာအခြေပြု ကစားနည်း",
 
     totalCycles: "စုစုပေါင်း စက်ဝန်းများ",
     perCycle: "စက်ဝန်းတစ်ခုလျှင်",
@@ -315,7 +318,7 @@ export const translations: any = {
     autoPick: "အလိုအလျောက် ရွေးရန်",
     clearAll: "အားလုံး ဖျက်ရန်",
     submitAllTickets: "လက်မှတ်အားလုံး တင်ရန်",
-    fillAllTickets: "လက်မှတ်အားလုံး ဖြည့်ပါ",
+    fillAllTickets: "လက်မှတ်များ ဖြည့်ရန်",
     latestUserJoinedBid: "နောက်ဆုံး အသုံးပြုသူသည် လေလံပွဲတွင် ဝင်ခဲ့သည်",
     bidDaily: "နေ့စဉ် လေလံပွဲတွင် ဝင်ပါ",
     bidWeekly: "အပတ်စဉ် လေလံပွဲတွင် ဝင်ပါ",
@@ -343,6 +346,9 @@ export const translations: any = {
     duplicateSetNumbers: "နံပါတ်အစုလိုက် ထပ်နေပါသည်",
     duplicateSetMessage: "သင်သည် ဤလေလံပွဲ၏ ယခင် Set - {0} တွင် ဤနံပါတ်များကို ထည့်သွင်းပြီးဖြစ်သည်။",
     enterUniqueNumber: "ထူးခြားသော နံပါတ်ကို ထည့်ပါ",
+    isPresentInSet: "တွင် ရှိနှင့်ပြီးသား ဖြစ်သည်",
+    set: "အစုံ",
+    number: "နံပါတ်",
     areYouSure: "သေချာလား",
     confirmUnsubscribeMessage: "သင်သည် Bidblast ဝန်ဆောင်မှုမှ ထွက်ခွာလိုပါသည်။ ဝန်ဆောင်မှု ပြီးဆုံးပါက၊ သင်သည် ဝန်ဆောင်မှုကို ဝင်ရောက်ကြည့်ရှုနိုင်တော့မည်မဟုတ်ပါ။",
     welcomeToBidblast: "Bidblast မှ ကြိုဆိုပါသည်",

@@ -6,10 +6,9 @@ import { motion, AnimatePresence } from "framer-motion";
 const phrases = [
   "Going Once...",
   "Going Twice...",
-  "Sold to the Highest Bidder!",
-  "Preparing Live Auctions...",
-  "Syncing Bid Data...",
-  "Gathering Rewards...",
+  "Preparing Live Bidding...",
+  "Syncing Biding Data...",
+  "Gathering Biding Winners...",
 ];
 
 export default function WaitLoader({ isOverlay = false }: { isOverlay?: boolean }) {

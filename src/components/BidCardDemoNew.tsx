@@ -275,7 +275,7 @@ function BidCard({ bid, index, activeTab }: { bid: any; index: number; activeTab
           //   transition-all duration-150 hover:opacity-90 active:scale-[0.97]
 
           // `}
-          className="bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2 rounded-xl text-sm transition-colors duration-150 shadow-md active:shadow-lg flex items-center justify-center gap-2"
+          className="bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2 rounded-xl text-sm tracking-[1px] transition-colors duration-150 shadow-md active:shadow-lg flex items-center justify-center gap-2"
         >
           <Target className="w-3.5 h-3.5" />
           {t.enterBid}

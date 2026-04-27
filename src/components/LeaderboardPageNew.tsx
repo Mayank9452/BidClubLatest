@@ -236,7 +236,12 @@ export default function LeaderboardPageNew() {
 
   const formatUsers = (users: any[] = []) => {
     return users.map((user: any) => {
-      const avatarIndex = (Number(user.user_id) % 25) + 1;
+      let avatarIndex = (Number(user.user_id) % 25) + 1;
+
+      // If avatarIndex > 15, generate random number between 1-15
+      if (avatarIndex > 15) {
+        avatarIndex = Math.floor(Math.random() * 15) + 1;
+      }
 
       return {
         id: user.user_id, // ✅ FIXED (important for expand)
@@ -351,11 +356,11 @@ export default function LeaderboardPageNew() {
                     transition={{ delay: index * 0.03 }}
                   >
                     <button
-                      onClick={() =>
-                        setExpandedUser(
-                          expandedUser === user.id ? null : user.id,
-                        )
-                      }
+                      // onClick={() =>
+                      //   setExpandedUser(
+                      //     expandedUser === user.id ? null : user.id,
+                      //   )
+                      // }
                       className="w-full"
                     >
                       <div className="flex items-center gap-2.5 p-2.5 bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-gray-100 transition-all active:scale-[0.98]">
@@ -373,7 +378,7 @@ export default function LeaderboardPageNew() {
                           >
                             <div className="w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
                               <img
-                                src={`https://bidblast.club/assets/frontend/users/${user.avatar}`}
+                                src={`/assets/users/${user.avatar}`}
                                 alt={user.name}
                                 className="w-full h-full"
                               />
@@ -397,7 +402,7 @@ export default function LeaderboardPageNew() {
                         {/* Score */}
                         <div className="text-right ">
                           <div className="flex items-center justify-end gap-1 text-[15px] font-black bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-                            <div className="relative h-8 w-8 ">
+                            <div className="relative">
                               <img
                                 src="/assets/images/diamond3.png"
                                 alt="diamond"
@@ -408,7 +413,7 @@ export default function LeaderboardPageNew() {
                               {/* <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/90 to-transparent 
                                 animate-[shimmer_2s_linear_infinite] opacity-50 rotate-[25deg] pointer-events-none rounded-full" /> */}
                             </div>
-                            <span>{user.score.toLocaleString()}</span>
+                            <span className="text-[13px]">{user.score.toLocaleString()}</span>
                           </div>
                           {/* <div className="flex items-center justify-end gap-0.5 text-[10px] text-emerald-600 font-bold">
                           <TrendingUp className="w-2.5 h-2.5" />
@@ -586,34 +591,59 @@ type PodiumType = "gold" | "silver" | "bronze";
 
 function PodiumCard({ user, rank, isFirst = false }: any) {
   const { t } = useLanguage();
+
   const type: PodiumType =
     rank === 1 ? "gold" : rank === 2 ? "silver" : "bronze";
 
   const styles = {
     gold: {
-      ring: "gradient-gold-tier",
-      badge: "gradient-gold-tier text-white",
-      podium: "from-yellow-300 via-yellow-400 to-amber-500",
-      crown: "text-yellow-500",
+      ring: {
+        background:
+          "linear-gradient(135deg, hsl(45, 85%, 35%), hsl(48, 95%, 75%), hsl(45, 85%, 35%))",
+      },
+      badge:
+        "bg-gradient-to-r from-yellow-500 to-amber-600 text-white shadow-yellow-500/40",
+      podium: {
+        background:
+          "linear-gradient(180deg, hsl(45, 85%, 35%), hsl(48, 95%, 75%), hsl(45, 85%, 35%))",
+      },
+      glow: "shadow-[0_0_15px_rgba(251,191,36,0.5)]",
+      crown: "text-yellow-400",
       text: "text-yellow-600",
     },
     silver: {
-      ring: "gradient-silver-tier",
-      badge: "gradient-silver-tier text-white",
-      podium: "from-gray-300 via-gray-400 to-gray-500",
+      ring: {
+        background:
+          "linear-gradient(135deg, hsl(0, 0%, 55%), hsl(0, 0%, 90%), hsl(0, 0%, 55%))",
+      },
+      badge:
+        "bg-gradient-to-r from-gray-500 to-gray-700 text-white shadow-gray-400/40",
+      podium: {
+        background:
+          "linear-gradient(180deg, hsl(0, 0%, 55%), hsl(0, 0%, 90%), hsl(0, 0%, 55%))",
+      },
+      glow: "shadow-[0_0_12px_rgba(156,163,175,0.5)]",
       crown: "",
       text: "text-gray-600",
     },
     bronze: {
-      ring: "gradient-bronze-tier",
-      badge: "gradient-bronze-tier text-white",
-      podium: "from-orange-300 via-orange-400 to-amber-700",
+      ring: {
+        background:
+          "linear-gradient(135deg, hsl(25, 70%, 35%), hsl(30, 80%, 65%), hsl(25, 70%, 35%))",
+      },
+      badge:
+        "bg-gradient-to-r from-orange-500 to-amber-700 text-white shadow-orange-500/40",
+      podium: {
+        background:
+          "linear-gradient(180deg, hsl(25, 70%, 35%), hsl(30, 80%, 65%), hsl(25, 70%, 35%))",
+      },
+      glow: "shadow-[0_0_12px_rgba(249,115,22,0.5)]",
       crown: "",
       text: "text-orange-600",
     },
   };
 
-  const current = styles[type] || styles.gold;
+  const current = styles[type];
 
   return (
     <motion.div
@@ -622,7 +652,7 @@ function PodiumCard({ user, rank, isFirst = false }: any) {
       transition={{ delay: rank * 0.08, type: "spring", bounce: 0.4 }}
       className="flex flex-col items-center flex-1"
     >
-      {/* Crown only for 1st */}
+      {/* 👑 Crown */}
       {type === "gold" && (
         <Crown
           className={`w-6 h-6 mb-1.5 animate-bounce ${current.crown}`}
@@ -630,14 +660,15 @@ function PodiumCard({ user, rank, isFirst = false }: any) {
         />
       )}
 
-      {/* Avatar */}
+      {/* 🧑 Avatar */}
       <div className={`relative mb-2 ${type === "gold" ? "scale-110" : ""}`}>
         <div
-          className={`w-14 h-14 rounded-xl p-[2px] ${current.ring} shadow-lg`}
+          style={current.ring}
+          className={`w-14 h-14 rounded-xl p-[2px] ${current.glow}`}
         >
           <div className="w-full h-full bg-white rounded-xl overflow-hidden flex items-center justify-center">
             <img
-              src={`https://bidblast.club/assets/frontend/users/${user.avatar}`}
+              src={`/assets/users/${user.avatar}`}
               alt={user.name}
               className="w-full h-full"
             />
@@ -646,48 +677,54 @@ function PodiumCard({ user, rank, isFirst = false }: any) {
 
         {/* Rank Badge */}
         <div
-          className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black shadow-md border-2 border-white ${current.badge}`}
+          className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black border-2 border-white ${current.badge}`}
         >
           {rank}
         </div>
       </div>
 
-      {/* Name & Score */}
+      {/* 🧾 Info */}
       <div className="text-center mb-1.5 px-1 flex flex-col items-center gap-1">
         <p className="text-[11px] font-bold text-gray-800 truncate max-w-[80px]">
           {user.name?.split(" ")[0]}
         </p>
-        {/* <p className="text-xs font-black bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-          {user.score.toLocaleString()}
-        </p> */}
+
+        {/* 💎 Score */}
         <div className="text-xs font-black bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-1.5">
-          <div className="relative h-8 w-8">
+          <div className="relative">
             <img
               src="/assets/images/diamond3.png"
               alt="diamond"
-              className="h-6 w-6 object-cover "
+              className="h-6 w-6 object-cover"
             />
 
-            {/* premium shimmer */}
-            {/* <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/90 to-transparent 
-                   animate-[shimmer_2s_linear_infinite] opacity-40 rotate-[25deg] pointer-events-none rounded-full" /> */}
+            {/* ✨ Optional shimmer */}
+            {/* 
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/90 to-transparent 
+            animate-[shimmer_2s_linear_infinite] opacity-40 rotate-[25deg] pointer-events-none rounded-full" />
+            */}
           </div>
           <span>{user.score.toLocaleString()}</span>
         </div>
+
         <p className={`text-[10px] font-bold tracking-[1px] ${current.text}`}>
           {user.bids.toLocaleString()} {t.bids}
         </p>
       </div>
 
-      {/* Podium Block */}
+      {/* 🏆 Podium */}
       <motion.div
         initial={{ height: 0 }}
         animate={{
           height: type === "gold" ? 75 : type === "silver" ? 55 : 45,
         }}
         transition={{ delay: 0.25 + rank * 0.08 }}
-        className={`w-full rounded-t-xl rounded-b-sm bg-gradient-to-b ${current.podium} border border-gray-200 shadow-inner`}
-      />
+        style={current.podium}
+        className="w-full rounded-t-xl  border border-white/30 shadow-inner relative overflow-hidden"
+      >
+        {/* ✨ subtle shine */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-20" />
+      </motion.div>
     </motion.div>
   );
 }

@@ -38,6 +38,7 @@ const frontendAPI = {
   getProfileInfo: `${API_URL}ManageProfileAPI`,
   games: `${API_URL}FreeGamesAPI`,
   playGames: `${API_URL}PlayGame`,
+  setProfileImage: `${API_URL}SetProfileImage`,
 };
 
 const gamesFrontendAPI = {

@@ -101,14 +101,23 @@ export default function WinnerList({ lastWeeklyWinners }) {
   useEffect(() => {
     if (!Array.isArray(lastWeeklyWinners)) return;
 
-    const formatted = lastWeeklyWinners.map((item: any) => ({
-      id: item.cycle_id,
-      rank: Number(item.cycle_reward_rank),
-      phone: maskMSISDN(item.user_phone),
-      avatar: item.user_image, // already full URL
-      uniqueNumber: item.cycle_id,
-      time: t.justNow,
-    }));
+    const formatted = lastWeeklyWinners.map((item: any, index: number) => {
+      // Calculate avatar index from user_id or index
+      let avatarIndex = (Number(item.user_id || index) % 25) + 1;
+      // If avatarIndex > 15, generate random number between 1-15
+      if (avatarIndex > 15) {
+        avatarIndex = Math.floor(Math.random() * 15) + 1;
+      }
+
+      return {
+        id: item.cycle_id,
+        rank: Number(item.cycle_reward_rank),
+        phone: maskMSISDN(item.user_phone),
+        avatar: `${avatarIndex}.png`, // Apply avatar logic
+        uniqueNumber: item.cycle_id,
+        time: t.justNow,
+      };
+    });
 
     setWeeklyWinners(formatted);
   }, [lastWeeklyWinners]);
@@ -320,7 +329,7 @@ function WinnerBanner({ winner, bgGradient }: any) {
           <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm p-0.5 border-2 border-white/30 shadow-xl">
             <div className="w-full h-full rounded-lg overflow-hidden bg-white">
               <img
-                src={`https://bidblast.club/assets/frontend/users/${Math.floor(Math.random() * 10) + 1}.png`} // Random avatar for demo
+                src={`/assets/users/${winner.avatar}`}
                 alt="Winner"
                 className="w-full h-full"
               />

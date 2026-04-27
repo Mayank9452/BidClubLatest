@@ -1,303 +1,3 @@
-// import { CheckCircle } from "lucide-react";
-// import { useLocation } from "react-router-dom";
-// import { TopBar } from "./TopBar";
-// import { BottomNavBar } from "./BottomNavBar";
-
-// export default function DetailsPage() {
-//     const { state } = useLocation();
-//     const videoUrl = state?.videoUrl;
-//     return (
-//         <>
-//             <div className="min-h-screen bg-gray-50 text-gray-900">
-//                 <TopBar />
-
-//                 <div className="max-w-6xl mx-auto px-6 py-2 space-y-10">
-
-//                     {/* Video Section */}
-//                     {/* <div className="relative rounded-2xl overflow-hidden shadow-xl bg-white">
-//                         <video
-//                             src={videoUrl}
-//                             controls
-//                             autoPlay
-//                             muted
-//                             className="w-full h-[450px] object-contain bg-black"
-//                         />
-//                     </div> */}
-//                     {/* <div className="mx-auto w-full max-w-[460px] rounded-2xl overflow-hidden bg-black shadow-md">
-//                         <video
-//                             src={videoUrl}
-//                             controls
-//                             playsInline
-//                             preload="metadata"
-//                             className="
-//   w-full
-//   aspect-[9/16]
-//   object-contain
-//   max-w-[90vw]
-//   max-h-[60vh]
-// "
-//                         />
-//                     </div> */}
-
-//                     <div className="w-full max-w-[100%] mx-auto rounded-2xl overflow-hidden bg-black shadow-md">
-//   <div className="relative w-full aspect-video flex items-center justify-center">
-//     <video
-//       src={videoUrl}
-//       controls
-//       playsInline
-//       preload="metadata"
-//       className="h-full max-h-full object-contain"
-//     />
-//   </div>
-// </div>
-
-//                     {/* BidBlast Info Section */}
-//                     {/* BidBlast Mobile Info Section */}
-//                     <div className="space-y-6">
-
-//                         {/* Intro Card */}
-//                         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-//                             <h3 className="text-xl font-bold mb-2">
-//                                 Welcome to BidBlast 🚀
-//                             </h3>
-//                             <p className="text-gray-600 text-sm">
-//                                 An exciting daily bidding game where every cycle gives you a fresh
-//                                 chance to win.
-//                             </p>
-//                         </div>
-
-//                         {/* Bid Types */}
-//                         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-//                             <h4 className="text-lg font-semibold mb-4">
-//                                 Choose Your Bid Type
-//                             </h4>
-
-//                             <div className="space-y-4">
-//                                 <div className="p-4 rounded-xl bg-gray-50 border">
-//                                     <p className="font-semibold">Daily Bid</p>
-//                                     <p className="text-sm text-gray-600">
-//                                         4 cycles per day • Each cycle lasts 6 hours
-//                                     </p>
-//                                 </div>
-
-//                                 <div className="p-4 rounded-xl bg-gray-50 border">
-//                                     <p className="font-semibold">Weekly Bid</p>
-//                                     <p className="text-sm text-gray-600">
-//                                         7 cycles • Each cycle runs for 24 hours
-//                                     </p>
-//                                 </div>
-
-//                                 <div className="p-4 rounded-xl bg-gray-50 border">
-//                                     <p className="font-semibold">Monthly Bid</p>
-//                                     <p className="text-sm text-gray-600">
-//                                         30 cycles • 30 days of bidding excitement
-//                                     </p>
-//                                 </div>
-//                             </div>
-//                         </div>
-
-//                         {/* Cycles Explanation */}
-//                         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-//                             <h4 className="text-lg font-semibold mb-2">
-//                                 What are Cycles?
-//                             </h4>
-//                             <p className="text-sm text-gray-600">
-//                                 Cycles are individual rounds inside a bid. Each cycle is a fresh
-//                                 contest, giving you multiple chances to win.
-//                             </p>
-//                         </div>
-
-//                         {/* Benefits */}
-//                         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-//                             <h4 className="text-lg font-semibold mb-4">
-//                                 Why You’ll Love Cycles
-//                             </h4>
-
-//                             <ul className="space-y-3 text-sm text-gray-700">
-//                                 <li>✅ More chances to win every day</li>
-//                                 <li>✅ Join any cycle — anytime</li>
-//                                 <li>✅ Play at your own pace</li>
-//                                 <li>✅ Each cycle is independent</li>
-//                             </ul>
-//                         </div>
-
-//                         {/* Finale */}
-//                         <div className="bg-indigo-50 rounded-2xl p-6 border border-indigo-100">
-//                             <h4 className="text-lg font-semibold mb-2">
-//                                 The Finale 🎉
-//                             </h4>
-//                             <p className="text-sm text-gray-700">
-//                                 Winners are announced at the end of each cycle, and prizes are awarded
-//                                 based on rank.
-//                                 <br /><br />
-//                                 <span className="font-semibold">
-//                                     The more you play, the higher your chances!
-//                                 </span>
-//                             </p>
-//                         </div>
-
-//                     </div>
-//                 </div>
-//             </div>
-
-//             <BottomNavBar />
-//         </>
-//     );
-// }
-
-
-// import { useLocation } from "react-router-dom";
-// import { TopBar } from "./TopBar";
-// import { BottomNavBar } from "./BottomNavBar";
-
-// export default function DetailsPage() {
-//   const { state } = useLocation();
-//   const videoUrl = state?.videoUrl;
-
-//   return (
-//     <>
-//       {/* Page Wrapper */}
-//       <TopBar />
-//       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-4">
-        
-
-//         <div className="max-w-md mx-auto px-4 pt-6 space-y-6">
-
-//           {/* Video Card */}
-//           <div className="relative rounded-2xl overflow-hidden bg-black shadow-lg">
-//             <span className="absolute top-3 left-3 z-10 text-xs bg-black/70 text-white px-3 py-1 rounded-full">
-//               ▶ Live Preview
-//             </span>
-
-//             <div className="aspect-video flex items-center justify-center">
-//               <video
-//                 src={videoUrl}
-//                 controls
-//                 playsInline
-//                 preload="metadata"
-//                 className="h-full object-contain"
-//               />
-//             </div>
-//           </div>
-
-//           {/* Welcome */}
-//           <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-[0_10px_11px_rgba(0,0,0,0.33)]">
-//             <h3 className="text-lg font-bold flex items-center gap-2 text-red-800">
-//               <span className="w-1 h-5 bg-indigo-600 rounded-full" />
-//               Welcome to BidBlast 🚀
-//             </h3>
-//             <p className="text-sm text-gray-600 mt-2">
-//               An exciting daily bidding game where every cycle gives you a
-//               fresh chance to win.
-//             </p>
-//           </div>
-
-//           {/* Bid Types */}
-//           <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-[0_10px_11px_rgba(0,0,0,0.33)]">
-//             <h3 className="text-lg font-bold flex items-center gap-2 mb-4 text-red-800">
-//               <span className="w-1 h-5 bg-indigo-600 rounded-full" />
-//               Choose Your Bid Type
-//             </h3>
-
-//             <div className="space-y-3">
-//               <div className="rounded-xl border p-4 bg-gray-50 active:scale-[0.98] transition">
-//                 <div className="flex justify-between items-center">
-//                   <p className="font-semibold text-gradient-gold">Daily Bid</p>
-//                   <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">
-//                     Popular
-//                   </span>
-//                 </div>
-//                 <p className="text-xs text-gray-600 mt-1">
-//                   4 cycles per day • Each cycle lasts 6 hours
-//                 </p>
-//               </div>
-
-//               <div className="rounded-xl border p-4 bg-gray-50 active:scale-[0.98] transition">
-//                 <p className="font-semibold text-gradient-gold">Weekly Bid</p>
-//                 <p className="text-xs text-gray-600 mt-1">
-//                   7 cycles • Each cycle runs for 24 hours
-//                 </p>
-//               </div>
-
-//               <div className="rounded-xl border p-4 bg-gray-50 active:scale-[0.98] transition">
-//                 <p className="font-semibold text-gradient-gold">Monthly Bid</p>
-//                 <p className="text-xs text-gray-600 mt-1">
-//                   30 cycles • 30 days of bidding excitement
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* What are Cycles */}
-//           <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-[0_10px_11px_rgba(0,0,0,0.33)]">
-//             <h3 className="text-lg font-bold flex items-center gap-2 mb-2 text-red-800">
-//               <span className="w-1 h-5 bg-indigo-600 rounded-full" />
-//               What are Cycles?
-//             </h3>
-//             <p className="text-sm text-gray-600">
-//               Cycles are individual rounds inside a bid. Each cycle is a fresh
-//               contest, giving you multiple chances to win.
-//             </p>
-//           </div>
-
-//           {/* Why Love Cycles */}
-//           <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-[0_10px_11px_rgba(0,0,0,0.33)]">
-//             <h3 className="text-lg font-bold flex items-center gap-2 mb-4 text-red-800">
-//               <span className="w-1 h-5 bg-indigo-600 rounded-full" />
-//               Why You’ll Love Cycles
-//             </h3>
-
-//             <ul className="space-y-3">
-//               {[
-//                 "More chances to win every day",
-//                 "Join any cycle — anytime",
-//                 "Play at your own pace",
-//                 "Each cycle is independent",
-//               ].map((text, i) => (
-//                 <li
-//                   key={i}
-//                   className="flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2"
-//                 >
-//                   <span className="text-green-500">✔</span>
-//                   <span className="text-sm text-gray-700">{text}</span>
-//                 </li>
-//               ))}
-//             </ul>
-//           </div>
-
-//           {/* Finale */}
-//           <div className="bg-indigo-50 rounded-2xl p-5 border border-indigo-100">
-//             <h3 className="text-lg font-bold mb-2 text-red-800">
-//               The Finale 🎉
-//             </h3>
-//             <p className="text-sm text-gray-700">
-//               Winners are announced at the end of each cycle and prizes are
-//               awarded based on rank.
-//               <br /><br />
-//               <span className="font-semibold">
-//                 The more you play, the better your chances!
-//               </span>
-//             </p>
-//           </div>
-
-//         </div>
-//       </div>
-
-//       {/* Sticky CTA */}
-//       {/* <div className="fixed bottom-16 left-0 right-0 px-4 z-40">
-//         <button className="w-full py-3 rounded-xl bg-indigo-600 text-white font-semibold shadow-lg">
-//           Start Bidding Now
-//         </button>
-//       </div> */}
-
-//       <BottomNavBar />
-//     </>
-//   );
-// }
-
-
-
-
 import { useLocation } from "react-router-dom";
 import { TopBar } from "./TopBar";
 import { BottomNavBar } from "./BottomNavBar";
@@ -313,16 +13,16 @@ export default function DetailsPage() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       <TopBar />
       
-      <div className="min-h-screen bg-premium-soft pb-20">
+      <div className="min-h-screen bg-premium-soft mx-2">
       {/* Top Bar Placeholder */}
-      <div className="bg-white border-b border-gray-200 p-4 sticky top-0 z-50 shadow-sm">
-        <h1 className="text-lg font-bold text-gray-800 text-center">{t.howToPlay}</h1>
+      <div className="gradient-home-section backdrop-blur-2xl border-b border-gray-200 p-4 sticky top-0 shadow-sm mt-2 rounded-xl pb-14">
+        <h1 className="text-lg font-bold text-white text-center">{t.howToPlay}</h1>
       </div>
       
-      <div className="max-w-md mx-auto px-4 pt-2 pb-2 space-y-4">
+      <div className="max-w-md mx-auto pt-2 pb-2 space-y-4 -mt-14">
         
         {/* Video Card - Premium Style */}
-        <div className="relative aspect-video rounded-2xl bg-dark-gray shadow-xl shadow-purple-500/20 overflow-hidden border border-white/20">
+        <div className="relative aspect-video rounded-2xl bg-dark-gray shadow-xl shadow-purple-500/20 overflow-hidden border border-white/20 mx-2">
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-10" />
           
           <span className="absolute top-4 left-4 z-20 flex items-center gap-2 text-xs font-semibold bg-red-500 text-white px-3 py-1.5 rounded-full shadow-lg">
@@ -385,12 +85,12 @@ export default function DetailsPage() {
                       <h4 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                         {t.dailyBid}
                       </h4>
-                      <p className="text-xs text-gray-500 font-medium">⚡ {t.fastPacedAction}</p>
+                      <p className="text-xs text-gray-500 font-semibold">{t.fastPacedAction}</p>
                     </div>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur-md opacity-50" />
-                    <span className="relative text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-full shadow-lg">
+                    <span className="relative text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-full shadow-lg tracking-[0.5px]">
                       🔥 {t.popular}
                     </span>
                   </div>
@@ -400,12 +100,12 @@ export default function DetailsPage() {
                   <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 p-4 border border-indigo-100">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-indigo-400/10 rounded-full blur-xl" />
                     <p className="text-3xl font-black bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent relative">4</p>
-                    <p className="text-xs text-gray-600 font-semibold mt-1">{t.totalCycles}</p>
+                    <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.totalCycles}</p>
                   </div>
                   <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-4 border border-purple-100">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl" />
-                    <p className="text-3xl font-black bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative">6h</p>
-                    <p className="text-xs text-gray-600 font-semibold mt-1">{t.perCycle}</p>
+                    <p className="text-3xl font-black bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative tracking-[0.5px]">6h</p>
+                    <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.perCycle}</p>
                   </div>
                 </div>
               </div>
@@ -428,15 +128,15 @@ export default function DetailsPage() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      <h4 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent tracking-[0.5px]">
                         {t.weeklyBid}
                       </h4>
-                      <p className="text-xs text-gray-500 font-medium">🎯 {t.strategicGameplay}</p>
+                      <p className="text-xs text-gray-500 font-semibold tracking-[0.5px]">{t.strategicGameplay}</p>
                     </div>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-md opacity-50" />
-                    <span className="relative text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1.5 rounded-full shadow-lg">
+                    <span className="relative text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1.5 rounded-full shadow-lg tracking-[0.5px]">
                       ⭐ {t.trending}
                     </span>
                   </div>
@@ -477,7 +177,7 @@ export default function DetailsPage() {
                       <h4 className="text-xl font-bold bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent">
                         Monthly Bid
                       </h4>
-                      <p className="text-xs text-gray-500 font-medium">👑 Ultimate challenge</p>
+                      <p className="text-xs text-gray-500 font-semibold">👑 Ultimate challenge</p>
                     </div>
                   </div>
                   <div className="relative">
@@ -543,7 +243,7 @@ export default function DetailsPage() {
                   className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-sm"
                 >
                   <span className="text-lg">{item.icon}</span>
-                  <span className="text-sm font-medium text-gray-700">{item.text}</span>
+                  <span className="text-sm font-semibold text-gray-700">{item.text}</span>
                 </div>
               ))}
             </div>

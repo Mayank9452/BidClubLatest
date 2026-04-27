@@ -7,14 +7,13 @@ export const updateProfileImageAPI = async (
 ) => {
   const state = getState() as RootState;
   const token = state.auth.data?.token || null;
-
-  const res = await fetch(frontendAPI.updateImage, {
-    method: "POST", // change to PUT if backend requires
+  const base64 = btoa(payload.profileImg);
+  const res = await fetch(`${frontendAPI.setProfileImage}/${base64}`, {
+    method: "GET", // change to PUT if backend requires
     headers: {
       "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",
-    },
-    body: JSON.stringify(payload),
+    }
   });
 
   if (res.status === 401) {

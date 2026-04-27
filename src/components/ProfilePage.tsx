@@ -25,6 +25,7 @@ import dayjs from "dayjs";
 import PopupBannerUnsubscribe from "./PopupBannerUnsubscribe";
 import PopupAvatarSelector from "./PopupAvatarSelector";
 import { useNavigate } from "react-router-dom";
+import { updateProfileImageThunk } from "@/features/profile/updateProfileSlice";
 
 const formatDateTime = (dateTimeString) => {
   const d = dayjs(dateTimeString);
@@ -131,9 +132,17 @@ export default function ProfilePage() {
 
 
 
-  const handleSaveAvatar = () => {
-    setIsEditingImage(false);
-    // Here you would save to backend
+  const handleSaveAvatar = async () => {
+    try {
+      const imgName = selectedAvatar.split(".")[0];
+      const res = await dispatch(updateProfileImageThunk({ profileImg: imgName })).unwrap();
+      console.log("RES>>>", res)
+      setIsEditingImage(false);
+      // Refresh profile info to reflect the new avatar
+      dispatch(getProfileInfo() as any);
+    } catch (error) {
+      console.error("Failed to update profile image:", error);
+    }
   };
 
   const handleTermsClick = () => {
@@ -225,9 +234,9 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Phone Number */}
-                <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-violet-100 shadow-sm">
-                  {/* <Phone className="w-4 h-4 text-violet-600" /> */}
-                  <span className="text-sm font-bold text-gray-800">
+                <div className="mt-4 flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-700 rounded-2xl shadow-xl shadow-violet-200/50 border border-white/20">
+                  {/* <Phone className="w-3.5 h-3.5 text-white animate-pulse" /> */}
+                  <span className="text-sm font-black text-white tracking-[1.5px]">
                     {maskMSISDN(user?.user_phone) || "N/A"}
                   </span>
                 </div>
