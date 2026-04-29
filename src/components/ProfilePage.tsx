@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User,
@@ -6,14 +6,9 @@ import {
   Phone,
   FileText,
   LogOut,
-  Edit3,
-  Check,
-  X,
   ChevronRight,
-  Shield,
   Gavel,
   Trophy,
-  Zap,
   Gem,
 } from "lucide-react";
 import { TopBar } from "./TopBar";
@@ -53,15 +48,11 @@ const maskMSISDN = (phone: string) => {
 
 export default function ProfilePage() {
   const [isEditingImage, setIsEditingImage] = useState(false);
-  // const [selectedAvatar, setSelectedAvatar] = useState("user123");
-  const [phoneNumber] = useState("+91 98765 43210");
   const { t, language, changeLanguage } = useLanguage();
   const dispatch = useAppDispatch();
   const { data, status } = useAppSelector((state) => state.profile);
-  console.log("data", data);
   const user = data?.data?.userInfo || [];
   const [selectedAvatar, setSelectedAvatar] = useState<string>("1.png");
-  console.log("Profile Info:", user);
   const [showUnsubscribePopup, setShowUnsubscribePopup] = useState(false);
   const navigate = useNavigate();
 
@@ -71,72 +62,14 @@ export default function ProfilePage() {
     }
   }, [dispatch, data]);
 
-  const translations: any = {
-    en: {
-      myProfile: "My Profile",
-      manageAccount: "Manage your account settings",
-      terms: "Terms of Use",
-      readPolicies: "Read our policies",
-      unsubscribe: "Unsubscribe",
-      leaveService: "Leave the service",
-      accountInfo: "Account Information",
-      memberSince: "Member Since",
-      status: "Status",
-      subscription: "Subscription",
-      chooseAvatar: "Choose Avatar",
-      saveAvatar: "Save Avatar",
-      language: "Language",
-      english: "English",
-      burmese: "Burmese",
-      bids: "Bids",
-      wins: "Wins",
-      points: "Points",
-      plan: "Premium Plan",
-    },
-    my: {
-      myProfile: "ကျွန်ုပ်၏ ပရိုဖိုင်",
-      manageAccount: "အကောင့် ဆက်တင်များကို စီမံပါ",
-      terms: "အသုံးပြုမှု စည်းမျဉ်းများ",
-      readPolicies: "ကျွန်ုပ်တို့၏ မူဝါဒများကို ဖတ်ပါ",
-      unsubscribe: "မထည့်သွင်းတော့ပါ",
-      leaveService: "ဝန်ဆောင်မှုမှ ထွက်ရန်",
-      accountInfo: "အကောင့် အချက်အလက်",
-      memberSince: "အဖွဲ့ဝင်ဖြစ်သည့်နေ့",
-      status: "အခြေအနေ",
-      subscription: "စာရင်းသွင်းမှု",
-      chooseAvatar: "Avatar ရွေးချယ်ပါ",
-      saveAvatar: "Avatar သိမ်းမည်",
-      language: "ဘာသာစကား",
-      english: "အင်္ဂလိပ်",
-      burmese: "မြန်မာ",
-      bids: "အဆိုပြုချက်များ",
-      wins: "အနိုင်ရများ",
-      points: "အမှတ်များ",
-      plan: "ပရီးမီယံ အစီအစဉ်",
-    },
-  };
 
-  // Avatar options for user to choose from
-  const avatarOptions = [
-    "user123",
-    "sarah",
-    "alex",
-    "mike",
-    "emma",
-    "john",
-    "lisa",
-    "david",
-    "sophie",
-    "chris",
-  ];
 
 
 
   const handleSaveAvatar = async () => {
     try {
       const imgName = selectedAvatar.split(".")[0];
-      const res = await dispatch(updateProfileImageThunk({ profileImg: imgName })).unwrap();
-      console.log("RES>>>", res)
+      await dispatch(updateProfileImageThunk({ profileImg: imgName })).unwrap();
       setIsEditingImage(false);
       // Refresh profile info to reflect the new avatar
       dispatch(getProfileInfo() as any);
@@ -423,7 +356,7 @@ export default function ProfilePage() {
   );
 }
 
-function StatCard({ label, value, icon, color }: any) {
+const StatCard = React.memo(({ label, value, icon, color }: any) => {
   const themes: any = {
     blue: "from-blue-600 to-indigo-700 border-blue-400 text-white shadow-blue-200",
     gold: "from-amber-500 to-orange-600 border-amber-300 text-white shadow-amber-200",
@@ -451,9 +384,9 @@ function StatCard({ label, value, icon, color }: any) {
       />
     </div>
   );
-}
+});
 
-function InfoRow({ label, value, badge = false }: any) {
+const InfoRow = React.memo(({ label, value, badge = false }: any) => {
   return (
     <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 tracking-[1px]">
       <span className="text-xs font-bold text-white">{label}</span>
@@ -466,4 +399,4 @@ function InfoRow({ label, value, badge = false }: any) {
       )}
     </div>
   );
-}
+});

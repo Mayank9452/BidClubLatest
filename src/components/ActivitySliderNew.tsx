@@ -167,25 +167,25 @@ const maskMSISDN = (phone: string) => {
   return `${start}xxxx${end}`;
 };
 
-export default function ActivitySliderNew({updatedData }) {
+export default function ActivitySliderNew({ updatedData }) {
   const [activityList, setActivityList] = React.useState<any[]>([]);
   const { t } = useLanguage();
-  console.log("updatedData", updatedData);
+  // console.log("updatedData", updatedData);
   useEffect(() => {
-  if (!Array.isArray(updatedData)) return;
+    if (!Array.isArray(updatedData)) return;
 
-  const formatted: Activity[] = updatedData.map((item: any, index: number) => ({
-    id: index + 1,
-    user: maskMSISDN(item.user_phone),
-    message: `${maskMSISDN(item.user_phone)} ${t.placedBid}`,
-    user_phone: maskMSISDN(item.user_phone),
-    newMessage: `${Math.floor(Math.random() * 10) + 1 % 2 === 0 ? `placed a bid` : `Player won the Bid`}`,
-    time: t.justNow,
-    avatar: item.user_image, // ✅ from API
-  }));
+    const formatted: Activity[] = updatedData.map((item: any, index: number) => ({
+      id: index + 1,
+      user: maskMSISDN(item.user_phone),
+      message: `${maskMSISDN(item.user_phone)} ${t.placedBid}`,
+      user_phone: maskMSISDN(item.user_phone),
+      newMessage: `${Math.floor(Math.random() * 10) + 1 % 2 === 0 ? `placed a bid` : `Player won the Bid`}`,
+      time: t.justNow,
+      avatar: item.user_image, // ✅ from API
+    }));
 
-  setActivityList(formatted);
-}, [updatedData, t]);
+    setActivityList(formatted);
+  }, [updatedData, t]);
   const gradientStyles = [
     "from-indigo-600 to-purple-600",
     "from-emerald-500 to-blue-600",
@@ -213,7 +213,7 @@ export default function ActivitySliderNew({updatedData }) {
         {[...activityList, ...activityList].map((activity, index) => {
           const gradientClass = gradientStyles[index % gradientStyles.length];
           const avatarSeed = getAvatarSeed(activity.id);
-          
+
           return (
             <div
               key={`${activity.id}-${index}`}
@@ -223,7 +223,7 @@ export default function ActivitySliderNew({updatedData }) {
               <Zap className="absolute -right-2 -bottom-2 w-16 h-16 text-white/10 -rotate-12" />
 
               <div className="relative z-10 flex flex-col justify-between h-full">
-                
+
 
                 {/* Avatar + Message Section */}
                 <div className="flex items-center justify-between gap-4">
@@ -231,7 +231,7 @@ export default function ActivitySliderNew({updatedData }) {
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm p-0.5 border-2 border-white/30 shadow-lg">
                       <div className="w-full h-full rounded-lg overflow-hidden bg-white">
-                        <img 
+                        <img
                           src={`https://bidblast.club/assets/frontend/users/${activity.avatar}`}
                           alt="User avatar"
                           className="w-full h-full"
@@ -242,21 +242,21 @@ export default function ActivitySliderNew({updatedData }) {
 
                   <div className="flex flex-col items-start justify-center">
                     {/* Message */}
-                  <h3 className="text-sm font-bold text-white leading-tight whitespace-normal">
-                    {activity.user_phone}
-                  </h3>
-                  <p className="text-[10px] font-semibold text-white tracking-[1px] italic">
-                    {activity.newMessage}
-                  </p>
+                    <h3 className="text-sm font-bold text-white leading-tight whitespace-normal">
+                      {activity.user_phone}
+                    </h3>
+                    <p className="text-[10px] font-semibold text-white tracking-[1px] italic">
+                      {activity.newMessage}
+                    </p>
                   </div>
 
                   <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                  <span className="text-[10px] font-black text-white/70 uppercase tracking-widest">
-                    {t.live}
-                  </span>
-                </div>
-                  
+                    <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                    <span className="text-[10px] font-black text-white/70 uppercase tracking-widest">
+                      {t.live}
+                    </span>
+                  </div>
+
                 </div>
 
                 {/* <div className="flex items-center gap-1.5 mt-3 pt-2 border-t border-white/10">

@@ -1,15 +1,14 @@
-import ModernBiddingPage from "@/components/BiddingPage";
-import BiddingPageLatest from "@/components/BiddingPageLatest";
-import BiddingPageNew from "@/components/BiddingPageNew";
-import DetailsPage from "@/components/DetailsPage";
-import GamesPage from "@/components/GamesPage";
-import LeaderboardPageNew from "@/components/LeaderboardPageNew";
-import NotificationPage from "@/components/NotificationPage";
-import PlayGamesUpdatedNew from "@/components/PlayGamesUpdatedNew";
-import ProfilePage from "@/components/ProfilePage";
-import TermsOfUsePage from "@/components/TermsOfUsePage";
-import HomePage from "@/pages/HomePage";
+import { lazy } from "react";
 
+const ModernBiddingPage = lazy(() => import("@/components/BiddingPage"));
+const DetailsPage = lazy(() => import("@/components/DetailsPage"));
+const GamesPage = lazy(() => import("@/components/GamesPage"));
+const LeaderboardPageNew = lazy(() => import("@/components/LeaderboardPageNew"));
+const NotificationPage = lazy(() => import("@/components/NotificationPage"));
+const PlayGamesUpdatedNew = lazy(() => import("@/components/PlayGamesUpdatedNew"));
+const ProfilePage = lazy(() => import("@/components/ProfilePage"));
+const TermsOfUsePage = lazy(() => import("@/components/TermsOfUsePage"));
+const HomePage = lazy(() => import("@/pages/HomePage"));
 
 const routes = [
   { path: "/", element: <HomePage /> },
@@ -18,7 +17,6 @@ const routes = [
     path: "/games/:game_id",
     element: <PlayGamesUpdatedNew />,
   },
-
   {
     path: "/details",
     element: <DetailsPage />,
@@ -45,30 +43,8 @@ const routes = [
   },
   {
     path: "/terms",
-    element: <TermsOfUsePage />
-  }
-  // { path: "/dashboard", element: <Index /> },
-  // { path: "/games", element: <Games /> },
-  // { path: "/games/:category", element: <CategoryWiseGames /> },
-  // { path: "/games/:category/:game", element: <PlayGamesUpdated /> },
-  // { path: "/rewards", element: <Rewards /> },
-  // { path: "/profile", element: <Profile /> },
-  // { path: "/update-profile", element: <UpdateProfile /> },
-
-  // { path: "/spin", element: <SpinWheel /> },
-  // { path: "/spinner", element: <SpinWheel /> },
-  // { path: "/spinner/:handle", element: <SpinWheelUpdated /> },
-  // { path: "/prospinner/:handle", element: <JackpotSpinWheel /> },
-
-  // { path: "/triple777", element: <Triple777 /> },
-  // { path: "/slot", element: <Triple777 /> },
-  // { path: "/slot/:handle", element: <Triple777 /> },
-
-  // { path: "/dice", element: <RollDice /> },
-  // { path: "/dice/:handle", element: <RollDice /> },
-
-  // { path: "/jackpot", element: <SpinJackpot /> },
-
+    element: <TermsOfUsePage />,
+  },
 ];
 
 export { routes };

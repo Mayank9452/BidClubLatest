@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Trophy,
@@ -6,9 +6,7 @@ import {
   TrendingUp,
   Zap,
   Star,
-  ChevronDown,
   Award,
-  Gem,
 } from "lucide-react";
 import { BottomNavBar } from "./BottomNavBar";
 import { TopBar } from "./TopBar";
@@ -31,117 +29,7 @@ const maskPhone = (phone: string) => {
   return `${first3}xxxx${last3}`;
 };
 
-// Mock data
-const MOCK_USERS = [
-  {
-    id: 1,
-    name: "Abhishek",
-    score: 15420,
-    bids: 234,
-    avatar: "Alex",
-    tier: "diamond",
-    streak: 12,
-  },
-  {
-    id: 2,
-    name: "Anirudh",
-    score: 14890,
-    bids: 198,
-    avatar: "Sarah",
-    tier: "platinum",
-    streak: 8,
-  },
-  {
-    id: 3,
-    name: "Akash",
-    score: 13750,
-    bids: 187,
-    avatar: "Mike",
-    tier: "gold",
-    streak: 6,
-  },
-  {
-    id: 4,
-    name: "Amish",
-    score: 12340,
-    bids: 165,
-    avatar: "Emma",
-    tier: "gold",
-    streak: 5,
-  },
-  {
-    id: 5,
-    name: "Jakie",
-    score: 11890,
-    bids: 156,
-    avatar: "James",
-    tier: "silver",
-    streak: 4,
-  },
-  {
-    id: 6,
-    name: "Bhibhav",
-    score: 10560,
-    bids: 142,
-    avatar: "Lisa",
-    tier: "silver",
-    streak: 7,
-  },
-  {
-    id: 7,
-    name: "Rahul",
-    score: 9870,
-    bids: 134,
-    avatar: "David",
-    tier: "silver",
-    streak: 3,
-  },
-  {
-    id: 8,
-    name: "Ranbir",
-    score: 8920,
-    bids: 128,
-    avatar: "Sophie",
-    tier: "bronze",
-    streak: 2,
-  },
-  {
-    id: 9,
-    name: "Sammer",
-    score: 8450,
-    bids: 119,
-    avatar: "Chris",
-    tier: "bronze",
-    streak: 5,
-  },
-  {
-    id: 10,
-    name: "Rana Singh",
-    score: 7890,
-    bids: 112,
-    avatar: "Anna",
-    tier: "bronze",
-    streak: 3,
-  },
-  {
-    id: 11,
-    name: "Harshvardhan",
-    score: 7340,
-    bids: 105,
-    avatar: "Tom",
-    tier: "bronze",
-    streak: 2,
-  },
-  {
-    id: 12,
-    name: "Ashish",
-    score: 6890,
-    bids: 98,
-    avatar: "Kate",
-    tier: "bronze",
-    streak: 1,
-  },
-];
+
 
 const getTierColor = (tier: string) => {
   const colors = {
@@ -165,18 +53,7 @@ const getTierBadge = (tier: string) => {
   return badges[tier as keyof typeof badges] || "🏅";
 };
 
-const generatePhone = (userId: string | number) => {
-  const num = Number(userId);
 
-  // create pseudo-random but stable 9-digit number
-  const randomPart = (num * 9301 + 49297) % 1000000000;
-
-  const padded = String(randomPart).padStart(9, "0");
-
-  const actualNumber = `9${padded}`;
-
-  return `95${actualNumber}`;
-};
 
 export default function LeaderboardPageNew() {
   const dispatch = useAppDispatch();
@@ -234,35 +111,27 @@ export default function LeaderboardPageNew() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [status, hasMore]);
 
-  const formatUsers = (users: any[] = []) => {
+  const formatUsers = useCallback((users: any[] = []) => {
     return users.map((user: any) => {
-      let avatarIndex = (Number(user.user_id) % 25) + 1;
-
-      // If avatarIndex > 15, generate random number between 1-15
-      if (avatarIndex > 15) {
-        avatarIndex = Math.floor(Math.random() * 15) + 1;
-      }
+      // Deterministic avatar index based on user_id
+      const avatarIndex = (Number(user.user_id) % 15) + 1;
 
       return {
-        id: user.user_id, // ✅ FIXED (important for expand)
+        id: user.user_id,
         name: maskPhone(user.user_phone),
         score: Number(user.points || 0),
-        bids: user.bidsCount || 0, // ✅ FIXED (was random)
+        bids: user.bidsCount || 0,
         avatar: `${avatarIndex}.png`,
         tier: "bronze",
-        streak: Math.floor(Math.random() * 10) + 1,
+        streak: (Number(user.user_id) % 10) + 1, // stable streak
       };
     });
-  };
+  }, []);
 
-  const users = formatUsers(list);
+  const users = useMemo(() => formatUsers(list), [list, formatUsers]);
 
-  const topThree = users.slice(0, 3);
-  const theRest = users.slice(3);
-
-  console.log("Formatted Users:", users);
-  console.log("Top Three:", topThree);
-  console.log("The Rest:", theRest);
+  const topThree = useMemo(() => users.slice(0, 3), [users]);
+  const theRest = useMemo(() => users.slice(3), [users]);
 
   return (
     <>
@@ -356,11 +225,11 @@ export default function LeaderboardPageNew() {
                     transition={{ delay: index * 0.03 }}
                   >
                     <button
-                      // onClick={() =>
-                      //   setExpandedUser(
-                      //     expandedUser === user.id ? null : user.id,
-                      //   )
-                      // }
+                      onClick={() =>
+                        setExpandedUser(
+                          expandedUser === user.id ? null : user.id,
+                        )
+                      }
                       className="w-full"
                     >
                       <div className="flex items-center gap-2.5 p-2.5 bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-gray-100 transition-all active:scale-[0.98]">
@@ -502,94 +371,17 @@ export default function LeaderboardPageNew() {
           </div>
         </div>
       </div>
-      {users.length === 0 && status === "success" && (
-        <p className="text-center text-gray-400 py-5">No leaderboard data</p>
-      )}
+
       <BottomNavBar />
     </>
   );
 }
 
-// function PodiumCard({ user, rank, isFirst = false }: any) {
-//   return (
-//     <motion.div
-//       initial={{ opacity: 0, scale: 0.8, y: 20 }}
-//       animate={{ opacity: 1, scale: 1, y: 0 }}
-//       transition={{ delay: rank * 0.08, type: "spring", bounce: 0.4 }}
-//       className="flex flex-col items-center flex-1"
-//     >
-//       {/* Crown for 1st place */}
-//       {isFirst && (
-//         <Crown
-//           className="w-6 h-6 text-yellow-500 mb-1.5 animate-bounce"
-//           fill="currentColor"
-//         />
-//       )}
 
-//       {/* Avatar */}
-//       <div className={`relative mb-2 ${isFirst ? "scale-105" : ""}`}>
-//         <div
-//           className={`w-14 h-14 rounded-xl p-0.5 ${
-//             rank === 1
-//               ? "bg-gradient-to-tr from-yellow-400 to-amber-600"
-//               : rank === 2
-//                 ? "bg-gradient-to-tr from-gray-300 to-gray-500"
-//                 : "bg-gradient-to-tr from-orange-400 to-orange-600"
-//           } shadow-lg`}
-//         >
-//           <div className="w-full h-full bg-white rounded-xl overflow-hidden flex items-center justify-center">
-//             <img
-//               src={`https://bidblast.club/assets/frontend/users/${user.avatar}`}
-//               alt={user.name}
-//               className="w-full h-full"
-//             />
-//           </div>
-//         </div>
-
-//         {/* Rank Badge */}
-//         <div
-//           className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black shadow-md border-2 border-white ${
-//             rank === 1
-//               ? "bg-gradient-to-r from-yellow-400 to-amber-600 text-white"
-//               : rank === 2
-//                 ? "bg-gradient-to-r from-gray-300 to-gray-500 text-gray-700"
-//                 : "bg-gradient-to-r from-orange-400 to-orange-600 text-white"
-//           }`}
-//         >
-//           {rank}
-//         </div>
-//       </div>
-
-//       {/* Name & Score */}
-//       <div className="text-center mb-1.5 px-1">
-//         <p className="text-[11px] font-bold text-gray-800 truncate max-w-[80px]">
-//           {user.name.split(" ")[0]}
-//         </p>
-//         <p className="text-xs font-black bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-//           {user.score.toLocaleString()}
-//         </p>
-//       </div>
-
-//       {/* Podium Block */}
-//       <motion.div
-//         initial={{ height: 0 }}
-//         animate={{ height: isFirst ? 70 : rank === 2 ? 55 : 45 }}
-//         transition={{ delay: 0.25 + rank * 0.08 }}
-//         className={`w-full rounded-t-xl ${
-//           rank === 1
-//             ? "bg-gradient-to-b from-yellow-100 to-amber-200"
-//             : rank === 2
-//               ? "bg-gradient-to-b from-gray-100 to-gray-200"
-//               : "bg-gradient-to-b from-orange-100 to-orange-200"
-//         } border border-gray-200 shadow-inner`}
-//       />
-//     </motion.div>
-//   );
-// }
 
 type PodiumType = "gold" | "silver" | "bronze";
 
-function PodiumCard({ user, rank, isFirst = false }: any) {
+const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
   const { t } = useLanguage();
 
   const type: PodiumType =
@@ -727,9 +519,9 @@ function PodiumCard({ user, rank, isFirst = false }: any) {
       </motion.div>
     </motion.div>
   );
-}
+});
 
-function StatCard({ icon, label, value }: any) {
+const StatCard = React.memo(({ icon, label, value }: any) => {
   return (
     <div className="bg-white rounded-lg p-2 text-center">
       <div className="flex justify-center text-violet-600 mb-0.5">{icon}</div>
@@ -737,4 +529,4 @@ function StatCard({ icon, label, value }: any) {
       <p className="text-xs font-bold text-gray-800">{value}</p>
     </div>
   );
-}
+});

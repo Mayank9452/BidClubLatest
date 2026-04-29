@@ -117,6 +117,7 @@ export function TopBar({
                 <PopoverContent
                   side="bottom"
                   align="end"
+                  onCloseAutoFocus={(e) => e.preventDefault()}
                   className="w-55 bg-card/5 backdrop-blur-xl border border-blue-400/20 shadow-[0_0_10px_rgba(59,130,246,0.3)] rounded-xl z-[1100] p-4"
                 >
                   <div className="space-y-1">
@@ -158,6 +159,7 @@ export function TopBar({
                 <PopoverContent
                   side="bottom"
                   align="end"
+                  onCloseAutoFocus={(e) => e.preventDefault()}
                   className="w-55 bg-card/5 backdrop-blur-xl border border-yellow-400/20 shadow-[0_0_10px_rgba(250,204,21,0.3)] rounded-xl z-[1100] p-4"
                 >
                   <div className="space-y-1">

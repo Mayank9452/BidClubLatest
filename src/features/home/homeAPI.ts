@@ -5,7 +5,7 @@ export const getHomeData = async (id: number = 1, { getState }) => {
   // const state = getState() as RootState;
   // const token = state.auth.data.token || null;
 
-  console.log("API FUNCTION CALLED with id:", id);
+  // console.log("API FUNCTION CALLED with id:", id);
 
   const res = await fetch(frontendAPI.home(id), { // ✅ FIXED
     method: "GET",

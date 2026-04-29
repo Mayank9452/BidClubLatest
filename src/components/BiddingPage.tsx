@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   Sparkles,
   Trophy,
@@ -23,8 +23,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { checkUniqueNumbers } from "@/features/uniqueNumber/uniqueNumberSlice";
 import { placeBid } from "@/features/placebid/placeBidSlice";
 import { fetchBidInfo } from "@/features/bid/bidSlice";
-// import biddingPageImg from "../assets/image/biddingPage.png";
-// import jackpotGif from "../assets/image/jackpot.gif";
+
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 const getMMTTime = () => {
@@ -53,7 +52,6 @@ export default function BiddingPage() {
   }>({});
   const [currentTicket, setCurrentTicket] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
-  const [timeLeft, setTimeLeft] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showDuplicatePopup, setShowDuplicatePopup] = useState(false);
   const [duplicateSets, setDuplicateSets] = useState<any>(null);
@@ -77,15 +75,17 @@ export default function BiddingPage() {
   const bidInfo = bidData?.bidInfo;
 
   // values you need
-  const bidName = bidInfo?.bid_name?.replace(/\+/g, " ");
+  const bidName = useMemo(() => bidInfo?.bid_name?.replace(/\+/g, " "), [bidInfo?.bid_name]);
   const bidCycle = bidData?.cycleCount;
   const batchCount = bidData?.batchCount;
   const completeSets = bidData?.completeSets;
-  const allCompleteSets = Array.isArray(completeSets)
-    ? completeSets
-    : completeSets
-      ? Object.values(completeSets).flat()
-      : [];
+
+  const allCompleteSets = useMemo(() => {
+    if (!completeSets) return [];
+    return Array.isArray(completeSets)
+      ? completeSets
+      : Object.values(completeSets).flat();
+  }, [completeSets]);
 
   useEffect(() => {
     const encodedBidId = sessionStorage.getItem("bidId");
@@ -100,17 +100,7 @@ export default function BiddingPage() {
     }
   }, [bidCycle]);
 
-  useEffect(() => {
-    if (!bidInfo?.bid_end_timestamp) return;
-
-    setTimeLeft(getTimeLeft(bidInfo.bid_end_timestamp));
-    const id = setInterval(() => {
-      setTimeLeft(getTimeLeft(bidInfo.bid_end_timestamp));
-    }, 1000);
-    return () => clearInterval(id);
-  }, [bidInfo?.bid_end_timestamp]);
-
-  const tickets = Array(6).fill(null);
+  const tickets = useMemo(() => Array(6).fill(null), []);
 
   const handleNumberClick = (num: string) => {
     if (currentTicket === null) return;
@@ -126,23 +116,19 @@ export default function BiddingPage() {
     setInputValue(selectedTickets[index] || "");
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(() => {
     if (currentTicket !== null && inputValue.length > 0) {
-      setSelectedTickets({ ...selectedTickets, [currentTicket]: inputValue });
+      setSelectedTickets(prev => ({ ...prev, [currentTicket]: inputValue }));
       setInputValue("");
       setCurrentTicket(null);
     }
-  };
+  }, [currentTicket, inputValue]);
 
   const handleDelete = () => {
     setInputValue(inputValue.slice(0, -1));
   };
 
-  const handleConfirmValue = () => {
-    if (inputValue.length === 4) {
-      handleConfirm();
-    }
-  };
+
 
   const handleCancelInput = () => {
     setInputValue("");
@@ -170,7 +156,7 @@ export default function BiddingPage() {
     setInputValue("");
   };
 
-  const handleSubmit = async (e?: any) => {
+  const handleSubmit = useCallback(async (e?: any) => {
     e?.preventDefault();
 
     if (Object.keys(selectedTickets).length !== 6) return;
@@ -178,7 +164,7 @@ export default function BiddingPage() {
     const numbersArray = Object.values(selectedTickets).map(Number);
 
     const checkPayload = {
-      bid: btoa(bidInfo?.bid_id.toString()),
+      bid: btoa(bidInfo?.bid_id.toString() || ""),
       data: JSON.stringify(numbersArray),
     };
 
@@ -205,9 +191,9 @@ export default function BiddingPage() {
         setShowDuplicatePopup(true);
       }
     } catch (err: any) {
-      console.error("Error:", err.message);
+      // console.error("Error:", err.message);
     }
-  };
+  }, [selectedTickets, bidInfo?.bid_id, bidData?.batchCount, bidData?.cycleCount, dispatch]);
 
   const handlePlayMoreBids = () => {
     const encodedBidId = sessionStorage.getItem("bidId");
@@ -276,36 +262,7 @@ export default function BiddingPage() {
           </div>
 
           {/* Small Premium Timer */}
-          <div className="flex flex-col items-center justify-center -mt-12 bg-white backdrop-blur-2xl  w-[85%] rounded-xl p-2 mx-auto mb-4 ">
-            {/* <div className="flex items-center gap-1.5 mb-2 bg-white/20 backdrop-blur-md rounded-full px-4 py-1 border border-white/20">
-                <Clock className="w-3.5 h-3.5 text-white" />
-                <span className="text-[10px] font-black  tracking-[2.5px] text-white">
-                  {t.endsIn || "Ends In"}
-                </span>
-              </div> */}
-
-            <div className="flex items-center justify-center gap-2 ">
-              {timeLeft.split(" : ").map((unit, i) => (
-                <div key={i} className="flex items-center justify-center gap-2">
-                  <div className="flex flex-col items-center justify-center">
-                    <div className="relative bg-[#ff084bcc]/80 backdrop-blur-lg border border-white/80 rounded-xl w-12 h-12 flex items-center justify-center shadow-2xl">
-                      <span className="text-lg font-black text-white tabular-nums drop-shadow-lg">
-                        {unit}
-                      </span>
-                    </div>
-                    <span className="text-[10px] tracking-[1px] font-black text-pink-500/90 mt-1.5">
-                      {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort][i]}
-                    </span>
-                  </div>
-                  {i < 3 && (
-                    <div className="text-xl font-bold text-[#ff084bcc] mb-5 animate-pulse">
-                      :
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+          <TimerSection endTime={bidInfo?.bid_end_timestamp} />
 
           {/* Note & Show Filled Sets Button */}
           <div className="flex flex-col items-center gap-3 mb-4 w-[100%] mx-auto relative z-10">
@@ -599,14 +556,14 @@ export default function BiddingPage() {
                         <button
                           onClick={handleDelete}
                           disabled={inputValue.length === 0}
-                          className="flex-1 bg-white/5 border border-white text-red-500 rounded-2xl py-4 font-black text-[10px] tracking-widest uppercase active:scale-95 transition-transform"
+                          className="flex-1 bg-gradient-to-r from-[#ff084b] to-[#f43f5e] border border-white text-white rounded-2xl py-4 font-bold text-xs tracking-widest shadow-lg shadow-rose-500/20 active:scale-95 transition-transform"
                         >
                           {t.delete}
                         </button>
                         <button
                           onClick={handleConfirm}
                           disabled={inputValue.length === 0}
-                          className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 border border-white text-white rounded-2xl py-4 font-black text-[10px] tracking-widest uppercase shadow-lg shadow-emerald-500/20 active:scale-95 transition-transform"
+                          className="flex-1 bg-gradient-to-r from-[#11998e] to-[#38ef7d] border border-white text-white rounded-2xl py-4 font-bold text-xs tracking-widest shadow-lg shadow-emerald-500/30 active:scale-95 transition-transform"
                         >
                           {t.confirm}
                         </button>
@@ -634,42 +591,14 @@ export default function BiddingPage() {
                     </motion.button>
                   ))}
 
-                  {/* Backspace */}
-                  {/* <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    onClick={handleDelete}
-                    disabled={currentTicket === null || inputValue.length === 0}
-                    className="h-14 rounded-2xl bg-red-500/30 border-2 border-red-500 text-red-500 flex items-center justify-center disabled:opacity-90"
-                  >
-                    <X className="w-6 h-6" />
-                  </motion.button> */}
 
-                  {/* Zero */}
-                  {/* <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    disabled={currentTicket === null || inputValue.length >= 4}
-                    onClick={() => handleNumberClick("0")}
-                    className="h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 border-2 border-white text-white text-xl font-black flex items-center justify-center"
-                  >
-                    0
-                  </motion.button> */}
-
-                  {/* Quick Confirm */}
-                  {/* <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    onClick={handleConfirmValue}
-                    disabled={currentTicket === null || inputValue.length < 4}
-                    className="h-14 rounded-2xl bg-pink-500/20 border-2 border-pink-500 text-pink-500 flex items-center justify-center disabled:opacity-90 shadow-[0_0_15px_rgba(236,72,153,0.3)]"
-                  >
-                    <Check className="w-6 h-6" />
-                  </motion.button> */}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     type="button"
                     onClick={handleAutoPick}
-                    className="bg-indigo-600 text-white font-black text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white/10"
+                    className="bg-indigo-600 text-white font-black text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
                   >
                     <Shuffle className="w-4 h-4" />
                     {t.autoPick}
@@ -677,7 +606,7 @@ export default function BiddingPage() {
                   <button
                     type="button"
                     onClick={handleClearAll}
-                    className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-black text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white/10"
+                    className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-black text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
                   >
                     <Trash2 className="w-4 h-4" />
                     {t.clearAll}
@@ -691,7 +620,7 @@ export default function BiddingPage() {
                 whileTap={{ scale: 0.98 }}
                 type="button"
                 disabled={Object.keys(selectedTickets).length !== 6}
-                className={`w-fit mx-auto py-3 px-6 rounded-lg font-bold text-lg tracking-[1px] shadow-2xl transition-all flex items-center justify-center gap-3  
+                className={`w-fit mx-auto py-3 px-6 rounded-lg font-bold text-sm tracking-[1px] shadow-2xl transition-all flex items-center justify-center gap-3  
                 ${Object.keys(selectedTickets).length === 6
                     ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-pink-500/20"
                     : "bg-gradient-to-r from-pink-400 to-rose-600 text-white border border-slate-200 cursor-not-allowed"
@@ -706,11 +635,7 @@ export default function BiddingPage() {
                   </>
                 )}
               </motion.button>
-              <div className="text-center mt-6">
-                <p className="text-[10px] font-black text-slate-300 tracking-[3.5px] ">
-                  ✨ {t.goodLuck}! ✨
-                </p>
-              </div>
+
             </div>
           </div>
         </div>
@@ -745,3 +670,42 @@ export default function BiddingPage() {
     </>
   );
 }
+
+const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) => {
+  const { t } = useLanguage();
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft(endTime || ""));
+
+  useEffect(() => {
+    if (!endTime) return;
+    const id = setInterval(() => {
+      setTimeLeft(getTimeLeft(endTime));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [endTime]);
+
+  return (
+    <div className="flex flex-col items-center justify-center -mt-12 bg-white backdrop-blur-2xl w-[85%] rounded-xl p-2 mx-auto mb-4">
+      <div className="flex items-center justify-center gap-2">
+        {timeLeft.split(" : ").map((unit, i) => (
+          <div key={i} className="flex items-center justify-center gap-2">
+            <div className="flex flex-col items-center justify-center">
+              <div className="relative bg-[#ff084bcc]/80 backdrop-blur-lg border border-white/80 rounded-xl w-12 h-12 flex items-center justify-center shadow-2xl">
+                <span className="text-lg font-black text-white tabular-nums drop-shadow-lg">
+                  {unit}
+                </span>
+              </div>
+              <span className="text-[10px] tracking-[1px] font-black text-pink-500/90 mt-1.5">
+                {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort][i]}
+              </span>
+            </div>
+            {i < 3 && (
+              <div className="text-xl font-bold text-[#ff084bcc] mb-5 animate-pulse">
+                :
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});

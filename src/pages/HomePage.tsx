@@ -1,46 +1,20 @@
-import BidCard from "@/components/BidCard";
 import VideoSection from "@/components/VideoSection";
 import ActivitySlider from "@/components/ActivitySlider";
-import Leaderboard from "@/components/Leaderboard";
-import { BIDS_DATA, ACTIVITY_FEED, LEADERBOARD_DATA } from "@/utils/mockData";
+import { ACTIVITY_FEED } from "@/utils/mockData";
 import { TopBar } from "@/components/TopBar";
-import { Flame, PlayCircle, Activity, Trophy, Gavel } from "lucide-react";
+import { Flame, PlayCircle, Activity, Trophy } from "lucide-react";
 import { BottomNavBar } from "@/components/BottomNavBar";
 import LeaderboardNew from "@/components/LeaderboardNew";
-import BidCardDemo from "@/components/BidCardDemo";
 import WinnerList from "@/components/WinnerList";
 import TrendingGamesSlider from "@/components/TrendingGamesSlider";
-import { useEffect, useState } from "react";
-import LowBalancePopup from "@/components/LowBalancePopup";
 import { useLanguage } from "@/components/context/LanguageContext";
-import { fetchHomeData } from "@/features/home/homeSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import BidCardDemoNew from "@/components/BidCardDemoNew";
-import { motion } from "framer-motion";
-import BidCardDemoNewTest from "@/components/BidCardNewTest";
 import BiddingHammer from "@/components/BiddingHammer";
-const gradientBackground = [
-  "gradient-casino",
-  "gradient-dark",
-  "gradient-purple",
-  "gradient-green-dark",
-  "gradient-pink-dark",
-  "gradient-blue",
-];
 export default function HomePage() {
-  const [isPopupOpen, setIsPopupOpen] = useState(true);
   const { t } = useLanguage();
   const dispatch = useAppDispatch();
-  const { data: response, status } = useAppSelector((state) => state.home);
-
-  // useEffect(() => {
-  //   dispatch(fetchHomeData(1));
-  // }, [dispatch]);
-
-  // if (status === "loading") {
-  //   return <div className="text-center py-10">Loading...</div>;
-  // }
-  console.log(response);
+  const { data: response } = useAppSelector((state) => state.home);
 
   return (
     <>
@@ -175,12 +149,7 @@ export default function HomePage() {
           <TrendingGamesSlider />
         </section>
       </div>
-      {/* The Popup Component */}
-      {/* <LowBalancePopup
-        visible={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
-        avatarUrl="https://api.dicebear.com/7.x/avataaars/svg?seed=winner4" // Optional
-      /> */}
+
       <BottomNavBar />
     </>
   );

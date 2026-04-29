@@ -10,8 +10,8 @@ import { updateConfig } from "@/features/config/configSlice"
 
 export function LanguageToggle() {
 
-  const config = useAppSelector((state)=>state?.config);
-  const { language } = useAppSelector((state)=>state?.config);
+  const config = useAppSelector((state) => state?.config);
+  const { language } = useAppSelector((state) => state?.config);
   const dispatch = useAppDispatch();
 
   const languages = [
@@ -24,14 +24,14 @@ export function LanguageToggle() {
       value: "my",
     },
   ]
-  
+
   return (
-    <Select value={config?.language} onValueChange={(e)=>{
-      console.log(e)
-      dispatch(updateConfig({language: e}));
+    <Select value={config?.language} onValueChange={(e) => {
+      // console.log(e)
+      dispatch(updateConfig({ language: e }));
     }}>
       <SelectGroup>
-        <SelectLabel className="ps-4">{language == "my"?"ဘာသာစကား":"Language"}</SelectLabel>
+        <SelectLabel className="ps-4">{language == "my" ? "ဘာသာစကား" : "Language"}</SelectLabel>
       </SelectGroup>
       <SelectTrigger className="w-full glass rounded-lg h-14 p-4 border border-border/50 font-bold glass-card hover:glass-card-light transition-colors dark:text-white">
         <SelectValue />
@@ -40,7 +40,7 @@ export function LanguageToggle() {
         {languages.map((s) => (
           <SelectItem key={s.value} value={s.value}>
             <div>
-              {s.label} 
+              {s.label}
             </div>
           </SelectItem>
         ))}

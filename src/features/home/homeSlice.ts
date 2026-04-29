@@ -7,7 +7,7 @@ export const fetchHomeData = createAsyncThunk(
   "home",
   async (id: number = 1, { getState, rejectWithValue }) => {
     try {
-      console.log("Thunk called with id:", id); // 👈 add this
+      // console.log("Thunk called with id:", id); // 👈 add this
       return await getHomeData(id, { getState });
     } catch (error: any) {
       return rejectWithValue({
@@ -39,7 +39,7 @@ const homeSlice = createSlice({
 
         if (token) {
           sessionStorage.setItem(storage.auth, token);
-          console.log("Auth token stored:", token);
+          // console.log("Auth token stored:", token);
         }
       })
       .addCase(fetchHomeData.rejected, (state, action) => {

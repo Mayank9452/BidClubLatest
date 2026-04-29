@@ -6,7 +6,7 @@ import { Clock, Users } from "lucide-react"
 import { useLanguage } from "./context/LanguageContext";
 
 export default function BidCard({ bid, background }: { bid: Bid; background: string }) {
-  console.log("BidCard background:", background);
+  // console.log("BidCard background:", background);
   const { t } = useLanguage();
   return (
     <div className={` w-full min-w-0 rounded-2xl p-4 transition-smooth hover:glow ${background}`}>
@@ -62,7 +62,7 @@ export default function BidCard({ bid, background }: { bid: Bid; background: str
         {/* <span className="cs-shadow" />
         <span className="edge gradient-light" /> */}
         <span className="front bg-white  py-2 rounded-lg text-sm"
-        style={{color: "deeppink"}}
+          style={{ color: "deeppink" }}
         >
           {t.enterBid}
         </span>

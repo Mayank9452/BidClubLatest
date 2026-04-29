@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Trophy,
@@ -56,36 +54,34 @@ export default function LeaderboardNew({
   const { t } = useLanguage();
 
   const [activeTab, setActiveTab] = useState<"weekly" | "monthly">("weekly");
-  const formatUsers = (data: any) => {
+  const formatUsers = useCallback((data: any) => {
     if (!data) return [];
 
     const combined = [...(data.top_3 || []), ...(data.others || [])];
 
     return combined.map((user: any) => {
-      let avatarIndex = (Number(user.user_id) % 25) + 1;
-      // If avatarIndex > 15, generate random number between 1-15
-      if (avatarIndex > 15) {
-        avatarIndex = Math.floor(Math.random() * 15) + 1;
-      }
+      // Deterministic avatar index based on user_id
+      let avatarIndex = (Number(user.user_id) % 15) + 1;
 
       return {
         id: user.user_id,
         name: `User ${user.user_id}`, // fallback name
         phone: maskMSISDN(`${user.user_phone}`),
         score: Number(user.points),
-        bids: user.bidsCount || Math.floor(Math.random() * 900) + 100, // random 100–999
+        bids: user.bidsCount || (Number(user.user_id) % 900) + 100, // stable pseudo-random
         avatar: `${avatarIndex}.png`,
       };
     });
-  };
+  }, [t.bids]);
 
-  const users =
+  const users = useMemo(() => 
     activeTab === "weekly"
       ? formatUsers(weeklyUsers)
-      : formatUsers(monthlyUsers);
+      : formatUsers(monthlyUsers)
+  , [activeTab, weeklyUsers, monthlyUsers, formatUsers]);
 
-  const topThree = users.slice(0, 3);
-  const theRest = users.slice(3, 5);
+  const topThree = useMemo(() => users.slice(0, 3), [users]);
+  const theRest = useMemo(() => users.slice(3, 5), [users]);
 
   return (
     <div className="w-full max-w-md mx-auto relative group -mt-16">
@@ -290,7 +286,7 @@ hover:from-indigo-200 hover:via-purple-300 hover:to-indigo-200 rounded-[1.5rem] 
 //   );
 // }
 
-function PodiumItem({ user, rank, type, delay }: any) {
+const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
   const { t } = useLanguage();
   const styles = {
   gold: {
@@ -417,4 +413,4 @@ function PodiumItem({ user, rank, type, delay }: any) {
       />
     </motion.div>
   );
-}
+});

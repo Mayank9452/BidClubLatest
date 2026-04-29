@@ -70,6 +70,7 @@ export const translations: any = {
     topPrize: "TOP PRIZE",
     bidder: "Bidder",
     enterBid: "Enter Bid",
+    reBid: "Re Bid",
     activeCycle: "Active Cycle",
     live: "Live",
     players: "Players",
@@ -95,8 +96,8 @@ export const translations: any = {
       "Experience the thrill of daily bidding where every cycle brings new opportunities to win amazing prizes.",
     chooseGameMode: "Choose Your Game Mode",
 
-    dailyBid: "Daily Bid",
-    weeklyBid: "Weekly Bid",
+    dailyBid: "Bid Daily",
+    weeklyBid: "Bid Weekly",
 
     fastPacedAction: "Fast-paced action",
     strategicGameplay: "Strategic gameplay",
@@ -255,6 +256,7 @@ export const translations: any = {
     topPrize: "အမြင့်ဆုံး ဆု",
     bidder: "လေလံတင်သူ",
     enterBid: "လေလံဝင်ပါ",
+    reBid: "ပြန်လည် လေလံဝင်ပါ",
     bid: "လေလံ",
     activeCycle: "လက်ရှိ စက်ဝန်း",
     live: "တိုက်ရိုက်",

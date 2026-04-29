@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Trophy, Crown, Medal, Star, Sparkles, Timer, Zap, Award } from "lucide-react";
 import { useLanguage } from "./context/LanguageContext";
 
@@ -93,35 +91,27 @@ const generateSparkles = (count: number) => {
 
 export default function WinnerList({ lastWeeklyWinners }) {
   const { t } = useLanguage();
-  const [weeklyWinners, setWeeklyWinners] = useState<any[]>([]);
-  console.log("TYPE:", typeof lastWeeklyWinners);
-  console.log("IS ARRAY:", Array.isArray(lastWeeklyWinners));
-  console.log("RAW:", lastWeeklyWinners);
-  const cardSparkles = generateSparkles(25);
-  useEffect(() => {
-    if (!Array.isArray(lastWeeklyWinners)) return;
 
-    const formatted = lastWeeklyWinners.map((item: any, index: number) => {
-      // Calculate avatar index from user_id or index
-      let avatarIndex = (Number(item.user_id || index) % 25) + 1;
-      // If avatarIndex > 15, generate random number between 1-15
-      if (avatarIndex > 15) {
-        avatarIndex = Math.floor(Math.random() * 15) + 1;
-      }
+  const cardSparkles = useMemo(() => generateSparkles(25), []);
+
+  const weeklyWinners = useMemo(() => {
+    if (!Array.isArray(lastWeeklyWinners)) return [];
+
+    return lastWeeklyWinners.map((item: any, index: number) => {
+      // Deterministic avatar index based on user_id or index
+      let avatarIndex = (Number(item.user_id || index) % 15) + 1;
 
       return {
         id: item.cycle_id,
         rank: Number(item.cycle_reward_rank),
         phone: maskMSISDN(item.user_phone),
-        avatar: `${avatarIndex}.png`, // Apply avatar logic
+        avatar: `${avatarIndex}.png`,
         uniqueNumber: item.cycle_id,
         time: t.justNow,
       };
     });
-
-    setWeeklyWinners(formatted);
-  }, [lastWeeklyWinners]);
-  console.log("lastWeeklyWinners", lastWeeklyWinners);
+  }, [lastWeeklyWinners, t.justNow]);
+  // console.log("lastWeeklyWinners", lastWeeklyWinners);
   return (
     <div className="relative overflow-hidden">
       {/* Floating Gold Sparkles - Background Layer */}
@@ -286,10 +276,10 @@ export default function WinnerList({ lastWeeklyWinners }) {
   );
 }
 
-function WinnerBanner({ winner, bgGradient }: any) {
+const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
   const { t } = useLanguage();
-  const cardSparkles = generateSparkles(8);
-  console.log("winner", winner);
+  const cardSparkles = useMemo(() => generateSparkles(8), []);
+  // console.log("winner", winner);
 
   return (
     <div
@@ -397,4 +387,4 @@ function WinnerBanner({ winner, bgGradient }: any) {
       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
     </div>
   );
-}
+});

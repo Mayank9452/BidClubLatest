@@ -1,3 +1,4 @@
+import React, { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import {
   Users,
   Zap,
@@ -14,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "./context/LanguageContext";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { fetchBidInfo } from "@/features/bid/bidSlice";
-import { useEffect, useState, useRef } from "react";
 import MyanmarClock from "./MynammarClock";
 import { motion } from "framer-motion";
 import TimeSliceClock from "./TimeSliceClock";
@@ -108,7 +108,7 @@ const getTimeLeft = (endTime: string) => {
 };
 
 // ── BidCard ──────────────────────────────────────────────────────────────────
-function BidCard({ bid, index, activeTab }: { bid: any; index: number; activeTab: string }) {
+const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number; activeTab: string }) => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const dispatch = useAppDispatch();
@@ -278,12 +278,12 @@ function BidCard({ bid, index, activeTab }: { bid: any; index: number; activeTab
           className="bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2 rounded-xl text-sm tracking-[1px] transition-colors duration-150 shadow-md active:shadow-lg flex items-center justify-center gap-2"
         >
           <Target className="w-3.5 h-3.5" />
-          {t.enterBid}
+          {bid.joinedStatus ? t.reBid : t.enterBid}
         </button>
       </div>
     </div>
   );
-}
+});
 
 // ── BidCardDemo ──────────────────────────────────────────────────────────────
 export default function BidCardDemo() {
@@ -294,36 +294,46 @@ export default function BidCardDemo() {
   const [activeTab, setActiveTab] = useState<"Daily" | "Weekly">("Daily");
   const scrollRef = useRef(null);
 
-  const formattedBids = liveBids.map((item: any) => {
-    const rawName = item.bid_name.replace(/\+/g, " ");
-    let translatedName = rawName;
-    
-    if (rawName.toLowerCase().includes("daily")) {
-      const number = rawName.match(/\d+/);
-      translatedName = `${t.dailyBid}${number ? " " + number[0] : ""}`;
-    } else if (rawName.toLowerCase().includes("weekly")) {
-      const number = rawName.match(/\d+/);
-      translatedName = `${t.weeklyBid}${number ? " " + number[0] : ""}`;
-    }
+  const formattedBids = useMemo(() => {
+    return liveBids.map((item: any) => {
+      const rawName = item.bid_name.replace(/\+/g, " ");
+      let translatedName = rawName;
 
-    return {
-      id: item.bid_id,
-      name: translatedName,
-      prize: item.bid_prize_1,
-      endTime: item.bid_end_timestamp,
-      activeCycle: item.bid_active_cycle,
-      currentBid: item.total_bids_count,
-    };
-  });
+      if (rawName.toLowerCase().includes("daily")) {
+        const number = rawName.match(/\d+/);
+        translatedName = `${t.dailyBid}${number ? " " + number[0] : ""}`;
+      } else if (rawName.toLowerCase().includes("weekly")) {
+        const number = rawName.match(/\d+/);
+        translatedName = `${t.weeklyBid}${number ? " " + number[0] : ""}`;
+      }
 
-  const DailyBids = formattedBids.filter((_, idx) =>
-    liveBids[idx]?.bid_name.toLowerCase().includes("daily"),
-  );
-  const WeeklyBids = formattedBids.filter((_, idx) =>
-    liveBids[idx]?.bid_name.toLowerCase().includes("weekly"),
-  );
+      return {
+        id: item.bid_id,
+        name: translatedName,
+        prize: item.bid_prize_1,
+        endTime: item.bid_end_timestamp,
+        activeCycle: item.bid_active_cycle,
+        currentBid: item.total_bids_count,
+        joinedStatus: item.joinedStatus,
+      };
+    });
+  }, [liveBids, t]);
 
-  const displayedBids = activeTab === "Daily" ? DailyBids : WeeklyBids;
+  const DailyBids = useMemo(() =>
+    formattedBids.filter((bid) =>
+      bid.name.toLowerCase().includes(t.dailyBid.toLowerCase()) ||
+      bid.name.toLowerCase().includes("daily")
+    ), [formattedBids, t.dailyBid]);
+
+  const WeeklyBids = useMemo(() =>
+    formattedBids.filter((bid) =>
+      bid.name.toLowerCase().includes(t.weeklyBid.toLowerCase()) ||
+      bid.name.toLowerCase().includes("weekly")
+    ), [formattedBids, t.weeklyBid]);
+
+  const displayedBids = useMemo(() =>
+    activeTab === "Daily" ? DailyBids : WeeklyBids
+    , [activeTab, DailyBids, WeeklyBids]);
 
   const isSingle = displayedBids.length === 1;
   const isOdd = displayedBids.length > 1 && displayedBids.length % 2 !== 0;

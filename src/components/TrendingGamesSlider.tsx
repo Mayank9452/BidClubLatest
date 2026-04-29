@@ -63,11 +63,11 @@ export default function TrendingGamesSlider() {
   );
 }
 
-function CategoryCard({
+const CategoryCard = React.memo(({
   category,
 }: {
   category: typeof GAME_CATEGORIES[0];
-}) {
+}) => {
   const Icon = category.icon;
   const navigate = useNavigate();
 
@@ -104,4 +104,4 @@ function CategoryCard({
       </div>
     </button>
   );
-}
+});

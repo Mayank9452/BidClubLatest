@@ -71,7 +71,7 @@ export default function BidCardTest({ bid, index }: any) {
 
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(bid.endTime));
 
-  console.log("bid info", bid);
+  // console.log("bid info", bid);
 
   useEffect(() => {
     const id = setInterval(

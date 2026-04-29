@@ -13,10 +13,10 @@ if (!root) throw new Error("Root element not found");
 
 ReactDOM.createRoot(root).render(
   // <React.StrictMode>
-    <Provider store={store}>
-      <LanguageProvider>
-        <App />
-      </LanguageProvider>
-    </Provider>
+  <Provider store={store}>
+    <LanguageProvider>
+      <App />
+    </LanguageProvider>
+  </Provider>
   // </React.StrictMode>
 );

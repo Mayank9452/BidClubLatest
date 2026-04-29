@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bell,
@@ -8,8 +8,6 @@ import {
   Gift,
   TrendingUp,
   Zap,
-  X,
-  ChevronRight,
   Gem,
 } from "lucide-react";
 import { TopBar } from "./TopBar";
@@ -28,81 +26,7 @@ const formatDateTime = (dateTimeString) => {
   };
 };
 
-// Mock notifications data
-const NOTIFICATIONS = [
-  {
-    id: 1,
-    bidName: "Bid Daily",
-    startDate: "2025-01-01",
-    startTime: "10:00 AM",
-    endDate: "2025-01-01",
-    endTime: "11:00 PM",
-    won: true,
-    prize: "4,350 Data Pack (MB)",
-    status: "completed",
-    timestamp: "2 hours ago",
-  },
-  {
-    id: 2,
-    bidName: "Bid Weekly",
-    startDate: "2024-12-28",
-    startTime: "09:00 AM",
-    endDate: "2024-12-31",
-    endTime: "11:59 PM",
-    won: false,
-    prize: null,
-    status: "completed",
-    timestamp: "5 hours ago",
-  },
-  {
-    id: 3,
-    bidName: "Bid Daily",
-    startDate: "2024-12-30",
-    startTime: "02:00 PM",
-    endDate: "2024-12-31",
-    endTime: "08:00 PM",
-    won: true,
-    prize: "10,000 Data Pack (MB)",
-    status: "completed",
-    timestamp: "1 day ago",
-  },
-  {
-    id: 4,
-    bidName: "Bid Daily",
-    startDate: "2024-12-29",
-    startTime: "12:00 PM",
-    endDate: "2024-12-29",
-    endTime: "06:00 PM",
-    won: false,
-    prize: null,
-    status: "completed",
-    timestamp: "2 days ago",
-  },
-  {
-    id: 5,
-    bidName: "Bid Daily",
-    startDate: "2024-12-28",
-    startTime: "08:00 AM",
-    endDate: "2024-12-28",
-    endTime: "10:00 PM",
-    won: true,
-    prize: "25,000 Data Pack (MB)",
-    status: "completed",
-    timestamp: "3 days ago",
-  },
-  {
-    id: 6,
-    bidName: "Bid Daily",
-    startDate: "2024-12-27",
-    startTime: "10:00 AM",
-    endDate: "2024-12-27",
-    endTime: "11:00 PM",
-    won: false,
-    prize: null,
-    status: "completed",
-    timestamp: "4 days ago",
-  },
-];
+
 
 export default function NotificationPage() {
   const dispatch = useAppDispatch();
@@ -118,7 +42,7 @@ export default function NotificationPage() {
     pageNo: 1,
   });
   const [selectedNotif, setSelectedNotif] = useState<number | null>(null);
-  const { t, language, changeLanguage } = useLanguage();
+  const { t } = useLanguage();
 
   useEffect(() => {
     dispatch(fetchNotification(filters));
@@ -157,39 +81,32 @@ export default function NotificationPage() {
     return `${days} days ago`;
   };
 
-  const formatNotification = (item: any) => {
-    const prize = Number(item.cycle_reward_prize);
+  const formatNotification = useCallback((item: any) => {
     const start = formatDateTime(
       `${item.bid_start_date} ${item.bid_start_time}`,
     );
     const end = formatDateTime(`${item.bid_end_date} ${item.bid_end_time}`);
 
+    // Deterministic diamond credit based on batch_id
+    const diamondAmount = (Number(item.batch_id) % 10) + 1;
+
     return {
       id: item.batch_id,
-
       bidName: item.bid_name?.replace(/\+/g, " "),
-
       startDate: start.date,
       startTime: start.time,
       endDate: end.date,
       endTime: end.time,
-
-      won: item.reward_prize_text === "No prize won" ? false : true,
-      diamondCredit: `Diamond earned : ${Math.floor(Math.random() * 10) + 1}`, // Mock diamond credit
-
-      prize:
-        item.reward_prize_text !== "No prize won"
-          ? `${item.reward_prize_text}`
-          : null,
-
+      won: item.reward_prize_text !== "No prize won",
+      diamondCredit: `Diamond earned : ${diamondAmount}`,
+      prize: item.reward_prize_text !== "No prize won" ? item.reward_prize_text : null,
       timestamp: formatTimeAgo(item.batch_datetime),
-
       rank: Number(item.cycle_reward_rank),
       isRead: item.cycle_reward_seen === "1",
     };
-  };
+  }, []);
 
-  const notifications = list.map(formatNotification);
+  const notifications = useMemo(() => list.map(formatNotification), [list, formatNotification]);
 
   const handleFilterChange = (type: "all" | "won" | "lost") => {
     setFilter(type);
@@ -202,14 +119,15 @@ export default function NotificationPage() {
     });
   };
 
-  const filteredNotifications = notifications.filter((notif) => {
-    if (filter === "won") return notif.won;
-    if (filter === "lost") return !notif.won;
-    return true;
-  });
+  const filteredNotifications = useMemo(() => {
+    return notifications.filter((notif) => {
+      if (filter === "won") return notif.won;
+      if (filter === "lost") return !notif.won;
+      return true;
+    });
+  }, [notifications, filter]);
 
-  const wonCount = notifications.filter((n) => n.won).length;
-  const lostCount = notifications.filter((n) => !n.won).length;
+
 
   return (
     <>
@@ -371,7 +289,7 @@ export default function NotificationPage() {
   );
 }
 
-function NotificationCard({ notification, isExpanded, onToggle }: any) {
+const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any) => {
   const {
     bidName,
     startDate,
@@ -383,7 +301,7 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
     diamondCredit,
     timestamp,
   } = notification;
-  const { t, language, changeLanguage } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <motion.button
@@ -476,7 +394,7 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
               </div> */}
               <div className="flex items-center gap-2 mb-1 text-gray-600">
                 <div className="w-5 h-5 bg-gray-300 rounded-lg flex items-center justify-center">
-                  <X className="w-4 h-4" strokeWidth={3} />
+                  <Bell className="w-4 h-4" strokeWidth={3} />
                 </div>
                 <p className="text-xs font-semibold tracking-wider">
                   {/* {t.yourPrize} */}
@@ -564,9 +482,9 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
       </div>
     </motion.button>
   );
-}
+});
 
-function StatBox({ icon, label, value }: any) {
+const StatBox = React.memo(({ icon, label, value }: any) => {
   return (
     <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg p-2 text-center border border-gray-100">
       <div className="flex justify-center text-violet-600 mb-1">{icon}</div>
@@ -574,4 +492,4 @@ function StatBox({ icon, label, value }: any) {
       <p className="text-xs font-bold text-gray-800">{value}</p>
     </div>
   );
-}
+});

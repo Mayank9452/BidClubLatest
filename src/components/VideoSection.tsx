@@ -37,7 +37,7 @@ export default function VideoSection() {
             className=" w-fit mt-2"
             onClick={() => {
               navigate("/details", {
-                state: { videoUrl: "https://bidblast.club/assets/frontend/img/introduction.mp4" },
+                state: { videoUrl: "/assets/frontend/img/introduction.mp4" },
               });
             }}
           >

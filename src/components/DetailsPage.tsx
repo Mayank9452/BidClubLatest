@@ -1,7 +1,8 @@
+import React, { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { TopBar } from "./TopBar";
 import { BottomNavBar } from "./BottomNavBar";
-import { Sparkles, Zap, Clock, Trophy, CheckCircle2, TrendingUp } from "lucide-react";
+import { Sparkles, Zap, Clock, Trophy, TrendingUp } from "lucide-react";
 import { useLanguage } from "./context/LanguageContext";
 
 export default function DetailsPage() {
@@ -12,274 +13,223 @@ export default function DetailsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       <TopBar />
-      
+
       <div className="min-h-screen bg-premium-soft mx-2">
-      {/* Top Bar Placeholder */}
-      <div className="gradient-home-section backdrop-blur-2xl border-b border-gray-200 p-4 sticky top-0 shadow-sm mt-2 rounded-xl pb-14">
-        <h1 className="text-lg font-bold text-white text-center">{t.howToPlay}</h1>
-      </div>
-      
-      <div className="max-w-md mx-auto pt-2 pb-2 space-y-4 -mt-14">
-        
-        {/* Video Card - Premium Style */}
-        <div className="relative aspect-video rounded-2xl bg-dark-gray shadow-xl shadow-purple-500/20 overflow-hidden border border-white/20 mx-2">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-10" />
-          
-          <span className="absolute top-4 left-4 z-20 flex items-center gap-2 text-xs font-semibold bg-red-500 text-white px-3 py-1.5 rounded-full shadow-lg">
-            <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-            {t.live}
-          </span>
-
-          <div className="aspect-video flex items-center justify-center">
-            <video
-              src={videoUrl}
-              controls
-              playsInline
-              preload="metadata"
-              className="w-full h-full object-cover"
-            />
-          </div>
+        {/* Top Bar Placeholder */}
+        <div className="gradient-home-section backdrop-blur-2xl border-b border-gray-200 p-4 sticky top-0 shadow-sm mt-2 rounded-xl pb-14">
+          <h1 className="text-lg font-bold text-white text-center">{t.howToPlay}</h1>
         </div>
 
-        {/* Hero Welcome Card */}
-        <div className="relative overflow-hidden rounded-3xl gradient-hero-vibrant p-5 shadow-2xl">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-          
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-6 h-6 text-yellow-300" />
-              <h2 className="text-2xl font-bold text-white">{t.welcomeToBidBlast}</h2>
-            </div>
-            <p className="text-indigo-100 text-sm leading-relaxed">
-              {t.bidblastDescription} 🎁
-            </p>
-          </div>
-        </div>
+        <div className="max-w-md mx-auto pt-2 pb-2 space-y-4 -mt-14">
 
-        {/* Bid Types - Ultra Modern Cards */}
-        <div className="space-y-4">
-          <div className="text-center mb-2">
-            <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-lg border border-gray-200">
-              <Zap className="w-5 h-5 text-indigo-600" />
-              <h3 className="text-lg font-bold text-gray-800">{t.chooseGameMode}</h3>
+          {/* Video Card - Premium Style */}
+          <div className="relative aspect-video rounded-2xl bg-dark-gray shadow-xl shadow-purple-500/20 overflow-hidden border border-white/20 mx-2">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-10" />
+
+            <span className="absolute top-4 left-4 z-20 flex items-center gap-2 text-xs font-semibold bg-red-500 text-white px-3 py-1.5 rounded-full shadow-lg">
+              <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              {t.live}
+            </span>
+
+            <div className="aspect-video flex items-center justify-center">
+              <video
+                src={videoUrl}
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
-          {/* Daily Bid */}
-          <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 p-[2px] shadow-2xl shadow-indigo-500/40 active:scale-[0.97] transition-all cursor-pointer">
-            <div className="relative bg-white rounded-[22px] p-5 h-full">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-2xl" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-400/20 to-pink-400/20 rounded-full blur-2xl" />
-              
-              <div className="relative">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-lg opacity-60" />
-                      <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-xl">
-                        <Clock className="w-7 h-7 text-white" />
+          {/* Hero Welcome Card */}
+          <div className="relative overflow-hidden rounded-3xl gradient-hero-vibrant p-5 shadow-2xl">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-6 h-6 text-yellow-300" />
+                <h2 className="text-2xl font-bold text-white">{t.welcomeToBidBlast}</h2>
+              </div>
+              <p className="text-indigo-100 text-sm leading-relaxed">
+                {t.bidblastDescription} 🎁
+              </p>
+            </div>
+          </div>
+
+          {/* Bid Types - Ultra Modern Cards */}
+          <div className="space-y-4">
+            <div className="text-center mb-2">
+              <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-lg border border-gray-200">
+                <Zap className="w-5 h-5 text-indigo-600" />
+                <h3 className="text-lg font-bold text-gray-800">{t.chooseGameMode}</h3>
+              </div>
+            </div>
+
+            {/* Daily Bid */}
+            <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 p-[2px] shadow-2xl shadow-indigo-500/40 active:scale-[0.97] transition-all cursor-pointer">
+              <div className="relative bg-white rounded-[22px] p-5 h-full">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-2xl" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-400/20 to-pink-400/20 rounded-full blur-2xl" />
+
+                <div className="relative">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl blur-lg opacity-60" />
+                        <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-xl">
+                          <Clock className="w-7 h-7 text-white" />
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                          {t.dailyBid}
+                        </h4>
+                        <p className="text-xs text-gray-500 font-semibold">{t.fastPacedAction}</p>
                       </div>
                     </div>
-                    <div>
-                      <h4 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                        {t.dailyBid}
-                      </h4>
-                      <p className="text-xs text-gray-500 font-semibold">{t.fastPacedAction}</p>
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur-md opacity-50" />
+                      <span className="relative text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-full shadow-lg tracking-[0.5px]">
+                        🔥 {t.popular}
+                      </span>
                     </div>
                   </div>
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur-md opacity-50" />
-                    <span className="relative text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-full shadow-lg tracking-[0.5px]">
-                      🔥 {t.popular}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3 mt-5">
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 p-4 border border-indigo-100">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-indigo-400/10 rounded-full blur-xl" />
-                    <p className="text-3xl font-black bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent relative">4</p>
-                    <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.totalCycles}</p>
-                  </div>
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-4 border border-purple-100">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl" />
-                    <p className="text-3xl font-black bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative tracking-[0.5px]">6h</p>
-                    <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.perCycle}</p>
+
+                  <div className="grid grid-cols-2 gap-3 mt-5">
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 p-4 border border-indigo-100">
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-indigo-400/10 rounded-full blur-xl" />
+                      <p className="text-3xl font-black bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent relative">4</p>
+                      <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.totalCycles}</p>
+                    </div>
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-4 border border-purple-100">
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl" />
+                      <p className="text-3xl font-black bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative tracking-[0.5px]">6h</p>
+                      <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.perCycle}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Weekly Bid */}
-          <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 p-[2px] shadow-2xl shadow-purple-500/40 active:scale-[0.97] transition-all cursor-pointer">
-            <div className="relative bg-white rounded-[22px] p-5 h-full">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-2xl" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-pink-400/20 to-rose-400/20 rounded-full blur-2xl" />
-              
-              <div className="relative">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl blur-lg opacity-60" />
-                      <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-xl">
-                        <TrendingUp className="w-7 h-7 text-white" />
+            {/* Weekly Bid */}
+            <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 p-[2px] shadow-2xl shadow-purple-500/40 active:scale-[0.97] transition-all cursor-pointer">
+              <div className="relative bg-white rounded-[22px] p-5 h-full">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-2xl" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-pink-400/20 to-rose-400/20 rounded-full blur-2xl" />
+
+                <div className="relative">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl blur-lg opacity-60" />
+                        <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-xl">
+                          <TrendingUp className="w-7 h-7 text-white" />
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent tracking-[0.5px]">
+                          {t.weeklyBid}
+                        </h4>
+                        <p className="text-xs text-gray-500 font-semibold tracking-[0.5px]">{t.strategicGameplay}</p>
                       </div>
                     </div>
-                    <div>
-                      <h4 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent tracking-[0.5px]">
-                        {t.weeklyBid}
-                      </h4>
-                      <p className="text-xs text-gray-500 font-semibold tracking-[0.5px]">{t.strategicGameplay}</p>
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-md opacity-50" />
+                      <span className="relative text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1.5 rounded-full shadow-lg tracking-[0.5px]">
+                        ⭐ {t.trending}
+                      </span>
                     </div>
                   </div>
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-md opacity-50" />
-                    <span className="relative text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1.5 rounded-full shadow-lg tracking-[0.5px]">
-                      ⭐ {t.trending}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3 mt-5">
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-4 border border-purple-100">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl" />
-                    <p className="text-3xl font-black bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative">7</p>
-                    <p className="text-xs text-gray-600 font-semibold mt-1">{t.totalCycles}</p>
-                  </div>
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-50 to-rose-50 p-4 border border-pink-100">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-pink-400/10 rounded-full blur-xl" />
-                    <p className="text-3xl font-black bg-gradient-to-br from-pink-600 to-rose-600 bg-clip-text text-transparent relative">24h</p>
-                    <p className="text-xs text-gray-600 font-semibold mt-1">{t.perCycle}</p>
+
+                  <div className="grid grid-cols-2 gap-3 mt-5">
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-4 border border-purple-100">
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl" />
+                      <p className="text-3xl font-black bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative">7</p>
+                      <p className="text-xs text-gray-600 font-semibold mt-1">{t.totalCycles}</p>
+                    </div>
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-50 to-rose-50 p-4 border border-pink-100">
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-pink-400/10 rounded-full blur-xl" />
+                      <p className="text-3xl font-black bg-gradient-to-br from-pink-600 to-rose-600 bg-clip-text text-transparent relative">24h</p>
+                      <p className="text-xs text-gray-600 font-semibold mt-1">{t.perCycle}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
+
           </div>
 
-          {/* Monthly Bid */}
-          {/* <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-500 via-orange-500 to-amber-500 p-[2px] shadow-2xl shadow-orange-500/40 active:scale-[0.97] transition-all cursor-pointer">
-            <div className="relative bg-white rounded-[22px] p-5 h-full">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-amber-400/20 rounded-full blur-2xl" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-rose-400/20 to-orange-400/20 rounded-full blur-2xl" />
-              
-              <div className="relative">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-br from-rose-500 to-orange-600 rounded-2xl blur-lg opacity-60" />
-                      <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-orange-600 flex items-center justify-center shadow-xl">
-                        <Trophy className="w-7 h-7 text-white" />
-                      </div>
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent">
-                        Monthly Bid
-                      </h4>
-                      <p className="text-xs text-gray-500 font-semibold">👑 Ultimate challenge</p>
-                    </div>
-                  </div>
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-rose-500 to-orange-500 rounded-full blur-md opacity-50" />
-                    <span className="relative text-xs font-bold bg-gradient-to-r from-rose-600 to-orange-600 text-white px-3 py-1.5 rounded-full shadow-lg">
-                      💎 Premium
-                    </span>
-                  </div>
+          {/* Info Cards */}
+          <div className="space-y-4 mt-6">
+            {/* What are Cycles */}
+            <div className="rounded-2xl bg-white p-5 shadow-lg border border-gray-100">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-xl">🔄</span>
                 </div>
-                
-                <div className="grid grid-cols-2 gap-3 mt-5">
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-rose-50 to-orange-50 p-4 border border-rose-100">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-rose-400/10 rounded-full blur-xl" />
-                    <p className="text-3xl font-black bg-gradient-to-br from-rose-600 to-orange-600 bg-clip-text text-transparent relative">30</p>
-                    <p className="text-xs text-gray-600 font-semibold mt-1">Total Cycles</p>
-                  </div>
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 p-4 border border-orange-100">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-orange-400/10 rounded-full blur-xl" />
-                    <p className="text-3xl font-black bg-gradient-to-br from-orange-600 to-amber-600 bg-clip-text text-transparent relative">30d</p>
-                    <p className="text-xs text-gray-600 font-semibold mt-1">Duration</p>
-                  </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-800 mb-2">
+                    {t.whatAreCycles}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {t.cyclesDescription}
+                  </p>
                 </div>
               </div>
             </div>
-          </div> */}
-        </div>
 
-        {/* Info Cards */}
-        <div className="space-y-4 mt-6">
-          {/* What are Cycles */}
-          <div className="rounded-2xl bg-white p-5 shadow-lg border border-gray-100">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-xl">🔄</span>
+            {/* Benefits */}
+            <div className="rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 p-5 shadow-lg border border-green-100">
+              <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <span className="text-xl">✨</span>
+                {t.whyYouLoveIt}
+              </h3>
+
+              <div className="space-y-3">
+                {useMemo(() => [
+                  { text: t.multipleChances, icon: "🎯" },
+                  { text: t.joinAnyCycle, icon: "⏰" },
+                  { text: t.playYourPace, icon: "🎮" },
+                  { text: t.independentCycles, icon: "🔓" },
+                ], [t]).map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-sm"
+                  >
+                    <span className="text-lg">{item.icon}</span>
+                    <span className="text-sm font-semibold text-gray-700">{item.text}</span>
+                  </div>
+                ))}
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-gray-800 mb-2">
-                  {t.whatAreCycles}
+            </div>
+
+            {/* Finale */}
+            <div className="rounded-2xl bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 p-6 shadow-lg border border-orange-100">
+              <div className="flex items-center gap-2 mb-3">
+                <Trophy className="w-6 h-6 text-orange-600" />
+                <h3 className="text-lg font-bold text-gray-800">
+                  {t.winBigPrizes} 🎉
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {t.cyclesDescription}
+              </div>
+              <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                {t.prizeDescription}
+              </p>
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 border border-orange-200">
+                <p className="text-sm font-semibold text-orange-800 text-center">
+                  🔥 {t.morePlayMoreChance}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Benefits */}
-          <div className="rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 p-5 shadow-lg border border-green-100">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <span className="text-xl">✨</span>
-              {t.whyYouLoveIt}
-            </h3>
-
-            <div className="space-y-3">
-              {[
-                { text: t.multipleChances, icon: "🎯" },
-                { text: t.joinAnyCycle, icon: "⏰" },
-                { text: t.playYourPace, icon: "🎮" },
-                { text: t.independentCycles, icon: "🔓" },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-sm"
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  <span className="text-sm font-semibold text-gray-700">{item.text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Finale */}
-          <div className="rounded-2xl bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 p-6 shadow-lg border border-orange-100">
-            <div className="flex items-center gap-2 mb-3">
-              <Trophy className="w-6 h-6 text-orange-600" />
-              <h3 className="text-lg font-bold text-gray-800">
-                {t.winBigPrizes} 🎉
-              </h3>
-            </div>
-            <p className="text-sm text-gray-700 leading-relaxed mb-3">
-              {t.prizeDescription}
-            </p>
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 border border-orange-200">
-              <p className="text-sm font-semibold text-orange-800 text-center">
-                🔥 {t.morePlayMoreChance}
-              </p>
-            </div>
-          </div>
         </div>
 
       </div>
-
-      {/* Bottom Nav Placeholder */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-around">
-        <button className="text-gray-400">🏠</button>
-        <button className="text-gray-400">🎮</button>
-        <button className="text-indigo-600">📋</button>
-        <button className="text-gray-400">👤</button>
-      </div>
-    </div>
-
       <BottomNavBar />
     </div>
+
   );
 }
