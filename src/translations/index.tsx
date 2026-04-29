@@ -21,6 +21,8 @@ export const translations: any = {
     language: "Language",
     english: "English",
     burmese: "Burmese",
+    totalDiamonds: "Total Diamonds ",
+    totalCoins: "Total Coins ",
 
 
 
@@ -149,6 +151,7 @@ export const translations: any = {
     minutesShort: "Min",
     secondsShort: "Sec",
     cycle: "Cycle",
+    noSetsCompleted: "No sets completed in this cycle",
     note: "Note",
     uniqueNumbersNote: "Enter Unique Numbers in each Active Cycle",
     showAllFilledSets: "Show All Filled Sets",
@@ -162,7 +165,7 @@ export const translations: any = {
     chooseYourAvatar: "Choose Your Avatar",
     saveProfile: "Save Profile",
     playMoreBids: "Play More Bids",
-    duplicateSetNumbers: "Duplicate Set Numbers",
+    duplicateSetNumbers: "Duplicate Numbers",
     duplicateSetMessage: "You have already placed this set of numbers in previous Set - {0} of this Bid.",
     enterUniqueNumber: "Enter Unique Number",
     isPresentInSet: "is already present in",
@@ -206,6 +209,8 @@ export const translations: any = {
     language: "ဘာသာစကား",
     english: "အင်္ဂလိပ်",
     burmese: "မြန်မာ",
+    totalDiamonds: "စုစုပေါင်း ရရှိထားသော ဒိုင်းမွန်းများ ",
+    totalCoins: "စုစုပေါင်း ရရှိထားသော ဒင်္ဂါးပြားများ ",
 
     all: "အားလုံး",
     won: "အနိုင်",
@@ -333,6 +338,7 @@ export const translations: any = {
     minutesShort: "မိနစ်",
     secondsShort: "စက္ကန့်",
     cycle: "စက်ဝန်း",
+    noSetsCompleted: "ဤစက်ဝန်းတွင် ဖြည့်ထားသောအစုံများ မရှိသေးပါ",
     howToPlayDescription: "ကျွန်ုပ်တို့၏ လွယ်ကူသော လမ်းညွှန်ချက်ဖြင့် စတင်လိုက်ပါ!",
     liveActivityDescription: "အခြားကစားသမားများ ဘာတွေလုပ်နေလဲဆိုတာကို အချိန်နှင့်တပြေးညီ ကြည့်ရှုပါ!",
     top5Rankings: "ထိပ်တန်း ၅ ဦးနှင့် သူတို့၏ အဆင့်များ",
@@ -343,7 +349,7 @@ export const translations: any = {
     chooseYourAvatar: "သင့်ပရိုဖိုင်ပုံကို ရွေးချယ်ပါ",
     saveProfile: "ပရိုဖိုင် သိမ်းဆည်းမည်",
     playMoreBids: "ပိုပြီး လေလံဆွဲပါ",
-    duplicateSetNumbers: "နံပါတ်အစုလိုက် ထပ်နေပါသည်",
+    duplicateSetNumbers: "နံပါတ် ထပ်နေပါသည်",
     duplicateSetMessage: "သင်သည် ဤလေလံပွဲ၏ ယခင် Set - {0} တွင် ဤနံပါတ်များကို ထည့်သွင်းပြီးဖြစ်သည်။",
     enterUniqueNumber: "ထူးခြားသော နံပါတ်ကို ထည့်ပါ",
     isPresentInSet: "တွင် ရှိနှင့်ပြီးသား ဖြစ်သည်",

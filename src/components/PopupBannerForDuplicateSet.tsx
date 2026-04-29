@@ -7,7 +7,11 @@ import { useLanguage } from "./context/LanguageContext";
 
 interface PopupBannerForDuplicateSetProps {
   isShow: boolean;
-  duplicateSets?: { [key: string]: { number: string; set: string }[] };
+  duplicateSets?: {
+    [cycle: string]: {
+      [batch: string]: { number: string; set: string }[];
+    };
+  };
   onConfirm: () => void;
 }
 
@@ -95,32 +99,31 @@ const PopupBannerForDuplicateSet = ({
           </h2>
 
           <div className="max-h-[150px] overflow-y-auto pr-2 custom-scrollbar space-y-2 mb-6">
-            {duplicateSets && Object.entries(duplicateSets).map(([batchNum, details]) => (
-              details.map((item, idx) => (
-                <div
-                  key={`${batchNum}-${idx}`}
-                  className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3 group hover:bg-white/20 transition-all"
-                >
-                  <div className="flex flex-col items-start gap-0.5">
-                    <span className="text-xs text-pink-400 font-bold uppercase tracking-wider tracking-[1px]">
-                      {t.set} {batchNum}
-                    </span>
-                    <p className="text-[10px] text-white font-semibold text-left tracking-[1px]">
-                      {language === "en" ? (
-                        <>
-                          {t.number} <span className="text-yellow-400 font-black">{item.number}</span> {t.isPresentInSet} {t.set} {batchNum}
-                        </>
-                      ) : (
-                        <>
-                          {t.number} <span className="text-yellow-400 font-black">{item.number}</span> သည် {t.set} {batchNum} {t.isPresentInSet}
-                        </>
-                      )}
-                    </p>
+            {duplicateSets && Object.entries(duplicateSets).map(([cycleNum, cycleData]) => (
+              Object.entries(cycleData).map(([batchNum, details]) => (
+                details.map((item, idx) => (
+                  <div
+                    key={`${cycleNum}-${batchNum}-${idx}`}
+                    className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3 group hover:bg-white/20 transition-all"
+                  >
+                    <div className="flex flex-col items-start gap-0.5">
+                      <span className="text-[10px] text-pink-400 font-black tracking-[1px]">
+                        {t.cycle} {cycleNum}
+                      </span>
+                      <p className="text-[10px] text-white font-semibold text-left tracking-[1px] leading-relaxed">
+                        {language === "en" ? (
+                          <>
+                            {t.number} <span className="text-yellow-400 font-black">{item.number}</span> {t.isPresentInSet} {t.set} {batchNum}
+                          </>
+                        ) : (
+                          <>
+                            {t.number} <span className="text-yellow-400 font-black">{item.number}</span> သည် {t.set} {batchNum} {t.isPresentInSet}
+                          </>
+                        )}
+                      </p>
+                    </div>
                   </div>
-                  {/* <div className="w-8 h-8 rounded-lg bg-red-500/20 border border-red-500/40 flex items-center justify-center flex-shrink-0">
-                    <AlertCircle className="w-4 h-4 text-red-500" />
-                  </div> */}
-                </div>
+                ))
               ))
             ))}
             {!duplicateSets && (

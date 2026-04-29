@@ -233,7 +233,7 @@ export default function ActivitySlider({ updatedData }) {
                   <div className="flex items-center gap-2">
                     {/* Avatar */}
                     <div className="flex-shrink-0">
-                      <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-sm p-0.5 border-2 border-white/30 shadow-lg">
+                      <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm p-0.5 border-2 border-white/30 shadow-lg">
                         <div className="w-full h-full rounded-lg overflow-hidden bg-white">
                           <img
                             src={`/assets/users/${activity.avatar}`}

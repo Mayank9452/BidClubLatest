@@ -6,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Coins, Gem, User } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useLanguage } from "./context/LanguageContext"
 
 export function TopBar({
   comingFrom = "spin-the-wheel",
@@ -21,7 +22,7 @@ export function TopBar({
   const userPoints = response?.data?.diamonds || profileData?.data?.userPoints;
 
   const dashboard = useAppSelector((state) => state.dashboard);
-  const { language } = useAppSelector((state) => state?.config);
+  const { t } = useLanguage();
 
   const [gemOpen, setGemOpen] = useState(false)
   const [coinOpen, setCoinOpen] = useState(false)
@@ -120,9 +121,7 @@ export function TopBar({
                 >
                   <div className="space-y-1">
                     <p className="text-xs font-semibold text-white">
-                      {language === "my"
-                        ? "စုစုပေါင်း ရရှိထားသော ဒိုင်းမွန်းများ "
-                        : "Total Diamonds "}
+                      {t.totalDiamonds}
                       <span className="font-semibold text-blue-400">
                         {userPoints.toLocaleString()}
                       </span>{" "}
@@ -163,9 +162,7 @@ export function TopBar({
                 >
                   <div className="space-y-1">
                     <p className="text-xs font-semibold text-white">
-                      {language === "my"
-                        ? "စုစုပေါင်း ရရှိထားသော ဒင်္ဂါးပြားများ "
-                        : "Total Coins "}
+                      {t.totalCoins}
                       <span className="font-semibold text-yellow-400">
                         {user_play_coins.toLocaleString()}
                       </span>{" "}

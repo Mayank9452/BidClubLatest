@@ -56,7 +56,11 @@ export default function BiddingPage() {
     const [timeLeft, setTimeLeft] = useState("");
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [showDuplicatePopup, setShowDuplicatePopup] = useState(false);
+    const [duplicateSets, setDuplicateSets] = useState<any>(null);
+    const [isShowingFilledSets, setIsShowingFilledSets] = useState(false);
     const { t } = useLanguage();
+
+
 
     const { data: bidResponse, status: bidStatus } = useAppSelector((state) => state.bid);
     const { status: uniqueStatus } = useAppSelector((state) => state.uniqueNumbers);
@@ -73,8 +77,9 @@ export default function BiddingPage() {
 
     // values you need
     const bidName = bidInfo?.bid_name?.replace(/\+/g, " ");
-    const bidCycle = bidInfo?.bid_cycles;
+    const bidCycle = bidData?.cycleCount;
     const batchCount = bidData?.batchCount;
+    const completeSets = bidData?.completeSets;
 
     useEffect(() => {
         const encodedBidId = sessionStorage.getItem("bidId");
@@ -173,8 +178,8 @@ export default function BiddingPage() {
             if (checkRes?.status === "success") {
                 const placeBidPayload: any = {
                     bid: checkPayload.bid,
-                    bCount: btoa(bidData.cycleCount.toString()),
-                    cCount: btoa(bidData.batchCount.toString()),
+                    bCount: btoa(bidData.batchCount.toString()),
+                    cCount: btoa(bidData.cycleCount),
                 };
 
                 Object.values(selectedTickets).forEach((value, index) => {
@@ -184,6 +189,7 @@ export default function BiddingPage() {
                 await dispatch(placeBid(placeBidPayload)).unwrap();
                 setShowSuccessPopup(true);
             } else if (checkRes?.status == "error" && checkRes?.reason == "duplicate_found") {
+                setDuplicateSets(checkRes.sets);
                 setShowDuplicatePopup(true);
             }
         } catch (err: any) {
@@ -237,7 +243,7 @@ export default function BiddingPage() {
                             </h1>
                         </div>
                         <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-                            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-xl">
+                            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
                                 <span className="text-[10px] font-black text-white uppercase tracking-[2px] opacity-80">
                                     {t.activeCycle || "Cycle"}
                                 </span>
@@ -246,7 +252,7 @@ export default function BiddingPage() {
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-xl">
+                            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
                                 <span className="text-[10px] font-black text-white uppercase tracking-[2px] opacity-80">
                                     Set
                                 </span>
@@ -276,7 +282,7 @@ export default function BiddingPage() {
                                             </span>
                                         </div>
                                         <span className="text-[10px] tracking-[1px] font-black text-pink-500/90 mt-1.5">
-                                            {["Days", "Hrs", "Min", "Sec"][i]}
+                                            {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort][i]}
                                         </span>
                                     </div>
                                     {i < 3 && (
@@ -297,15 +303,29 @@ export default function BiddingPage() {
                                 <Info className="w-4 h-4 text-white font-bold" />
                             </div>
                             <div className="flex flex-col justify-center gap-0.5">
-                                <span className="text-[12px] font-black text-[#ff0000] uppercase tracking-[1px]">Note :-</span>
+                                <span className="text-[12px] font-black text-[#ff0000] uppercase tracking-[1px]">{t.note} :-</span>
                                 <p className="text-[11px] font-semibold text-white tracking-widest leading-relaxed">
-                                    Enter Unique Numbers in each Active Cycle
+                                    {t.uniqueNumbersNote}
                                 </p>
-                                <button className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 backdrop-blur-xl text-white text-[11px] font-black rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5 tracking-[2px] uppercase group overflow-hidden relative">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                                    <Eye className="w-4 h-4 text-pink-400" />
-                                    <span>Show All Filled Sets</span>
-                                </button>
+                                {completeSets && completeSets.length > 0 && (
+                                    <button
+                                        onClick={() => setIsShowingFilledSets(!isShowingFilledSets)}
+                                        className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 backdrop-blur-xl text-white text-[11px] font-black rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5 tracking-[2px] uppercase group overflow-hidden relative"
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                                        {isShowingFilledSets ? (
+                                            <>
+                                                <X className="w-4 h-4 text-pink-400" />
+                                                <span>{t.hideFilledSets}</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Eye className="w-4 h-4 text-pink-400" />
+                                                <span>{t.showAllFilledSets}</span>
+                                            </>
+                                        )}
+                                    </button>
+                                )}
                             </div>
 
                         </div>
@@ -317,6 +337,77 @@ export default function BiddingPage() {
                     {/* Content Wrapper - Using Tinted Layers to Replace White Backgrounds */}
                     <div className="">
                         <div className="max-w-md mx-auto space-y-6">
+                            {/* Historical Filled Sets - Horizontal Scroll */}
+                            <AnimatePresence>
+                                {isShowingFilledSets && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="overflow-hidden"
+                                    >
+                                        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 px-1 scrollbar-hide">
+                                            {completeSets?.map((setData: any, setIndex: number) => {
+                                                const setNumbers = [
+                                                    setData.batch_set_1,
+                                                    setData.batch_set_2,
+                                                    setData.batch_set_3,
+                                                    setData.batch_set_4,
+                                                    setData.batch_set_5,
+                                                    setData.batch_set_6
+                                                ];
+                                                return (
+                                                    <div
+                                                        key={setIndex}
+                                                        className={`${completeSets.length === 1 ? "w-full" : "min-w-[80%]"} flex-shrink-0 snap-center relative`}
+                                                    >
+                                                        <div className="absolute -inset-1 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-xl blur-xl" />
+                                                        <div className="relative rounded-xl p-2 shadow-2xl border border-white/40 bg-white/5 backdrop-blur-sm">
+                                                            <div className="border-2 border-dashed border-white/60 rounded-xl p-3">
+                                                                {/* Header for Historical Set */}
+                                                                <div className="flex items-center justify-center gap-2 w-[70%] mx-auto relative overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 to-[#fd0075] p-1.5 shadow-lg mb-4 backdrop-blur-2xl">
+                                                                    <Trophy className="w-4 h-4 text-white" />
+                                                                    <h3 className="text-[12px] font-bold text-white tracking-[1px]">
+                                                                        {t.setNumbersTitle.replace("{0}", setData.batch_bid_batch)}
+                                                                    </h3>
+                                                                </div>
+
+                                                                {/* Mini Grid for Historical Set */}
+                                                                <div className="grid grid-cols-2 gap-3 mb-2">
+                                                                    {setNumbers.map((val, idx) => (
+                                                                        <div
+                                                                            key={idx}
+                                                                            className="relative rounded-2xl overflow-hidden ring-2 ring-white shadow-md"
+                                                                        >
+                                                                            <div className="relative bg-[linear-gradient(to_right,_#fb9f35,_#fe0d68)] p-2 h-14 flex flex-col items-center justify-center">
+                                                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                                                                                <div className="absolute inset-1.5 border-2 border-dashed border-white/80 rounded-lg pointer-events-none" />
+
+                                                                                {/* Mini Notches */}
+                                                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-6 bg-[#f8fafc] rounded-r-full" />
+                                                                                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-6 bg-[#f8fafc] rounded-l-full" />
+
+                                                                                <p className="text-sm font-black text-white drop-shadow-md">
+                                                                                    {val}
+                                                                                </p>
+                                                                                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-white/20 backdrop-blur-sm rounded-full mt-0.5">
+                                                                                    <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                                                                                    <span className="text-[8px] font-bold text-white tracking-[1px]">{t.filled}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
                             {/* Tickets Grid - Tinted Container (Less White) */}
                             <div className="relative">
                                 <div className="absolute -inset-1 bg-gradient-to-br from-pink-400/10 to-rose-400/10 rounded-xl blur-2xl" />
@@ -563,7 +654,7 @@ export default function BiddingPage() {
                                 whileTap={{ scale: 0.98 }}
                                 type="button"
                                 disabled={Object.keys(selectedTickets).length !== 6}
-                                className={`w-3/4 mx-auto py-5 rounded-[1.75rem] font-black text-sm tracking-[3px]  shadow-2xl transition-all flex items-center justify-center gap-3 rounded-xl 
+                                className={`w-fit mx-auto py-3 px-6 rounded-lg font-bold text-lg tracking-[1px] shadow-2xl transition-all flex items-center justify-center gap-3  
                 ${Object.keys(selectedTickets).length === 6
                                         ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-pink-500/20"
                                         : "bg-gradient-to-r from-pink-400 to-rose-600 text-white border border-slate-200 cursor-not-allowed"
@@ -609,6 +700,7 @@ export default function BiddingPage() {
 
             <PopupBannerForDuplicateSet
                 isShow={showDuplicatePopup}
+                duplicateSets={duplicateSets}
                 onConfirm={() => setShowDuplicatePopup(false)}
             />
 

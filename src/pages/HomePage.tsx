@@ -59,17 +59,17 @@ export default function HomePage() {
   "
           style={{ opacity: 1, transform: "none" }}
         >
-          {/* <h2 className="text-xl text-center font-extrabold text-gradient-casino mb-4">
+          {/* <h2 className="text-xl text-center font-bold text-gradient-casino mb-4">
             🔥 Live Auctions
           </h2> */}
 
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            {/* <h2 className="flex items-center justify-center gap-2 text-xl font-extrabold text-white">
+            {/* <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white">
               <Flame className="h-5 w-5 text-white" />
               
               Live Bidding
             </h2> */}
-            <h2 className="flex items-center justify-center gap-4 text-xl font-extrabold text-white mb-2">
+            <h2 className="flex items-center justify-center gap-4 text-xl font-bold text-white mb-2">
               <div className="flex-shrink-0 -mt-2">
                 <BiddingHammer className="w-12 h-12" />
               </div>
@@ -96,12 +96,12 @@ export default function HomePage() {
 "
           style={{ opacity: 1, transform: "none" }}
         >
-          {/* <h2 className="text-xl text-center font-extrabold text-gradient-casino mb-4">
+          {/* <h2 className="text-xl text-center font-bold text-gradient-casino mb-4">
             <PlayCircle className="h-5 w-5 text-primary" />
             ⚡ How to Play
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-xl font-extrabold text-white">
+            <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white">
               <PlayCircle className="h-5 w-5 text-white" />
               {t.howToPlay}
             </h2>
@@ -125,11 +125,11 @@ export default function HomePage() {
           ⚡ Live Activity
         </h2> */}
 
-          {/* <h2 className="text-xl text-center font-extrabold text-gradient-casino mb-4">
+          {/* <h2 className="text-xl text-center font-bold text-gradient-casino mb-4">
             ⚡ Live Activity
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-xl font-extrabold text-white">
+            <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white">
               <Activity className="h-5 w-5 text-white" />
               {t.liveActivity}
             </h2>
@@ -152,11 +152,11 @@ export default function HomePage() {
   "
           style={{ opacity: 1, transform: "none" }}
         >
-          {/* <h2 className="text-xl text-center font-extrabold text-gradient-casino mb-4">
+          {/* <h2 className="text-xl text-center font-bold text-gradient-casino mb-4">
             ⚡ Leaderboard
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-xl font-extrabold text-white tracking-[1px]">
+            <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white tracking-[1px]">
               <Trophy className="h-5 w-5 text-white" />
               {t.leaderboard}
             </h2>
