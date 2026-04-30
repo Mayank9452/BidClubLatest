@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const phrases = [
-  "Going Once...",
-  "Going Twice...",
-  "Preparing Live Bidding...",
-  "Syncing Biding Data...",
-  "Gathering Biding Winners...",
-];
+import { useLanguage } from "./context/LanguageContext";
 
 export default function WaitLoader({ isOverlay = false }: { isOverlay?: boolean }) {
+  const { t } = useLanguage();
   const [index, setIndex] = useState(0);
   const [tick, setTick] = useState(0);
+
+  const phrases = useMemo(() => [
+    t.goingOnce,
+    t.goingTwice,
+    t.preparingLiveBidding,
+    t.syncingBiddingData,
+    t.gatheringBiddingWinners,
+  ], [t]);
 
   // Cycle through phrases
   useEffect(() => {

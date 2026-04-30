@@ -167,9 +167,9 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Phone Number */}
-                <div className="mt-4 flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-700 rounded-2xl shadow-xl shadow-violet-200/50 border border-white/20">
+                <div className="mt-4 flex p-1 items-center gap-2  bg-gradient-to-r from-[#d40862bf] to-[#4c4496d4] rounded-2xl shadow-xl shadow-violet-200/50 ">
                   {/* <Phone className="w-3.5 h-3.5 text-white animate-pulse" /> */}
-                  <span className="text-sm font-black text-white tracking-[1.5px]">
+                  <span className="text-sm rounded-xl font-bold text-white tracking-[1.5px] border-2 border-dashed border-white px-4 py-1.5">
                     {maskMSISDN(user?.user_phone) || "N/A"}
                   </span>
                 </div>

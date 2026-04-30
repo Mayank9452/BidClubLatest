@@ -192,7 +192,7 @@ export default function LeaderboardPageNew() {
 
         {/* Top 3 Podium - Compact for mobile */}
         <div className="relative z-10 -mt-20 px-3 mb-4">
-          <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-1 border border-gray-100">
+          <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-1 pb-0 border border-gray-100">
             <div className="flex items-end justify-center gap-2  bg-white rounded-2xl">
               {/* 2nd Place */}
               {topThree[1] && <PodiumCard user={topThree[1]} rank={2} />}

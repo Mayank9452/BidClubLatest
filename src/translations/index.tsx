@@ -186,6 +186,11 @@ export const translations: any = {
     resultAwaiting: "Result Awaiting",
     resultAwaitingCycleEnd: "you have already added your uniqe bids of this round. Please wait for the next round.",
     resultAwaitingCycleGeneral: "you have already added your all uniqe bids. Please wait for the result.",
+    goingOnce: "Going Once...",
+    goingTwice: "Going Twice...",
+    preparingLiveBidding: "Preparing Live Bidding...",
+    syncingBiddingData: "Syncing Bidding Data...",
+    gatheringBiddingWinners: "Gathering Bidding Winners...",
   },
 
   my: {
@@ -375,5 +380,10 @@ export const translations: any = {
     showAllFilledSets: "ဖြည့်ထားသောအစုံများအားလုံးကို ကြည့်ရန်",
     hideFilledSets: "ဖြည့်ထားသောအစုံများကို ဝှက်ရန်",
     setNumbersTitle: "Set {0} နံပါတ်များ",
+    goingOnce: "တစ်ကြိမ်...",
+    goingTwice: "နှစ်ကြိမ်...",
+    preparingLiveBidding: "တိုက်ရိုက် လေလံပွဲ ပြင်ဆင်နေသည်...",
+    syncingBiddingData: "လေလံ အချက်အလက်များ ချိတ်ဆက်နေသည်...",
+    gatheringBiddingWinners: "လေလံ အနိုင်ရရှိသူများကို စုဆောင်းနေသည်...",
   },
 };
