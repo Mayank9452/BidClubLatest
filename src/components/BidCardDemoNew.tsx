@@ -10,6 +10,7 @@ import {
   Trophy,
   Clock,
   RefreshCw,
+  Calendar,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "./context/LanguageContext";
@@ -135,6 +136,7 @@ const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number
         border-2 ${theme.border} 
         cursor-pointer transition-all duration-200
         hover:-translate-y-1 hover:shadow-xl active:scale-[0.97]
+        will-change-transform
       `}
       onClick={async () => {
         const encodedBidId = btoa(String(bid.id));
@@ -211,7 +213,7 @@ const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number
           </div>
           <div className="flex flex-col items-center">
             {/* Time Values with colons */}
-            <div className="flex items-center justify-center text-[11px] font-bold text-red-500 tracking-[1px] tabular-nums animate-pulse">
+            <div className="flex items-center justify-center text-[11px] font-bold text-red-500 tracking-[1px] tabular-nums">
               {timeLeft.split(" : ").map((t: string, i: number) => (
                 <div key={i} className="flex items-center">
                   <span className="w-[26px] text-center">{t}</span>
@@ -253,7 +255,7 @@ const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number
           <div
             className={`bg-white border-2 ${theme.border} rounded-xl p-1.5 flex flex-col items-center gap-0.5`}
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${theme.accentText} animate-spin`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${theme.accentText}`} />
             <span
               className={`text-[8px] font-bold uppercase tracking-widest text-center ${theme.accentText}`}
             >
@@ -342,7 +344,7 @@ export default function BidCardDemo() {
   return (
     <div className="rounded-2xl">
       {/* Tab Switcher */}
-      <div className="flex bg-white/30 backdrop-blur-md p-1 rounded-xl shadow-xl mx-5 mb-5">
+      <div className="flex bg-white/30 backdrop-blur-sm p-1 rounded-xl shadow-xl mx-5 mb-5 border border-white/20">
         {["Daily", "Weekly"].map((tab) => (
           <button
             key={tab}
@@ -366,6 +368,26 @@ export default function BidCardDemo() {
           </button>
         ))}
       </div>
+      {/* Empty State */}
+      {displayedBids.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-evenly py-2 px-6 text-center"
+        >
+          <div className="w-16 h-16 bg-pink-50 rounded-2xl flex items-center justify-center shadow-sm border border-pink-100">
+            <Calendar className="w-8 h-8 text-pink-500" />
+          </div>
+          <div>
+            <h3 className="text-slate-800 font-bold text-sm mb-1 tracking-[0.5px]">
+              {activeTab === "Daily" ? t.noDailyBidsActive : t.noWeeklyBidsActive}
+            </h3>
+            <p className="text-slate-500 text-xs font-semibold tracking-[0.5px]">
+              {t.stayTuned}
+            </p>
+          </div>
+        </motion.div>
+      )}
 
       {/* Single card */}
       {isSingle && (
@@ -381,11 +403,12 @@ export default function BidCardDemo() {
         <div ref={scrollRef} className="overflow-hidden">
           <motion.div
             key={activeTab}
-            className="flex gap-3 cursor-grab active:cursor-grabbing pb-4 w-max"
+            className="flex gap-3 cursor-grab active:cursor-grabbing pb-4 w-max will-change-transform"
             drag="x"
             dragConstraints={scrollRef}
-            dragElastic={0.05}
+            dragElastic={0.02}
             whileTap={{ cursor: "grabbing" }}
+            whileDrag={{ scale: 0.98 }}
           >
             {displayedBids.map((bid: any, index: number) => (
               <div key={bid.id} className="w-[225px] sm:w-[280px]">

@@ -92,7 +92,7 @@ const generateSparkles = (count: number) => {
 export default function WinnerList({ lastWeeklyWinners }) {
   const { t } = useLanguage();
 
-  const cardSparkles = useMemo(() => generateSparkles(25), []);
+  const cardSparkles = useMemo(() => generateSparkles(12), []);
 
   const weeklyWinners = useMemo(() => {
     if (!Array.isArray(lastWeeklyWinners)) return [];
@@ -195,19 +195,18 @@ export default function WinnerList({ lastWeeklyWinners }) {
           <div className="relative overflow-hidden py-2">
             <div
               className={`
-    flex gap-4 px-4
+    flex gap-4 px-4 will-change-transform
     ${weeklyWinners.length > 1
-                  ? "animate-[slide-right_30s_linear_infinite] hover:[animation-play-state:paused] w-max"
+                  ? "animate-[slide-right_25s_linear_infinite] hover:[animation-play-state:paused] w-max"
                   : "justify-center"
                 }
   `}
             >
-              {[...weeklyWinners].map((winner, index) => (
-                // animate-[slide-right_30s_linear_infinite]
+              {[...weeklyWinners, ...weeklyWinners].map((winner, index) => (
                 <WinnerBanner
                   key={`${winner.id}-${index}`}
                   winner={winner}
-                  bgGradient={gradientStyles[index % gradientStyles.length]}
+                  bgGradient={gradientStyles[(index % weeklyWinners.length) % gradientStyles.length]}
                 />
               ))}
             </div>
@@ -278,12 +277,12 @@ export default function WinnerList({ lastWeeklyWinners }) {
 
 const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
   const { t } = useLanguage();
-  const cardSparkles = useMemo(() => generateSparkles(8), []);
+  const cardSparkles = useMemo(() => generateSparkles(3), []);
   // console.log("winner", winner);
 
   return (
     <div
-      className={`relative flex-shrink-0 w-[260px] rounded-2xl p-3 shadow-lg border border-white/20 overflow-hidden bg-gradient-to-br ${bgGradient} active:scale-95 transition-transform`}
+      className={`relative flex-shrink-0 w-[260px] rounded-2xl p-3 shadow-lg border border-white/20 overflow-hidden bg-gradient-to-br ${bgGradient} active:scale-95 transition-transform will-change-transform`}
     >
       {/* Card-specific floating sparkles */}
       {cardSparkles.map((sparkle) => (
@@ -316,7 +315,7 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
       {/* Avatar + Info */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex-shrink-0 relative">
-          <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm p-0.5 border-2 border-white/30 shadow-xl">
+          <div className="w-12 h-12 rounded-xl bg-white/30 p-0.5 border-2 border-white/40 shadow-xl">
             <div className="w-full h-full rounded-lg overflow-hidden bg-white">
               <img
                 src={`/assets/users/${winner.avatar}`}
@@ -359,12 +358,12 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
           {/* Top Row: Rank & Icon */}
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="flex items-center justify-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-white" />
               <span className="text-[9px] font-bold text-white uppercase tracking-widest">
                 {t.rank} {winner.rank}
               </span>
             </div>
-            <div className="bg-white/20 backdrop-blur-md p-1 rounded-lg border border-white/70 relative">
+            <div className="bg-white/30 p-1 rounded-lg border border-white/70 relative">
               {getRankIcon(winner.rank)}
               {/* Icon Sparkle for Top 3 */}
               {winner.rank <= 3 && (

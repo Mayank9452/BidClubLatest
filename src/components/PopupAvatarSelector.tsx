@@ -34,16 +34,16 @@ const PopupAvatarSelector: React.FC<PopupAvatarSelectorProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[100] flex items-center justify-center p-4 will-change-transform"
           onClick={onClose}
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0, y: 40 }}
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 40 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative gradient-popup-premium border border-white/20 rounded-[2.5rem] p-4 shadow-[0_25px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(236,72,153,0.1)] flex flex-col items-center gap-4 overflow-hidden"
+            className="relative gradient-popup-premium border border-white/20 rounded-[2.5rem] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center gap-4 overflow-hidden will-change-transform"
           >
 
             {/* Glowing Corner Accents */}
@@ -61,9 +61,9 @@ const PopupAvatarSelector: React.FC<PopupAvatarSelectorProps> = ({
 
 
 
-            {/* Luminous Ambient Glows (Aurora Effect) */}
-            <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[80%] bg-pink-500/10 blur-[100px] rounded-full pointer-events-none animate-pulse" />
-            <div className="absolute bottom-[-20%] left-[-20%] w-[80%] h-[80%] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none animate-pulse" />
+            {/* Luminous Ambient Glows (Aurora Effect) - Reduced blur for mobile performance */}
+            <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[80%] bg-pink-500/10 blur-[60px] rounded-full pointer-events-none animate-pulse" />
+            <div className="absolute bottom-[-20%] left-[-20%] w-[80%] h-[80%] bg-blue-500/10 blur-[80px] rounded-full pointer-events-none animate-pulse" />
 
             {/* Close Button */}
             <button
@@ -82,13 +82,13 @@ const PopupAvatarSelector: React.FC<PopupAvatarSelectorProps> = ({
               </div>
 
               {/* Avatar Grid - 3 Columns */}
-              <div className="grid grid-cols-3 gap-6 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar bg-white/20 p-3 rounded-2xl">
+              <div className="grid grid-cols-3 gap-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar bg-white/5 backdrop-blur-sm p-3 rounded-2xl">
                 {avatars.map((avatar) => (
                   <button
                     key={avatar}
                     onClick={() => onSelect(avatar)}
-                    className={`relative aspect-square rounded-[2rem] bg-white border transition-all duration-300 active:scale-90 flex items-center justify-center p-2 ${selectedAvatar === avatar
-                      ? "ring-4 ring-yellow-500 ring-offset-2 ring-offset-[#111] border-transparent scale-101"
+                    className={`relative aspect-square rounded-[2rem] bg-white/10 border transition-all duration-200 active:scale-95 flex items-center justify-center p-2 ${selectedAvatar === avatar
+                      ? "ring-2 ring-yellow-500 ring-offset-2 ring-offset-[#111] border-transparent scale-105"
                       : "ring-0 border-white/10 opacity-90 hover:opacity-100"
                       }`}
                   >
@@ -96,9 +96,10 @@ const PopupAvatarSelector: React.FC<PopupAvatarSelectorProps> = ({
                       src={`/assets/users/${avatar}`}
                       alt={avatar}
                       className="w-full h-full object-contain"
+                      loading="lazy"
                     />
                     {selectedAvatar === avatar && (
-                      <div className="absolute inset-0 bg-pink-500/20 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-pink-500/20 flex items-center justify-center rounded-[2rem] overflow-hidden">
                         <div className="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center shadow-lg">
                           <Check className="w-3 h-3 text-white" strokeWidth={4} />
                         </div>

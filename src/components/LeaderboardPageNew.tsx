@@ -7,6 +7,8 @@ import {
   Zap,
   Star,
   Award,
+  ChevronLeft,
+  X,
 } from "lucide-react";
 import { BottomNavBar } from "./BottomNavBar";
 import { TopBar } from "./TopBar";
@@ -48,7 +50,7 @@ const getTierBadge = (tier: string) => {
     platinum: "⚪",
     gold: "🥇",
     silver: "🥈",
-    bronze: "🥉",
+    bronze: "🏅",
   };
   return badges[tier as keyof typeof badges] || "🏅";
 };
@@ -140,9 +142,9 @@ export default function LeaderboardPageNew() {
 
         {/* Header Section - Compact for mobile */}
         <div className="relative rounded-xl gradient-home-section active:from-purple-700 active:to-rose-700 text-white pt-4 pb-24 px-3 overflow-hidden">
-          {/* Animated Background Elements */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl" />
+          {/* Animated Background Elements - Reduced blur for performance */}
+          <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-xl animate-pulse will-change-[opacity]" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 rounded-full blur-lg will-change-[opacity]" />
 
           <div className="relative z-10 max-w-md mx-auto">
             <div className="flex items-center justify-center gap-2 mb-2">
@@ -162,7 +164,7 @@ export default function LeaderboardPageNew() {
             </p>
 
             {/* Tab Switcher - Touch optimized */}
-            <div className="flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-xl">
+            <div className="flex bg-white/5 backdrop-blur-sm p-1 rounded-xl border border-white/10 shadow-xl">
               {["weekly", "monthly"].map((tab) => (
                 <button
                   key={tab}
@@ -193,7 +195,7 @@ export default function LeaderboardPageNew() {
         {/* Top 3 Podium - Compact for mobile */}
         <div className="relative z-10 -mt-20 px-3 mb-4">
           <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-1 pb-0 border border-gray-100">
-            <div className="flex items-end justify-center gap-2  bg-white rounded-2xl">
+            <div className="flex items-end justify-center  bg-white rounded-2xl">
               {/* 2nd Place */}
               {topThree[1] && <PodiumCard user={topThree[1]} rank={2} />}
 
@@ -222,7 +224,8 @@ export default function LeaderboardPageNew() {
                     key={user.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.03 }}
+                    transition={{ delay: Math.min(index * 0.03, 0.3) }}
+                    className="will-change-[transform,opacity]"
                   >
                     <button
                       // onClick={() =>
@@ -255,6 +258,7 @@ export default function LeaderboardPageNew() {
                           </div>
                           <div className="absolute -bottom-0.5 -right-0.5 text-xs">
                             {getTierBadge(user.tier)}
+
                           </div>
                         </div>
 
@@ -269,7 +273,7 @@ export default function LeaderboardPageNew() {
                         </div>
 
                         {/* Score */}
-                        <div className="text-right ">
+                        <div className="text-right me-0.5">
                           <div className="flex items-center justify-end gap-1 text-[15px] font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
                             <div className="relative">
                               <img
@@ -342,13 +346,18 @@ export default function LeaderboardPageNew() {
           </div>
         </div>
 
-        {/* Your Rank Card - Sticky bottom */}
-        <div className="fixed bottom-20 left-0 right-0 px-3 z-10">
-          <div className="max-w-md mx-auto gradient-home-section active:from-purple-700 active:to-rose-700 text-white rounded-xl p-3 shadow-2xl">
+        {/* Your Rank Card - Optimized Sticky Bottom */}
+        <div className="fixed bottom-20 left-0 right-0 px-3 z-10 pointer-events-none">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 25, delay: 0.5 }}
+            className="max-w-md mx-auto gradient-home-section text-white rounded-xl p-3 shadow-2xl border border-white/10 pointer-events-auto will-change-transform"
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                  <span className="text-base font-bold text-white/80 tracking-[1px]">
+                  <span className="text-base font-bold text-white tracking-[1px]">
                     #47
                   </span>
                 </div>
@@ -356,19 +365,19 @@ export default function LeaderboardPageNew() {
                   <p className="text-white/80 text-[10px] tracking-[1px] font-semibold">
                     {t.yourRank}
                   </p>
-                  <p className="text-white/80 text-xs font-bold tracking-[1px]">
+                  <p className="text-white text-xs font-bold tracking-[1px]">
                     {t.keepClimbing}!
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-xl text-white/80 font-semibold">3,450</p>
-                <p className="text-white/80 text-[10px] font-semibold tracking-[1px]">
+                <p className="text-xl text-white font-bold">3,450</p>
+                <p className="text-white/60 text-[10px] font-semibold tracking-[1px] uppercase">
                   {t.points}
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
@@ -439,10 +448,10 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8, y: 20 }}
+      initial={{ opacity: 0, scale: 0.9, y: 10 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ delay: rank * 0.08, type: "spring", bounce: 0.4 }}
-      className="flex flex-col items-center flex-1"
+      transition={{ delay: rank * 0.05, type: "spring", bounce: 0.3, duration: 0.4 }}
+      className="flex flex-col items-center flex-1 will-change-[transform,opacity]"
     >
       {/* 👑 Crown */}
       {type === "gold" && (
@@ -476,14 +485,14 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
       </div>
 
       {/* 🧾 Info */}
-      <div className="text-center mb-1.5 px-1 flex flex-col items-center gap-1">
+      <div className="text-center px-1 flex flex-col items-center mb-0.5">
         <p className="text-[11px] font-bold text-gray-800 truncate max-w-[80px]">
           {user.name?.split(" ")[0]}
         </p>
 
         {/* 💎 Score */}
-        <div className="text-xs font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-1.5">
-          <div className="relative">
+        <div className="text-xs font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent flex items-center justify-center">
+          <div className="relative ">
             <img
               src="/assets/images/diamond3.png"
               alt="diamond"
@@ -504,18 +513,20 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
         </p>
       </div>
 
-      {/* 🏆 Podium */}
+      {/* 🏆 Podium - Hardware accelerated height animation */}
       <motion.div
-        initial={{ height: 0 }}
-        animate={{
-          height: type === "gold" ? 75 : type === "silver" ? 55 : 45,
+        initial={{ scaleY: 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ delay: 0.2 + rank * 0.05, duration: 0.5, ease: "easeOut" }}
+        style={{
+          ...current.podium,
+          height: type === "gold" ? 110 : type === "silver" ? 80 : 60,
+          transformOrigin: "bottom"
         }}
-        transition={{ delay: 0.25 + rank * 0.08 }}
-        style={current.podium}
-        className="w-full rounded-t-xl  border border-white/30 shadow-inner relative overflow-hidden"
+        className="w-full rounded-t-[1.5rem] border border-white/30 shadow-inner relative overflow-hidden will-change-transform"
       >
         {/* ✨ subtle shine */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-10" />
       </motion.div>
     </motion.div>
   );

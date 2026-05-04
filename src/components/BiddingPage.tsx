@@ -211,11 +211,13 @@ export default function BiddingPage() {
       <TopBar />
       <div className="min-h-screen overflow-x-hidden relative">
         {/* Background Layers */}
-        <div className="h-[100vh] fixed w-full top-0 left-0 z-[-1] overflow-hidden">
+        <div className="h-[100vh] fixed w-full top-0 left-0 z-[-1] overflow-hidden bg-[#0a0a1a]">
           <img
             src="/assets/images/biddingPage.png"
             className="w-full h-full object-cover"
             alt="Background"
+            loading="eager"
+            {...({ fetchpriority: "high" } as any)}
           />
         </div>
         {/* Jackpot GIF Overlay (Appears ABOVE all components) */}
@@ -224,6 +226,7 @@ export default function BiddingPage() {
             src="/assets/images/jackpot.gif"
             className="w-full h-full object-cover"
             alt="Jackpot"
+            loading="eager"
           />
         </div>
 

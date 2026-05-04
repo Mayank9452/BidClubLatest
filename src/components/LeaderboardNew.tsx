@@ -138,7 +138,7 @@ export default function LeaderboardNew({
         </div>
 
         {/* 3D-Style Podium */}
-        <div className="relative z-10 flex items-end justify-center gap-3 pt-3 h-54">
+        <div className="relative z-10 flex items-end justify-center pt-3 h-54">
           {topThree[1] && (
             <PodiumItem user={topThree[1]} rank={2} type="silver" delay={0.1} />
           )}
@@ -402,14 +402,17 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
         </p>
       </div>
 
-      {/* Podium Block */}
+      {/* Podium Block - Hardware accelerated */}
       <motion.div
-        initial={{ height: 0 }}
-        animate={{
+        initial={{ scaleY: 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ delay: delay + 0.2, duration: 0.5, ease: "easeOut" }}
+        style={{
+          ...current.podium,
           height: type === "gold" ? 110 : type === "silver" ? 80 : 60,
+          transformOrigin: "bottom"
         }}
-        style={current.podium}
-        className="w-full rounded-t-[1.5rem] border-x border-t border-white/30 shadow-inner"
+        className="w-full rounded-t-[1.5rem] border-x border-t border-white/30 shadow-inner will-change-transform"
       />
     </motion.div>
   );

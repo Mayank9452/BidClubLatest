@@ -34,7 +34,7 @@ function MyanmarClock() {
   };
 
   return (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 drop-shadow-md">
+    <svg viewBox="0 0 24 24" className="w-8 h-8">
       {/* Glow background */}
       <defs>
         <radialGradient id="glow" cx="50%" cy="50%" r="50%">

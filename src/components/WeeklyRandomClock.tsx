@@ -50,10 +50,10 @@ export default function WeeklyRandomClock({ seed }: { seed: number }) {
     };
   };
 
-  // ── 24 ticks ─────────────────────────────
+  // ── 12 ticks ─────────────────────────────
   const ticks = useMemo(() => {
-    return Array.from({ length: 24 }).map((_, i) => {
-      const deg = (i / 24) * 360;
+    return Array.from({ length: 12 }).map((_, i) => {
+      const deg = (i / 12) * 360;
 
       const outer = polar(deg, 9);
       const inner = polar(deg, i % 6 === 0 ? 7 : 8);

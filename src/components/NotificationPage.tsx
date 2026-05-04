@@ -23,7 +23,7 @@ const formatDateTime = (dateTimeString) => {
   const d = dayjs(dateTimeString);
 
   return {
-    date: d.format("D MMM YYYY").toUpperCase(),
+    date: d.format("D MMM YYYY").toLowerCase(),
     time: d.format("h:mm A"),
   };
 };
@@ -78,10 +78,35 @@ export default function NotificationPage() {
     const hours = Math.floor(diff / 3600);
     const days = Math.floor(diff / 86400);
 
-    if (mins < 60) return `${mins} min ago`;
-    if (hours < 24) return `${hours} hrs ago`;
-    return `${days} days ago`;
+    if (mins < 60) return t.minAgo?.replace("{0}", mins.toString()) || `${mins} min ago`;
+    if (hours < 24) return t.hrsAgo?.replace("{0}", hours.toString()) || `${hours} hrs ago`;
+    return t.daysAgo?.replace("{0}", days.toString()) || `${days} days ago`;
   };
+
+  const formatBidName = useCallback((bidName: string) => {
+    if (!bidName) return "";
+    const parts = bidName.split("+");
+    const type = parts[1]?.toLowerCase();
+    const cycle = parts[2] || "";
+
+    if (type === "daily") return t.bidNameDaily?.replace("{0}", cycle) || `Bid Daily ${cycle}`;
+    if (type === "weekly") return t.bidNameWeekly?.replace("{0}", cycle) || `Bid Weekly ${cycle}`;
+
+    return bidName.replace(/\+/g, " ");
+  }, [t]);
+
+  const formatPrize = useCallback((prizeText: string) => {
+    if (!prizeText || prizeText === "No prize won") return null;
+
+    // Extract amount like "5120 MB" from "You won 5120 MB Atom Data"
+    const match = prizeText.match(/(\d+\s*(MB|GB|KB))/i);
+    if (match) {
+      const amount = match[0];
+      return t.youWonData?.replace("{0}", amount) || prizeText;
+    }
+
+    return prizeText;
+  }, [t]);
 
   const formatNotification = useCallback((item: any) => {
     const start = formatDateTime(
@@ -94,19 +119,19 @@ export default function NotificationPage() {
 
     return {
       id: item.batch_id,
-      bidName: item.bid_name?.replace(/\+/g, " "),
+      bidName: formatBidName(item.bid_name),
       startDate: start.date,
       startTime: start.time,
       endDate: end.date,
       endTime: end.time,
       won: item.reward_prize_text !== "No prize won",
-      diamondCredit: `Diamond earned : ${diamondAmount}`,
-      prize: item.reward_prize_text !== "No prize won" ? item.reward_prize_text : null,
+      diamondCredit: t.diamondEarned?.replace("{0}", diamondAmount.toString()) || `Diamond earned: ${diamondAmount}`,
+      prize: formatPrize(item.reward_prize_text),
       timestamp: formatTimeAgo(item.batch_datetime),
       rank: Number(item.cycle_reward_rank),
       isRead: item.cycle_reward_seen === "1",
     };
-  }, []);
+  }, [formatBidName, formatPrize, t]);
 
   const notifications = useMemo(() => list.map(formatNotification), [list, formatNotification]);
 
@@ -223,7 +248,7 @@ export default function NotificationPage() {
                   )}
 
                   {/* ✅ Text */}
-                  <span className="relative text-sm z-10 tracking-[1px]">
+                  <span className="relative text-xs tracking-[1px]">
                     {tab === "all" ? t.all : tab === "won" ? t.won : t.lost}
                   </span>
                 </button>
@@ -312,8 +337,8 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
       whileTap={{ scale: 0.98 }}
     >
       <div
-        className={`relative bg-white rounded-xl shadow-md border-2 overflow-hidden transition-all duration-150 ${won
-          ? "border-blue-400/40 bg-gradient-to-br from-emerald-50/50 to-white"
+        className={`relative bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-150 ${won
+          ? "bg-gradient-to-br from-emerald-50/50 to-white"
           : "border-gray-200 active:border-violet-200"
           }`}
       >
@@ -381,7 +406,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
               </div>
             </div>
           ) : (
-            <div className="bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-pink-300 transition-all active:scale-[0.98] rounded-lg p-2.5 mb-2.5">
+            <div className="bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-violet-300 transition-all active:scale-[0.98] rounded-lg p-2.5 mb-2.5">
               {/* <div className="flex items-center gap-2">
                 <div className="w-6 h-6 bg-gray-300 rounded-lg flex items-center justify-center">
                   <X className="w-3.5 h-3.5 text-gray-600" strokeWidth={3} />
@@ -418,7 +443,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
             <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-lg p-2 border border-violet-300">
               <div className="flex items-center gap-1 mb-0.5">
                 <Calendar className="w-3 h-3 text-violet-600" />
-                <span className="text-[9px] tracking-[1px] font-bold text-violet-600 uppercase">
+                <span className="text-[9px] tracking-[1px] font-bold text-violet-600">
                   {t.start}
                 </span>
               </div>
@@ -429,7 +454,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
             <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg p-2 border border-indigo-300">
               <div className="flex items-center gap-1 mb-0.5">
                 <Clock className="w-3 h-3 text-indigo-600" />
-                <span className="text-[9px] tracking-[1px] font-bold text-indigo-600 uppercase">
+                <span className="text-[9px] tracking-[1px] font-bold text-indigo-600">
                   {t.end}
                 </span>
               </div>
