@@ -72,54 +72,54 @@ const PopupBannerUpdated = () => {
               {/* Decorative Icon Head */}
               {/* Mystery Box Visual (Welcome Variant) */}
               <div className="relative mb-4 flex justify-center">
-            <motion.div
-              animate={{
-                y: [-6, 6, -6],
-                rotate: [-2, 2, -2]
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="relative group"
-            >
-              {/* Outer Atmosphere Glow */}
-              <div className="absolute -inset-6 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-indigo-500/20 blur-3xl rounded-full opacity-80 group-hover:opacity-100 transition-opacity" />
+                <motion.div
+                  animate={{
+                    y: [-6, 6, -6],
+                    rotate: [-2, 2, -2]
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="relative group"
+                >
+                  {/* Outer Atmosphere Glow */}
+                  <div className="absolute -inset-6 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-indigo-500/20 blur-3xl rounded-full opacity-80 group-hover:opacity-100 transition-opacity" />
 
-              <div className="relative w-24 h-24">
-                {/* The Container */}
-                <div className="absolute inset-0 rounded-[2rem]">
-                  <div className="w-full h-full flex items-center justify-center overflow-hidden relative">
-                    {/* Golden internal light */}
-                    <div className="absolute inset-0 " />
+                  <div className="relative w-24 h-24">
+                    {/* The Container */}
+                    <div className="absolute inset-0 rounded-[2rem]">
+                      <div className="w-full h-full flex items-center justify-center overflow-hidden relative">
+                        {/* Golden internal light */}
+                        <div className="absolute inset-0 " />
 
-                    <img
-                      src="/assets/robotavatar/4.png"
-                      className="w-full h-full object-cover relative z-10 "
-                      alt="Success Robot"
-                    />
+                        <img
+                          src="/assets/robotavatar/4.png"
+                          className="w-full h-full object-cover relative z-10 "
+                          alt="Success Robot"
+                        />
 
-                    {/* Floating Sparkle Particles */}
-                    <motion.div
-                      animate={{ scale: [0, 1.2, 0], opacity: [0, 1, 0] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                      className="absolute top-4 right-4"
-                    >
-                      <Sparkles className="w-4 h-4 text-yellow-400" />
-                    </motion.div>
-                    <motion.div
-                      animate={{ scale: [0, 1, 0], opacity: [0, 0.8, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, delay: 1.2 }}
-                      className="absolute bottom-4 left-4"
-                    >
-                      <Sparkles className="w-3 h-3 text-pink-400" />
-                    </motion.div>
-                  </div>
-                </div>
+                        {/* Floating Sparkle Particles */}
+                        <motion.div
+                          animate={{ scale: [0, 1.2, 0], opacity: [0, 1, 0] }}
+                          transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                          className="absolute top-4 right-4"
+                        >
+                          <Sparkles className="w-4 h-4 text-yellow-400" />
+                        </motion.div>
+                        <motion.div
+                          animate={{ scale: [0, 1, 0], opacity: [0, 0.8, 0] }}
+                          transition={{ duration: 1.5, repeat: Infinity, delay: 1.2 }}
+                          className="absolute bottom-4 left-4"
+                        >
+                          <Sparkles className="w-3 h-3 text-pink-400" />
+                        </motion.div>
+                      </div>
+                    </div>
 
-                {/* Floating Gems/Stars around the container */}
-                {/* <motion.div
+                    {/* Floating Gems/Stars around the container */}
+                    {/* <motion.div
                   animate={{ y: [0, -2, 0], rotate: 360 }}
                   transition={{ duration: 5, repeat: Infinity }}
                   className="absolute -top-4 -left-4 w-7 h-7 bg-gradient-to-tr from-yellow-400 to-orange-500 rounded-lg blur-[1px] shadow-lg flex items-center justify-center"
@@ -132,13 +132,13 @@ const PopupBannerUpdated = () => {
                   transition={{ duration: 4, repeat: Infinity, delay: 1 }}
                   className="absolute -bottom-2 -right-4 w-6 h-6 bg-gradient-to-br from-pink-400 to-purple-600 rounded-full blur-[1px] shadow-lg"
                 /> */}
+                  </div>
+                </motion.div>
               </div>
-            </motion.div>
-          </div>
 
               {/* Title */}
               <div className="mb-4 px-4">
-                <h2 className="text-xl sm:text-3xl font-black bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight">
+                <h2 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight">
                   {t.welcomeToBidblast}
                 </h2>
               </div>

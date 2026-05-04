@@ -108,7 +108,7 @@
 //               <div className="relative z-10 flex flex-col justify-between h-full">
 //                 <div className="flex items-center gap-2 mb-2">
 //                   <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-//                   <span className="text-[10px] font-black text-white/70 uppercase tracking-widest">
+//                   <span className="text-[10px] font-bold text-white/70 uppercase tracking-widest">
 //                     Live
 //                   </span>
 //                 </div>
@@ -252,7 +252,7 @@ export default function ActivitySliderNew({ updatedData }) {
 
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                    <span className="text-[10px] font-black text-white/70 uppercase tracking-widest">
+                    <span className="text-[10px] font-bold text-white/70 uppercase tracking-widest">
                       {t.live}
                     </span>
                   </div>

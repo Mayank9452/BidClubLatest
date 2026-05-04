@@ -9,6 +9,8 @@ import {
   TrendingUp,
   Zap,
   Gem,
+  MessageCircleX,
+  X,
 } from "lucide-react";
 import { TopBar } from "./TopBar";
 import { BottomNavBar } from "./BottomNavBar";
@@ -147,7 +149,7 @@ export default function NotificationPage() {
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                   <Bell className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="text-2xl font-bold text-white tracking-[1px]">
+                <h1 className="text-xl font-bold text-white tracking-[1px]">
                   {t.notifications}
                 </h1>
               </div>
@@ -221,7 +223,7 @@ export default function NotificationPage() {
                   )}
 
                   {/* ✅ Text */}
-                  <span className="relative z-10 tracking-[1px]">
+                  <span className="relative text-sm z-10 tracking-[1px]">
                     {tab === "all" ? t.all : tab === "won" ? t.won : t.lost}
                   </span>
                 </button>
@@ -323,7 +325,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
             }`}
         />
 
-        <div className="p-3.5">
+        <div className="p-3.5 ">
           {/* Header */}
           <div className="flex items-start justify-between mb-2.5">
             <div className="flex items-center gap-2.5">
@@ -336,7 +338,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
                 {won ? (
                   <Trophy className="w-5 h-5 text-white" fill="currentColor" />
                 ) : (
-                  <Bell className="w-5 h-5 text-white" />
+                  <MessageCircleX className="w-5 h-5 text-white" />
                 )}
               </div>
 
@@ -373,7 +375,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
 
               <div className="flex items-center gap-2 mb-1">
                 <Gem className="w-4 h-4 text-white inline mr-1" />
-                <p className="text-white text-[10px] font-semibold tracking-[1px]">
+                <p className="text-white text-[11px] font-semibold tracking-[0.5px]">
                   {diamondCredit}
                 </p>
               </div>
@@ -394,7 +396,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
               </div> */}
               <div className="flex items-center gap-2 mb-1 text-gray-600">
                 <div className="w-5 h-5 bg-gray-300 rounded-lg flex items-center justify-center">
-                  <Bell className="w-4 h-4" strokeWidth={3} />
+                  <X className="w-4 h-4" strokeWidth={3} />
                 </div>
                 <p className="text-xs font-semibold tracking-wider">
                   {/* {t.yourPrize} */}
@@ -404,7 +406,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
 
               <div className="ms-0.5 flex items-center gap-1.5 mb-1 text-pink-600">
                 <Gem className="w-4 h-4 inline mr-1" />
-                <p className="text-[10px] font-semibold tracking-[1px]">
+                <p className="text-[11px] font-semibold tracking-[1px]">
                   {diamondCredit}
                 </p>
               </div>
@@ -416,23 +418,23 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
             <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-lg p-2 border border-violet-300">
               <div className="flex items-center gap-1 mb-0.5">
                 <Calendar className="w-3 h-3 text-violet-600" />
-                <span className="text-[9px] font-bold text-violet-600 uppercase">
+                <span className="text-[9px] tracking-[1px] font-bold text-violet-600 uppercase">
                   {t.start}
                 </span>
               </div>
-              <p className="text-[10px] font-bold text-gray-800">{startDate}</p>
-              <p className="text-[9px] text-gray-600 font-bold">{startTime}</p>
+              <p className="text-[10px] font-bold text-gray-800 tracking-[1px]">{startDate}</p>
+              <p className="text-[9px] text-gray-600 font-bold tracking-[1px]">{startTime}</p>
             </div>
 
             <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg p-2 border border-indigo-300">
               <div className="flex items-center gap-1 mb-0.5">
                 <Clock className="w-3 h-3 text-indigo-600" />
-                <span className="text-[9px] font-bold text-indigo-600 uppercase">
+                <span className="text-[9px] tracking-[1px] font-bold text-indigo-600 uppercase">
                   {t.end}
                 </span>
               </div>
-              <p className="text-[10px] font-bold text-gray-800">{endDate}</p>
-              <p className="text-[9px] text-gray-600 font-bold">{endTime}</p>
+              <p className="text-[10px] font-bold text-gray-800 tracking-[1px]">{endDate}</p>
+              <p className="text-[9px] text-gray-600 font-bold tracking-[1px]">{endTime}</p>
             </div>
           </div>
 

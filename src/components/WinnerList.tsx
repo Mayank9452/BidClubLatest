@@ -180,7 +180,7 @@ export default function WinnerList({ lastWeeklyWinners }) {
                   <div className="w-full h-full bg-yellow-300 rounded-full shadow-[0_0_6px_rgba(253,224,71,0.9)]" />
                 </div>
               ))}
-              <h1 className="text-xl font-black text-white tracking-[1px]">
+              <h1 className="text-xl font-bold text-white tracking-[1px]">
                 {t.weeklyWinners}
               </h1>
             </div>
@@ -360,7 +360,7 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="flex items-center justify-center gap-2">
               <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              <span className="text-[9px] font-black text-white uppercase tracking-widest">
+              <span className="text-[9px] font-bold text-white uppercase tracking-widest">
                 {t.rank} {winner.rank}
               </span>
             </div>

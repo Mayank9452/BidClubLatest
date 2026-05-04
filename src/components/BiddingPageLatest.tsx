@@ -206,11 +206,11 @@ export default function BiddingPageLatest() {
                                 <div key={i} className="flex items-center justify-center gap-2">
                                     <div className="flex flex-col items-center justify-center">
                                         <div className="relative bg-[#ff084bcc]/80 backdrop-blur-lg border border-white/80 rounded-xl w-12 h-12 flex items-center justify-center shadow-2xl">
-                                            <span className="text-lg font-black text-white tabular-nums drop-shadow-lg">
+                                            <span className="text-lg font-bold text-white tabular-nums drop-shadow-lg">
                                                 {unit}
                                             </span>
                                         </div>
-                                        <span className="text-[10px] tracking-[1px] font-black text-pink-500/90 mt-1.5">
+                                        <span className="text-[10px] tracking-[1px] font-bold text-pink-500/90 mt-1.5">
                                             {["Days", "Hrs", "Min", "Sec"][i]}
                                         </span>
                                     </div>
@@ -298,7 +298,7 @@ export default function BiddingPageLatest() {
                                                                                 animate={{ scale: 1 }}
                                                                                 className="relative z-10 flex flex-col items-center justify-center gap-0"
                                                                             >
-                                                                                <p className="text-xl font-black text-white drop-shadow-md">
+                                                                                <p className="text-xl font-bold text-white drop-shadow-md">
                                                                                     {hasValue}
                                                                                 </p>
                                                                                 <div className="flex items-center gap-1 px-2.5 py-1 bg-white/20 backdrop-blur-sm rounded-full">
@@ -316,7 +316,7 @@ export default function BiddingPageLatest() {
                                                                                 <p className="text-[11px] font-bold text-indigo-600  tracking-[2px] mb-1">
                                                                                     {t.ticket} {index + 1}
                                                                                 </p>
-                                                                                <p className="text-[12px] font-black text-pink-500/90 ">
+                                                                                <p className="text-[12px] font-bold text-pink-500/90 ">
                                                                                     {t.tapToEnter}
                                                                                 </p>
                                                                             </div>
@@ -332,7 +332,7 @@ export default function BiddingPageLatest() {
                                             {/* Good Luck Badge */}
                                             <div className="flex justify-center ">
                                                 <div className="px-4 py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl shadow-xl border border-white/20">
-                                                    <p className="text-xs font-black text-white tracking-[3px] ">
+                                                    <p className="text-xs font-bold text-white tracking-[3px] ">
                                                         ✨ {t.goodLuck}! ✨
                                                     </p>
                                                 </div>
@@ -360,10 +360,10 @@ export default function BiddingPageLatest() {
                                                     <div className="flex items-center justify-between mb-4 ">
                                                         <div className="flex items-center gap-3 w-3/4">
                                                             <div className="flex flex-col border-l-4 border-pink-500 pl-3 py-1">
-                                                                <h3 className="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent tracking-widest leading-none">
+                                                                <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent tracking-widest leading-none">
                                                                     TICKET - {currentTicket + 1}
                                                                 </h3>
-                                                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-[3px] mt-1">
+                                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[3px] mt-1">
                                                                     Enter Unique Number
                                                                 </span>
                                                             </div>
@@ -382,7 +382,7 @@ export default function BiddingPageLatest() {
                                                                     key={i}
                                                                     animate={isFilled ? { scale: [1, 1.1, 1] } : isNext ? { scale: [1, 1.05, 1] } : {}}
                                                                     transition={isNext ? { repeat: Infinity, duration: 1.5 } : {}}
-                                                                    className={`w-12 h-14 rounded-xl border-2 flex items-center justify-center text-xl font-black transition-all duration-300
+                                                                    className={`w-12 h-14 rounded-xl border-2 flex items-center justify-center text-xl font-bold transition-all duration-300
                                                                         ${isFilled ? 'border-pink-500 text-pink-600 bg-pink-50/50 shadow-[0_0_10px_rgba(236,72,153,0.2)]' :
                                                                             isNext ? 'border-indigo-500 text-indigo-600 bg-indigo-50 shadow-[0_0_15px_rgba(99,102,241,0.2)]' :
                                                                                 'border-indigo-300 text-slate-200 bg-slate-50'}`}
@@ -397,14 +397,14 @@ export default function BiddingPageLatest() {
                                                         <button
                                                             onClick={handleDelete}
                                                             disabled={inputValue.length === 0}
-                                                            className="flex-1 bg-rose-50 border-2 border-rose-400 text-rose-600 rounded-xl py-3 font-black text-[9px] tracking-widest uppercase active:scale-95 transition-all shadow-[0_2px_0_rgba(251,113,133,0.3)] disabled:opacity-50"
+                                                            className="flex-1 bg-rose-50 border-2 border-rose-400 text-rose-600 rounded-xl py-3 font-bold text-[9px] tracking-widest uppercase active:scale-95 transition-all shadow-[0_2px_0_rgba(251,113,133,0.3)] disabled:opacity-50"
                                                         >
                                                             {t.delete}
                                                         </button>
                                                         <button
                                                             onClick={handleConfirm}
                                                             disabled={inputValue.length === 0}
-                                                            className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl py-3 font-black text-[9px] tracking-widest uppercase shadow-lg shadow-emerald-500/10 active:scale-95 transition-transform"
+                                                            className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl py-3 font-bold text-[9px] tracking-widest uppercase shadow-lg shadow-emerald-500/10 active:scale-95 transition-transform"
                                                         >
                                                             {t.confirm}
                                                         </button>
@@ -420,7 +420,7 @@ export default function BiddingPageLatest() {
                                                     whileTap={{ scale: 0.9 }}
                                                     disabled={currentTicket === null || inputValue.length >= 4}
                                                     onClick={() => handleNumberClick(num.toString())}
-                                                    className="h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 border-2 border-white text-white text-xl font-black flex items-center justify-center 
+                                                    className="h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 border-2 border-white text-white text-xl font-bold flex items-center justify-center 
                                                         active:bg-pink-500/20 active:border-pink-500/50 transition-all shadow-lg"
                                                 >
                                                     {num}
@@ -432,7 +432,7 @@ export default function BiddingPageLatest() {
                                             <button
                                                 type="button"
                                                 onClick={handleAutoPick}
-                                                className="bg-indigo-600 text-white font-black text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white/10"
+                                                className="bg-indigo-600 text-white font-bold text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white/10"
                                             >
                                                 <Shuffle className="w-4 h-4" />
                                                 {t.autoPick}
@@ -440,7 +440,7 @@ export default function BiddingPageLatest() {
                                             <button
                                                 type="button"
                                                 onClick={handleClearAll}
-                                                className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-black text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white/10"
+                                                className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white/10"
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                                 {t.clearAll}
@@ -453,7 +453,7 @@ export default function BiddingPageLatest() {
                                             whileTap={{ scale: 0.98 }}
                                             type="button"
                                             disabled={Object.keys(selectedTickets).length !== 6}
-                                            className={`w-full py-5 rounded-[1.75rem] font-black text-sm tracking-[4px] transition-all duration-500 flex items-center justify-center gap-3 active:scale-95 mt-8
+                                            className={`w-full py-5 rounded-[1.75rem] font-bold text-sm tracking-[4px] transition-all duration-500 flex items-center justify-center gap-3 active:scale-95 mt-8
                                                 ${Object.keys(selectedTickets).length === 6
                                                     ? "bg-gradient-to-r from-[#ff009c] via-[#bd10e0] to-[#7928ca] text-white shadow-[0_10px_30px_rgba(255,0,156,0.4)] border-t border-white/20"
                                                     : "bg-indigo-100 backdrop-blur-md text-indigo-600 border-2 border-indigo-400 shadow-xl shadow-indigo-100/30"
@@ -468,7 +468,7 @@ export default function BiddingPageLatest() {
                                             ) : (
                                                 <div className="flex items-center gap-2">
                                                     <span>{t.fillAllTickets}</span>
-                                                    <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-[10px] font-black">
+                                                    <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-[10px] font-bold">
                                                         {Object.keys(selectedTickets).length}/6
                                                     </span>
                                                 </div>

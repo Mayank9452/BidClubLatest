@@ -76,7 +76,7 @@ const PopupAvatarSelector: React.FC<PopupAvatarSelectorProps> = ({
             <div className="relative z-10 w-full pt-4">
               {/* Header */}
               <div className="text-center mb-6 px-10">
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent mb-1 leading-tight">
+                <h2 className="text-xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent mb-1 leading-tight">
                   {t.chooseYourAvatar}
                 </h2>
               </div>

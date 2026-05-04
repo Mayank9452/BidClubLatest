@@ -94,7 +94,7 @@ const PopupBannerForDuplicateSet = ({
             </motion.div>
           </div>
 
-          <h2 className="text-xl font-black bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-4">
+          <h2 className="text-xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-4">
             {t.duplicateSetNumbers}
           </h2>
 
@@ -107,17 +107,17 @@ const PopupBannerForDuplicateSet = ({
                     className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3 group hover:bg-white/20 transition-all"
                   >
                     <div className="flex flex-col items-start gap-0.5">
-                      <span className="text-[10px] text-pink-400 font-black tracking-[1px]">
+                      <span className="text-[10px] text-pink-400 font-bold tracking-[1px]">
                         {t.cycle} {cycleNum}
                       </span>
                       <p className="text-[10px] text-white font-semibold text-left tracking-[1px] leading-relaxed">
                         {language === "en" ? (
                           <>
-                            {t.number} <span className="text-yellow-400 font-black">{item.number}</span> {t.isPresentInSet} {t.set} {batchNum}
+                            {t.number} <span className="text-yellow-400 font-bold">{item.number}</span> {t.isPresentInSet} {t.set} {batchNum}
                           </>
                         ) : (
                           <>
-                            {t.number} <span className="text-yellow-400 font-black">{item.number}</span> သည် {t.set} {batchNum} {t.isPresentInSet}
+                            {t.number} <span className="text-yellow-400 font-bold">{item.number}</span> သည် {t.set} {batchNum} {t.isPresentInSet}
                           </>
                         )}
                       </p>

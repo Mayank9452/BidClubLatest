@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 import ScrollToTop from "./components/ScrollToTop";
@@ -12,24 +12,40 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { fetchHomeData } from "./features/home/homeSlice";
 import PopupBannerUpdated from "./components/PopupBannerUpdated";
 import AuctionLoader from "./components/Loader";
+import { storage } from "./config/config";
 
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const { status, data } = useAppSelector((state) => state.home);
-  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [authToken, setAuthToken] = useState<string | null>(() => sessionStorage.getItem(storage.auth));
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchHomeData(1));
-  }, [dispatch]);
+    const params = new URLSearchParams(location.search);
+    const testId = params.get("testId");
+
+    if (testId) {
+      let id = 1;
+      try {
+        id = Number(atob(testId));
+      } catch (e) {
+        console.error("Failed to decode testId", e);
+      }
+      dispatch(fetchHomeData(id));
+      navigate("/", { replace: true });
+    } else if (!authToken && status === "idle") {
+      dispatch(fetchHomeData(1));
+    }
+  }, [dispatch, location.search, navigate, authToken, status]);
 
   // Handle auth and initial popup logic
   useEffect(() => {
-    const token = sessionStorage.getItem("auth");
-
     if (status === "success" && data?.data?.authToken) {
-      setAuthToken(token);
+      setAuthToken(data.data.authToken);
 
       const popupShown = sessionStorage.getItem("popupShown");
       if (!popupShown) {
@@ -50,33 +66,31 @@ const App: React.FC = () => {
           <Toaster />
           <Sonner />
           <div className="mobile-container sm:border-r sm:border-l overflow-hidden">
-            <BrowserRouter>
-              <ScrollToTop />
-              {authToken && <PopupBannerUpdated />}
-              <Suspense fallback={<AuctionLoader />}>
-                <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      authToken ? (
-                        <Navigate to="/dashboard" replace />
-                      ) : (
-                        <AuctionLoader />
-                      )
-                    }
-                  />
-                  {authToken &&
-                    routes.map((item, index) => (
-                      <Route
-                        path={item?.path}
-                        key={index}
-                        element={item?.element}
-                      />
-                    ))}
-                  <Route path="*" element={<AuctionLoader />} />
-                </Routes>
-              </Suspense>
-            </BrowserRouter>
+            <ScrollToTop />
+            {authToken && <PopupBannerUpdated />}
+            <Suspense fallback={<AuctionLoader />}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    authToken ? (
+                      <Navigate to="/dashboard" replace />
+                    ) : (
+                      <AuctionLoader />
+                    )
+                  }
+                />
+                {authToken &&
+                  routes.map((item, index) => (
+                    <Route
+                      path={item?.path}
+                      key={index}
+                      element={item?.element}
+                    />
+                  ))}
+                <Route path="*" element={<AuctionLoader />} />
+              </Routes>
+            </Suspense>
           </div>
         </TooltipProvider>
       </ThemeProvider>

@@ -126,7 +126,7 @@ export default function ProfilePage() {
               <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                 <User className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-2xl font-black text-white tracking-[1px]">
+              <h1 className="text-xl font-bold text-white tracking-[1px]">
                 {t.myProfile}
               </h1>
             </div>
@@ -373,7 +373,7 @@ const StatCard = React.memo(({ label, value, icon, color }: any) => {
         {icon}
       </div>
       <div className="text-center relative z-10">
-        <p className="text-base font-black leading-none mb-0.5">{value}</p>
+        <p className="text-base font-bold leading-none mb-0.5">{value}</p>
         <p className="text-[10px] font-bold uppercase tracking-widest text-white/80">
           {label}
         </p>

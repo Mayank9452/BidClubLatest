@@ -74,11 +74,11 @@ export default function LeaderboardNew({
     });
   }, [t.bids]);
 
-  const users = useMemo(() => 
+  const users = useMemo(() =>
     activeTab === "weekly"
       ? formatUsers(weeklyUsers)
       : formatUsers(monthlyUsers)
-  , [activeTab, weeklyUsers, monthlyUsers, formatUsers]);
+    , [activeTab, weeklyUsers, monthlyUsers, formatUsers]);
 
   const topThree = useMemo(() => users.slice(0, 3), [users]);
   const theRest = useMemo(() => users.slice(3, 5), [users]);
@@ -99,7 +99,7 @@ export default function LeaderboardNew({
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 {/* <Zap className="w-5 h-5 text-indigo-600 fill-indigo-600" /> */}
-                <h2 className="text-xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-[1px]">
+                <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-[1px]">
                   {t.rankings}
                 </h2>
               </div>
@@ -114,7 +114,7 @@ export default function LeaderboardNew({
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab as any)}
-                  className={`relative px-4 py-2 text-xs font-black capitalize transition-all duration-500 rounded-xl ${activeTab === tab ? "text-white" : "text-slate-500"
+                  className={`relative px-4 py-2 text-xs font-bold capitalize transition-all duration-500 rounded-xl ${activeTab === tab ? "text-white" : "text-slate-500"
                     }`}
                 >
                   {activeTab === tab && (
@@ -128,7 +128,7 @@ export default function LeaderboardNew({
                       }}
                     />
                   )}
-                  <span className="relative z-10 tracking-[1px]">
+                  <span className="relative z-10 tracking-[1px] text-xs">
                     {tab === "weekly" ? t.weekly : t.monthly}
                   </span>
                 </button>
@@ -163,7 +163,7 @@ export default function LeaderboardNew({
 hover:from-indigo-200 hover:via-purple-300 hover:to-indigo-200 rounded-[1.5rem] transition-all duration-300 shadow-sm"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-6 text-center font-black text-slate-800 group-hover:text-slate-900 transition-colors">
+                  <div className="w-6 text-center font-bold text-slate-800 group-hover:text-slate-900 transition-colors">
                     {index + 4}
                   </div>
                   {/* <div className="relative">
@@ -221,7 +221,7 @@ hover:from-indigo-200 hover:via-purple-300 hover:to-indigo-200 rounded-[1.5rem] 
 
         {/* Action Button - Neon Style */}
         <button
-          className="relative z-10 w-full mt-2 py-4 bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white rounded-2xl font-black text-sm shadow-xl shadow-purple-200 hover:shadow-purple-300 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 tracking-[1px]"
+          className="relative z-10 w-full mt-2 py-4 bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white rounded-2xl font-bold text-sm shadow-xl shadow-purple-200 hover:shadow-purple-300 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 tracking-[1px]"
           onClick={() => {
             navigate("/leaderboard");
           }}
@@ -257,7 +257,7 @@ hover:from-indigo-200 hover:via-purple-300 hover:to-indigo-200 rounded-[1.5rem] 
 
 //         {/* Rank Badge */}
 //         <div
-//           className={`absolute -bottom-2 left-1/2 -translate-x-1/2 ${color} ${isGold ? "text-white" : "text-slate-700"} text-[10px] font-black w-7 h-7 flex items-center justify-center rounded-xl shadow-lg border-2 border-white`}
+//           className={`absolute -bottom-2 left-1/2 -translate-x-1/2 ${color} ${isGold ? "text-white" : "text-slate-700"} text-[10px] font-bold w-7 h-7 flex items-center justify-center rounded-xl shadow-lg border-2 border-white`}
 //         >
 //           {rank}
 //         </div>
@@ -268,7 +268,7 @@ hover:from-indigo-200 hover:via-purple-300 hover:to-indigo-200 rounded-[1.5rem] 
 //       </div>
 
 //       <div className="text-center z-10 mb-2">
-//         <p className="text-[11px] font-black text-slate-800 truncate px-1">
+//         <p className="text-[11px] font-bold text-slate-800 truncate px-1">
 //           {user.phone}
 //         </p>
 //         <p className="text-xs font-bold text-indigo-600">
@@ -289,46 +289,46 @@ hover:from-indigo-200 hover:via-purple-300 hover:to-indigo-200 rounded-[1.5rem] 
 const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
   const { t } = useLanguage();
   const styles = {
-  gold: {
-    ring: {
-      background:
-        "linear-gradient(135deg, hsl(45, 85%, 35%), hsl(48, 95%, 75%), hsl(45, 85%, 35%))",
+    gold: {
+      ring: {
+        background:
+          "linear-gradient(135deg, hsl(45, 85%, 35%), hsl(48, 95%, 75%), hsl(45, 85%, 35%))",
+      },
+      badge: "bg-yellow-500 text-white",
+      podium: {
+        background:
+          "linear-gradient(135deg, hsl(45, 85%, 35%), hsl(48, 95%, 75%), hsl(45, 85%, 35%))",
+      },
+      glow: "shadow-yellow-500/40",
+      text: "text-yellow-500",
     },
-    badge: "bg-yellow-500 text-white",
-    podium: {
-      background:
-        "linear-gradient(135deg, hsl(45, 85%, 35%), hsl(48, 95%, 75%), hsl(45, 85%, 35%))",
+    silver: {
+      ring: {
+        background:
+          "linear-gradient(135deg, hsl(0, 0%, 55%), hsl(0, 0%, 90%), hsl(0, 0%, 55%))",
+      },
+      badge: "bg-gray-500 text-white",
+      podium: {
+        background:
+          "linear-gradient(135deg, hsl(0, 0%, 55%), hsl(0, 0%, 90%), hsl(0, 0%, 55%))",
+      },
+      glow: "shadow-gray-400/30",
+      text: "text-gray-500",
     },
-    glow: "shadow-yellow-500/40",
-    text: "text-yellow-500",
-  },
-  silver: {
-    ring: {
-      background:
-        "linear-gradient(135deg, hsl(0, 0%, 55%), hsl(0, 0%, 90%), hsl(0, 0%, 55%))",
+    bronze: {
+      ring: {
+        background:
+          "linear-gradient(135deg, hsl(25, 70%, 35%), hsl(30, 80%, 65%), hsl(25, 70%, 35%))",
+      },
+      badge: "bg-orange-500 text-white",
+      podium: {
+        background:
+          "linear-gradient(135deg, hsl(25, 70%, 35%), hsl(30, 80%, 65%), hsl(25, 70%, 35%))",
+      },
+      glow: "shadow-orange-500/40",
+      text: "text-orange-500",
     },
-    badge: "bg-gray-500 text-white",
-    podium: {
-      background:
-        "linear-gradient(135deg, hsl(0, 0%, 55%), hsl(0, 0%, 90%), hsl(0, 0%, 55%))",
-    },
-    glow: "shadow-gray-400/30",
-    text: "text-gray-500",
-  },
-  bronze: {
-    ring: {
-      background:
-        "linear-gradient(135deg, hsl(25, 70%, 35%), hsl(30, 80%, 65%), hsl(25, 70%, 35%))",
-    },
-    badge: "bg-orange-500 text-white",
-    podium: {
-      background:
-        "linear-gradient(135deg, hsl(25, 70%, 35%), hsl(30, 80%, 65%), hsl(25, 70%, 35%))",
-    },
-    glow: "shadow-orange-500/40",
-    text: "text-orange-500",
-  },
-};
+  };
 
   const current = styles[type];
 
@@ -345,9 +345,9 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
           className={`w-16 h-16 rounded-xl p-[2px] ${current.ring} shadow-xl ${current.glow} transition-transform duration-500 group-hover:scale-110`}
         > */}
         <div
-  style={current.ring}
-  className={`w-16 h-16 rounded-xl p-[2px] shadow-xl ${current.glow}`}
->
+          style={current.ring}
+          className={`w-16 h-16 rounded-xl p-[2px] shadow-xl ${current.glow}`}
+        >
           <div className="bg-white rounded-xl w-full h-full flex items-center justify-center overflow-hidden">
             <img
               src={`/assets/users/${user.avatar}`}
@@ -359,7 +359,7 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
 
         {/* Rank Badge */}
         <div
-          className={`absolute -bottom-2 left-1/2 -translate-x-1/2 ${current.badge} text-[10px] font-black w-7 h-7 flex items-center justify-center rounded-xl shadow-lg border-2 border-white`}
+          className={`absolute -bottom-2 left-1/2 -translate-x-1/2 ${current.badge} text-[10px] font-bold w-7 h-7 flex items-center justify-center rounded-xl shadow-lg border-2 border-white`}
         >
           {rank}
         </div>
@@ -372,7 +372,7 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
 
       {/* User Info */}
       <div className="text-center flex flex-col justify-center items-center gap-2">
-        <p className="text-xs font-black text-slate-800 truncate px-1">
+        <p className="text-xs font-bold text-slate-800 truncate px-1">
           {user.phone}
         </p>
         <div className="text-right">
@@ -409,7 +409,7 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
           height: type === "gold" ? 110 : type === "silver" ? 80 : 60,
         }}
         style={current.podium}
-  className="w-full rounded-t-[1.5rem] border-x border-t border-white/30 shadow-inner"
+        className="w-full rounded-t-[1.5rem] border-x border-t border-white/30 shadow-inner"
       />
     </motion.div>
   );

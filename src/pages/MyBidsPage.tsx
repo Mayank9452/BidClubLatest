@@ -7,7 +7,7 @@ import { BIDS_DATA } from "@/utils/mockData";
 export default function MyBidsPage() {
   return (
     <div className="mobile-container px-4 py-6 space-y-6">
-      <h1 className="text-2xl font-extrabold text-gradient-casino">
+      <h1 className="text-xl font-extrabold text-gradient-casino">
         My Bids
       </h1>
 

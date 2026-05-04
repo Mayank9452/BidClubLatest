@@ -226,7 +226,7 @@ export default function NotificationPage() {
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                   <Bell className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="text-2xl font-bold text-white tracking-[1px]">
+                <h1 className="text-xl font-bold text-white tracking-[1px]">
                   {t.notifications}
                 </h1>
               </div>
@@ -247,31 +247,28 @@ export default function NotificationPage() {
             <div className="flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-xl gap-1">
               <button
                 onClick={() => handleFilterChange("all")}
-                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${
-                  filter === "all"
-                    ? "bg-white text-violet-700 shadow-md"
-                    : "text-white/70"
-                }`}
+                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${filter === "all"
+                  ? "bg-white text-violet-700 shadow-md"
+                  : "text-white/70"
+                  }`}
               >
                 {t.all}
               </button>
               <button
                 onClick={() => handleFilterChange("won")}
-                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${
-                  filter === "won"
-                    ? "bg-white text-emerald-600 shadow-md"
-                    : "text-white/70"
-                }`}
+                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${filter === "won"
+                  ? "bg-white text-emerald-600 shadow-md"
+                  : "text-white/70"
+                  }`}
               >
                 {t.won}
               </button>
               <button
                 onClick={() => handleFilterChange("lost")}
-                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${
-                  filter === "lost"
-                    ? "bg-white text-gray-600 shadow-md"
-                    : "text-white/70"
-                }`}
+                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${filter === "lost"
+                  ? "bg-white text-gray-600 shadow-md"
+                  : "text-white/70"
+                  }`}
               >
                 {t.lost}
               </button>
@@ -358,19 +355,17 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
       whileTap={{ scale: 0.98 }}
     >
       <div
-        className={`relative bg-white rounded-xl shadow-md border-2 overflow-hidden transition-all duration-150 ${
-          won
-            ? "border-blue-400/40 bg-gradient-to-br from-emerald-50/50 to-white"
-            : "border-gray-200 active:border-violet-200"
-        }`}
+        className={`relative bg-white rounded-xl shadow-md border-2 overflow-hidden transition-all duration-150 ${won
+          ? "border-blue-400/40 bg-gradient-to-br from-emerald-50/50 to-white"
+          : "border-gray-200 active:border-violet-200"
+          }`}
       >
         {/* Status Strip */}
         <div
-          className={`absolute top-0 left-0 right-0 h-1 ${
-            won
-              ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2]"
-              : "bg-gradient-to-r from-gray-300 to-gray-400 bg-gradient-to-r from-indigo-400 to-purple-400"
-          }`}
+          className={`absolute top-0 left-0 right-0 h-1 ${won
+            ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2]"
+            : "bg-gradient-to-r from-gray-300 to-gray-400 bg-gradient-to-r from-indigo-400 to-purple-400"
+            }`}
         />
 
         <div className="p-3.5">
@@ -378,11 +373,10 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
           <div className="flex items-start justify-between mb-2.5">
             <div className="flex items-center gap-2.5">
               <div
-                className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                  won
-                    ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2]"
-                    : "bg-gradient-to-br from-gray-300 to-gray-400 "
-                }`}
+                className={`w-10 h-10 rounded-xl flex items-center justify-center ${won
+                  ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2]"
+                  : "bg-gradient-to-br from-gray-300 to-gray-400 "
+                  }`}
               >
                 {won ? (
                   <Trophy className="w-5 h-5 text-white" fill="currentColor" />
@@ -401,11 +395,10 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
 
             {/* Win/Loss Badge */}
             <div
-              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${
-                won
-                  ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2] text-white"
-                  : "bg-gray-100 text-gray-600"
-              }`}
+              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${won
+                ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2] text-white"
+                : "bg-gray-100 text-gray-600"
+                }`}
             >
               {won ? t.wonBadge : t.lostBadge}
             </div>
@@ -420,7 +413,7 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
                   {t.yourPrize}
                 </p>
               </div>
-              <p className="text-white text-sm font-black">{prize}</p>
+              <p className="text-white text-sm font-bold">{prize}</p>
             </div>
           ) : (
             <div className="bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-pink-300 transition-all active:scale-[0.98] rounded-lg p-2.5 mb-2.5">

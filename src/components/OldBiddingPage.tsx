@@ -89,13 +89,13 @@ export default function OldBiddingPage() {
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-400/20 rounded-full blur-2xl" />
 
           <div className="relative max-w-md mx-auto text-center">
-            <h1 className="text-2xl font-black text-white tracking-tight">
+            <h1 className="text-xl font-bold text-white tracking-tight">
               {/* {t.placeYourBid} */}
               {bidName?.includes("Daily") ? `${t.bidDaily} ${bidName?.split(" ")[2]}` : `${t.bidWeekly} ${bidName?.split(" ")[2]}`}
             </h1>
             <p className="text-xs text-white/80 mt-1">
-            {/* {t.chooseNumbersWin} */}
-            {t.latestUserJoinedBid}
+              {/* {t.chooseNumbersWin} */}
+              {t.latestUserJoinedBid}
             </p>
           </div>
         </div>
@@ -123,7 +123,7 @@ export default function OldBiddingPage() {
                     <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                       {t.bid} 2
                     </p>
-                    <p className="text-xs font-black bg-gradient-to-r from-pink-600 via-rose-600 to-orange-600 bg-clip-text text-transparent">
+                    <p className="text-xs font-bold bg-gradient-to-r from-pink-600 via-rose-600 to-orange-600 bg-clip-text text-transparent">
                       {/* {t.activeCycle} : 4 */}
                       {bidName || "-"}
                     </p>
@@ -135,10 +135,10 @@ export default function OldBiddingPage() {
                     {t.selected}
                   </p>
                   <div className="flex items-baseline gap-1">
-                    <p className="text-3xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                    <p className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                       {Object.keys(selectedTickets).length}
                     </p>
-                    <p className="text-xl font-black text-gray-400">/6</p>
+                    <p className="text-xl font-bold text-gray-400">/6</p>
                   </div>
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function OldBiddingPage() {
                       fill="currentColor"
                     />
                   </div>
-                  <h2 className="text-lg font-black bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
+                  <h2 className="text-lg font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
                     {t.fillYourTickets}
                   </h2>
                 </div>
@@ -211,11 +211,10 @@ export default function OldBiddingPage() {
                       >
                         {/* Ticket */}
                         <div
-                          className={`relative rounded-2xl overflow-hidden ${
-                            isSelected
-                              ? "ring-2 ring-pink-500 ring-offset-2 shadow-2xl"
-                              : "shadow-xl"
-                          }`}
+                          className={`relative rounded-2xl overflow-hidden ${isSelected
+                            ? "ring-2 ring-pink-500 ring-offset-2 shadow-2xl"
+                            : "shadow-xl"
+                            }`}
                         >
                           {/* Ticket Background */}
                           <div
@@ -237,7 +236,7 @@ export default function OldBiddingPage() {
                             <div className="relative z-10 h-full flex flex-col items-center justify-center">
                               {hasValue ? (
                                 <>
-                                  <p className="text-3xl font-black text-white drop-shadow-2xl tracking-wider mb-2">
+                                  <p className="text-3xl font-bold text-white drop-shadow-2xl tracking-wider mb-2">
                                     {hasValue}
                                   </p>
                                   <div className="flex items-center gap-1 px-3 py-1 bg-white/40 backdrop-blur-sm rounded-full">
@@ -245,7 +244,7 @@ export default function OldBiddingPage() {
                                       className="w-3.5 h-3.5 text-white"
                                       strokeWidth={3}
                                     />
-                                    <span className="text-[10px] font-black text-white">
+                                    <span className="text-[10px] font-bold text-white">
                                       {t.filled}
                                     </span>
                                   </div>
@@ -271,7 +270,7 @@ export default function OldBiddingPage() {
                 {/* Good Luck Badge */}
                 <div className="flex justify-center">
                   <div className="px-8 py-2.5 bg-gradient-to-r from-pink-500 via-rose-500 to-orange-500 rounded-full shadow-xl border-2 border-white">
-                    <p className="text-sm font-black text-white tracking-widest">
+                    <p className="text-sm font-bold text-white tracking-widest">
                       ✨ {t.goodLuck}! ✨
                     </p>
                   </div>
@@ -289,11 +288,11 @@ export default function OldBiddingPage() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center shadow-md">
-                        <span className="text-sm font-black text-white">
+                        <span className="text-sm font-bold text-white">
                           {currentTicket + 1}
                         </span>
                       </div>
-                      <p className="text-sm font-black text-gray-700">
+                      <p className="text-sm font-bold text-gray-700">
                         {t.enterTicketNumber}
                       </p>
                     </div>
@@ -307,7 +306,7 @@ export default function OldBiddingPage() {
 
                   {/* Single Input Display */}
                   <div className="mb-2 p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border-2 border-purple-200">
-                    <p className="text-center text-3xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent tracking-wider min-h-[60px] flex items-center justify-center">
+                    <p className="text-center text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent tracking-wider min-h-[60px] flex items-center justify-center">
                       {inputValue || "____"}
                     </p>
                     {/* <p className="text-center text-xs font-bold text-gray-500 mt-2">
@@ -320,11 +319,10 @@ export default function OldBiddingPage() {
                     <button
                       onClick={handleDelete}
                       disabled={inputValue.length === 0}
-                      className={`flex-1 rounded-xl py-3 font-bold transition-all flex items-center justify-center gap-2 active:scale-95 ${
-                        inputValue.length > 0
-                          ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
-                          : "bg-gradient-to-r from-orange-200 to-red-200 text-orange-400 cursor-not-allowed"
-                      }`}
+                      className={`flex-1 rounded-xl py-3 font-bold transition-all flex items-center justify-center gap-2 active:scale-95 ${inputValue.length > 0
+                        ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
+                        : "bg-gradient-to-r from-orange-200 to-red-200 text-orange-400 cursor-not-allowed"
+                        }`}
                     >
                       <Trash2 className="w-4 h-4" />
                       {t.delete}
@@ -332,11 +330,10 @@ export default function OldBiddingPage() {
                     <button
                       onClick={handleConfirm}
                       disabled={inputValue.length === 0}
-                      className={`flex-1 rounded-xl py-3 font-bold text-white transition-all flex items-center justify-center gap-2 active:scale-95 ${
-                        inputValue.length > 0
-                          ? "bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg"
-                          : "bg-gradient-to-r from-green-200 to-emerald-200 text-green-400 cursor-not-allowed"
-                      }`}
+                      className={`flex-1 rounded-xl py-3 font-bold text-white transition-all flex items-center justify-center gap-2 active:scale-95 ${inputValue.length > 0
+                        ? "bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg"
+                        : "bg-gradient-to-r from-green-200 to-emerald-200 text-green-400 cursor-not-allowed"
+                        }`}
                     >
                       <Check className="w-4 h-4" />
                       {t.confirm}
@@ -362,7 +359,7 @@ export default function OldBiddingPage() {
               <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-xl flex items-center justify-center shadow-lg">
                 <Sparkles className="w-5 h-5 text-white" fill="currentColor" />
               </div>
-              <h2 className="text-lg font-black bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
+              <h2 className="text-lg font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
                 Keypad
               </h2>
             </div> */}
@@ -388,11 +385,10 @@ export default function OldBiddingPage() {
                       key={num}
                       onClick={() => handleNumberClick(num.toString())}
                       disabled={isDisabled}
-                      className={`aspect-square rounded-xl text-2xl font-black transition-all shadow-lg border-2 border-orange-500 ${
-                        isDisabled
-                          ? "bg-gradient-to-br from-pink-200 to-orange-200 text-pink-400 cursor-not-allowed opacity-90"
-                          : `bg-gradient-to-br ${colors[idx]} text-white hover:shadow-xl active:scale-90`
-                      }`}
+                      className={`aspect-square rounded-xl text-xl font-bold transition-all shadow-lg border-2 border-orange-500 ${isDisabled
+                        ? "bg-gradient-to-br from-pink-200 to-orange-200 text-pink-400 cursor-not-allowed opacity-90"
+                        : `bg-gradient-to-br ${colors[idx]} text-white hover:shadow-xl active:scale-90`
+                        }`}
                     >
                       {num}
                     </button>
@@ -422,11 +418,10 @@ export default function OldBiddingPage() {
             {/* Submit Button - Enhanced */}
             <button
               disabled={Object.keys(selectedTickets).length !== 6}
-              className={`w-full py-4 rounded-2xl font-black text-lg shadow-2xl transition-all ${
-                Object.keys(selectedTickets).length === 6
-                  ? "bg-gradient-to-r from-pink-600 via-rose-600 to-orange-500 active:from-pink-700 active:to-rose-700 text-white opacity-80"
-                  : "bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 text-white border-orange-300 opacity-80 cursor-not-allowed"
-              }`}
+              className={`w-full py-4 rounded-2xl font-bold text-lg shadow-2xl transition-all ${Object.keys(selectedTickets).length === 6
+                ? "bg-gradient-to-r from-pink-600 via-rose-600 to-orange-500 active:from-pink-700 active:to-rose-700 text-white opacity-80"
+                : "bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 text-white border-orange-300 opacity-80 cursor-not-allowed"
+                }`}
             >
               {Object.keys(selectedTickets).length === 6
                 ? `🎯 ${t.submitAllTickets}`

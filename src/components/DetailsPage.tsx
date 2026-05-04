@@ -50,7 +50,7 @@ export default function DetailsPage() {
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-6 h-6 text-yellow-300" />
-                <h2 className="text-2xl font-bold text-white">{t.welcomeToBidBlast}</h2>
+                <h2 className="text-xl font-bold text-white">{t.welcomeToBidBlast}</h2>
               </div>
               <p className="text-indigo-100 text-sm leading-relaxed">
                 {t.bidblastDescription} 🎁
@@ -100,12 +100,12 @@ export default function DetailsPage() {
                   <div className="grid grid-cols-2 gap-3 mt-5">
                     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 p-4 border border-indigo-100">
                       <div className="absolute top-0 right-0 w-16 h-16 bg-indigo-400/10 rounded-full blur-xl" />
-                      <p className="text-3xl font-black bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent relative">4</p>
+                      <p className="text-3xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent relative">4</p>
                       <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.totalCycles}</p>
                     </div>
                     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-4 border border-purple-100">
                       <div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl" />
-                      <p className="text-3xl font-black bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative tracking-[0.5px]">6h</p>
+                      <p className="text-3xl font-bold bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative tracking-[0.5px]">6h</p>
                       <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.perCycle}</p>
                     </div>
                   </div>
@@ -146,12 +146,12 @@ export default function DetailsPage() {
                   <div className="grid grid-cols-2 gap-3 mt-5">
                     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-4 border border-purple-100">
                       <div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl" />
-                      <p className="text-3xl font-black bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative">7</p>
+                      <p className="text-3xl font-bold bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative">7</p>
                       <p className="text-xs text-gray-600 font-semibold mt-1">{t.totalCycles}</p>
                     </div>
                     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-50 to-rose-50 p-4 border border-pink-100">
                       <div className="absolute top-0 right-0 w-16 h-16 bg-pink-400/10 rounded-full blur-xl" />
-                      <p className="text-3xl font-black bg-gradient-to-br from-pink-600 to-rose-600 bg-clip-text text-transparent relative">24h</p>
+                      <p className="text-3xl font-bold bg-gradient-to-br from-pink-600 to-rose-600 bg-clip-text text-transparent relative">24h</p>
                       <p className="text-xs text-gray-600 font-semibold mt-1">{t.perCycle}</p>
                     </div>
                   </div>

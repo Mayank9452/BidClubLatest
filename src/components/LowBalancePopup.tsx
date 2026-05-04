@@ -12,7 +12,7 @@
 //   return (
 //     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
 //       <div className="relative bg-white rounded-2xl shadow-xl w-80 max-w-[90%] p-6 flex flex-col items-center">
-        
+
 //         {/* Close Button */}
 //         <button
 //           onClick={onClose}
@@ -114,7 +114,7 @@ export default function LowBalancePopup({ visible, onClose, avatarUrl }: LowBala
 
               {/* Message */}
               <div className="text-center space-y-2 mb-4">
-                <h2 className="text-2xl font-extrabold tracking-tight bg-[#0a0f7a] bg-clip-text text-transparent">
+                <h2 className="text-xl font-extrabold tracking-tight bg-[#0a0f7a] bg-clip-text text-transparent">
                   {t.lowBalance}
                 </h2>
                 <p className="text-[12px] text-black dark:text-slate-400 font-semibold">

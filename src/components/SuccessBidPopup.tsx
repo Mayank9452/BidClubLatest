@@ -191,7 +191,7 @@ const SuccessBidPopup = ({
             </motion.div>
           </div>
 
-          <h2 className="text-xl sm:text-3xl font-black bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-4">
+          <h2 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-4">
             {t.successfullyBidPlaced}
           </h2>
 

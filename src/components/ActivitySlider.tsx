@@ -42,7 +42,7 @@ const ActivityItem = React.memo(({ activity, gradientClass, t }: { activity: any
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-          <span className="text-[9px] font-black text-white/70 uppercase tracking-widest">
+          <span className="text-[9px] font-bold text-white/70 uppercase tracking-widest">
             {t.live}
           </span>
         </div>
@@ -99,4 +99,4 @@ export default function ActivitySlider({ updatedData }) {
       </div>
     </div>
   );
-}
+}

@@ -242,19 +242,19 @@ export default function BiddingPage() {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
               <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                <span className="text-[10px] font-black text-white uppercase tracking-[2px] opacity-80">
+                <span className="text-[10px] font-bold text-white uppercase tracking-[2px] opacity-80">
                   {t.activeCycle || "Cycle"}
                 </span>
-                <div className="bg-white text-pink-600 rounded-lg px-2.5 py-0.5 text-[12px] font-black shadow-lg transform -rotate-2">
+                <div className="bg-white text-pink-600 rounded-lg px-2.5 py-0.5 text-[12px] font-bold shadow-lg transform -rotate-2">
                   {bidCycle}
                 </div>
               </div>
 
               <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                <span className="text-[10px] font-black text-white uppercase tracking-[2px] opacity-80">
+                <span className="text-[10px] font-bold text-white uppercase tracking-[2px] opacity-80">
                   {t.set}
                 </span>
-                <div className="bg-indigo-500 text-white rounded-lg px-2.5 py-0.5 text-[12px] font-black shadow-lg transform rotate-2">
+                <div className="bg-indigo-500 text-white rounded-lg px-2.5 py-0.5 text-[12px] font-bold shadow-lg transform rotate-2">
                   {batchCount}
                 </div>
               </div>
@@ -272,14 +272,14 @@ export default function BiddingPage() {
                 <Info className="w-4 h-4 text-white font-bold" />
               </div>
               <div className="flex flex-col justify-center gap-0.5">
-                <span className="text-[12px] font-black text-[#ff0000] uppercase tracking-[1px]">{t.note} :-</span>
+                <span className="text-[12px] font-bold text-[#ff0000] uppercase tracking-[1px]">{t.note} :-</span>
                 <p className="text-[11px] font-semibold text-white tracking-widest leading-relaxed">
                   {t.uniqueNumbersNote}
                 </p>
                 {allCompleteSets && allCompleteSets.length > 0 && (
                   <button
                     onClick={() => setIsShowingFilledSets(!isShowingFilledSets)}
-                    className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 backdrop-blur-xl text-white text-[11px] font-black rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5 tracking-[2px] group overflow-hidden relative"
+                    className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 backdrop-blur-xl text-white text-[11px] font-bold rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5 tracking-[2px] group overflow-hidden relative"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                     {isShowingFilledSets ? (
@@ -373,7 +373,7 @@ export default function BiddingPage() {
                                           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-6 bg-[#f8fafc] rounded-r-full" />
                                           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-6 bg-[#f8fafc] rounded-l-full" />
 
-                                          <p className="text-sm font-black text-white drop-shadow-md">
+                                          <p className="text-sm font-bold text-white drop-shadow-md">
                                             {val}
                                           </p>
                                           <div className="flex items-center gap-1 px-1.5 py-0.5 bg-white/20 backdrop-blur-sm rounded-full mt-0.5">
@@ -471,7 +471,7 @@ export default function BiddingPage() {
                                       animate={{ scale: 1 }}
                                       className="relative z-10 flex flex-col items-center justify-center gap-0"
                                     >
-                                      <p className="text-xl font-black text-white drop-shadow-md">
+                                      <p className="text-xl font-bold text-white drop-shadow-md">
                                         {hasValue}
                                       </p>
                                       <div className="flex items-center gap-1 px-2.5 py-1 bg-white/20 backdrop-blur-sm rounded-full">
@@ -489,7 +489,7 @@ export default function BiddingPage() {
                                       <p className="text-[11px] font-bold text-indigo-900  tracking-[2px] mb-1">
                                         {t.ticket} {index + 1}
                                       </p>
-                                      <p className="text-[12px] font-black text-[#ff0067] ">
+                                      <p className="text-[12px] font-bold text-[#ff0067] ">
                                         {t.tapToEnter}
                                       </p>
                                     </div>
@@ -505,7 +505,7 @@ export default function BiddingPage() {
                     {/* Good Luck Badge */}
                     <div className="flex justify-center ">
                       <div className="px-4 py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl shadow-xl border border-white/20">
-                        <p className="text-xs font-black text-white tracking-[3px] ">
+                        <p className="text-xs font-bold text-white tracking-[3px] ">
                           ✨ {t.goodLuck}! ✨
                         </p>
                       </div>
@@ -529,7 +529,7 @@ export default function BiddingPage() {
                       <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
-                            <span className="text-sm font-black text-indigo-600">{currentTicket + 1}</span>
+                            <span className="text-sm font-bold text-indigo-600">{currentTicket + 1}</span>
                           </div>
                           <h3 className="text-sm font-bold text-white uppercase tracking-widest">{t.enterTicketNumber}</h3>
                         </div>
@@ -544,7 +544,7 @@ export default function BiddingPage() {
                           <motion.div
                             key={i}
                             animate={inputValue[i] ? { scale: [1, 1.1, 1] } : {}}
-                            className={`w-14 h-16 rounded-xl border-2 flex items-center justify-center text-2xl font-black transition-all duration-300
+                            className={`w-14 h-16 rounded-xl border-2 flex items-center justify-center text-xl font-bold transition-all duration-300
                             ${inputValue[i] ? 'border-pink-500 text-white bg-pink-500/20 shadow-[0_0_15px_rgba(236,72,153,0.3)]' : 'border-white/40 text-white bg-white/40'}`}
                           >
                             {inputValue[i] || "•"}
@@ -584,7 +584,7 @@ export default function BiddingPage() {
                       whileTap={{ scale: 0.9 }}
                       disabled={currentTicket === null || inputValue.length >= 4}
                       onClick={() => handleNumberClick(num.toString())}
-                      className="h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 border-2 border-white text-white text-xl font-black flex items-center justify-center 
+                      className="h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 border-2 border-white text-white text-xl font-bold flex items-center justify-center 
                              active:bg-pink-500/20 active:border-pink-500/50 transition-all shadow-lg"
                     >
                       {num}
@@ -598,7 +598,7 @@ export default function BiddingPage() {
                   <button
                     type="button"
                     onClick={handleAutoPick}
-                    className="bg-indigo-600 text-white font-black text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
+                    className="bg-indigo-600 text-white font-bold text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
                   >
                     <Shuffle className="w-4 h-4" />
                     {t.autoPick}
@@ -606,7 +606,7 @@ export default function BiddingPage() {
                   <button
                     type="button"
                     onClick={handleClearAll}
-                    className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-black text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
+                    className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
                   >
                     <Trash2 className="w-4 h-4" />
                     {t.clearAll}
@@ -690,11 +690,11 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
           <div key={i} className="flex items-center justify-center gap-2">
             <div className="flex flex-col items-center justify-center">
               <div className="relative bg-[#ff084bcc]/80 backdrop-blur-lg border border-white/80 rounded-xl w-12 h-12 flex items-center justify-center shadow-2xl">
-                <span className="text-lg font-black text-white tabular-nums drop-shadow-lg">
+                <span className="text-lg font-bold text-white tabular-nums drop-shadow-lg">
                   {unit}
                 </span>
               </div>
-              <span className="text-[10px] tracking-[1px] font-black text-pink-500/90 mt-1.5">
+              <span className="text-[10px] tracking-[1px] font-bold text-pink-500/90 mt-1.5">
                 {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort][i]}
               </span>
             </div>

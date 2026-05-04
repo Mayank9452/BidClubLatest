@@ -152,7 +152,7 @@ export default function LeaderboardPageNew() {
                   fill="currentColor"
                 />
               </div>
-              <h1 className="text-2xl font-bold text-white tracking-[1px]">
+              <h1 className="text-xl font-bold text-white tracking-[1px]">
                 {t.leaderboard}
               </h1>
             </div>
@@ -181,7 +181,7 @@ export default function LeaderboardPageNew() {
                       }}
                     />
                   )}
-                  <span className="relative z-10 tracking-[1px] font-bold">
+                  <span className="relative z-10 tracking-[1px] text-xs font-bold">
                     {tab === "allTime" ? t.allTime : t[tab]}
                   </span>
                 </button>
@@ -270,7 +270,7 @@ export default function LeaderboardPageNew() {
 
                         {/* Score */}
                         <div className="text-right ">
-                          <div className="flex items-center justify-end gap-1 text-[15px] font-black bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                          <div className="flex items-center justify-end gap-1 text-[15px] font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
                             <div className="relative">
                               <img
                                 src="/assets/images/diamond3.png"
@@ -333,7 +333,7 @@ export default function LeaderboardPageNew() {
                 </p>
               )}
 
-              {users.length === 0 && status === "success" &&  (
+              {users.length === 0 && status === "success" && (
                 <p className="text-center text-gray-400 py-5">
                   No leaderboard data
                 </p>
@@ -348,7 +348,7 @@ export default function LeaderboardPageNew() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                  <span className="text-base font-black text-white/80 tracking-[1px]">
+                  <span className="text-base font-bold text-white/80 tracking-[1px]">
                     #47
                   </span>
                 </div>
@@ -469,7 +469,7 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
 
         {/* Rank Badge */}
         <div
-          className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black border-2 border-white ${current.badge}`}
+          className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-bold border-2 border-white ${current.badge}`}
         >
           {rank}
         </div>
@@ -482,7 +482,7 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
         </p>
 
         {/* 💎 Score */}
-        <div className="text-xs font-black bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-1.5">
+        <div className="text-xs font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-1.5">
           <div className="relative">
             <img
               src="/assets/images/diamond3.png"
