@@ -69,12 +69,12 @@ export default function GamesPage() {
 
           {/* TRENDING SECTION */}
           <div className="relative -mt-12 space-y-4 mx-1">
-            <div className="w-[90%] mx-auto relative overflow-hidden rounded-2xl bg-white p-4 border-2 border-pink-200 shadow-xl flex items-center justify-center gap-3">
+            <div className="w-[90%] mx-auto relative overflow-hidden rounded-2xl bg-white p-4 border-2 border-pink-400 shadow-xl flex items-center justify-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-md">
                 <Zap className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-pink-500">
+                <h2 className="text-lg font-bold text-pink-700">
                   {t.trendingGames}
                 </h2>
               </div>

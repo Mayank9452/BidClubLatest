@@ -124,7 +124,7 @@ export function TopBar({
                     <p className="text-xs font-semibold text-white">
                       {t.totalDiamonds}
                       <span className="font-semibold text-blue-400">
-                        {userPoints.toLocaleString()}
+                        {userPoints?.toLocaleString()}
                       </span>{" "}
                     </p>
                   </div>
@@ -166,7 +166,7 @@ export function TopBar({
                     <p className="text-xs font-semibold text-white">
                       {t.totalCoins}
                       <span className="font-semibold text-yellow-400">
-                        {user_play_coins.toLocaleString()}
+                        {user_play_coins?.toLocaleString()}
                       </span>{" "}
                     </p>
                   </div>

@@ -60,7 +60,7 @@ const PlayGamesUpdatedNew = () => {
     <>
       <div className="w-full h-[100dvh] bg-black flex items-center justify-center">
         {loading ? (
-          <div className="text-white text-lg">Loading game...</div>
+          <></>
         ) : gameLink ? (
           <iframe
             src={gameLink}

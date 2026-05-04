@@ -281,16 +281,19 @@ export function BottomNavBar({
   // ]
 
   const navItems = [
-  { id: "home", label: t.navbarHome, icon: Home, path: ["/dashboard", "/"] },
-  { id: "leaderboard", label: t.navbarLeaderboard, icon: Trophy, path: ["/leaderboard"] },
-  { id: "notification", label: t.navbarNotification, icon: Bell, path: ["/notification"] },
-  { id: "games", label: t.navbarGames, icon: Gamepad2, path: ["/games"] },
-]
+    { id: "home", label: t.navbarHome, icon: Home, path: ["/dashboard", "/"] },
+    { id: "leaderboard", label: t.navbarLeaderboard, icon: Trophy, path: ["/leaderboard"] },
+    { id: "notification", label: t.navbarNotification, icon: Bell, path: ["/notification"] },
+    { id: "games", label: t.navbarGames, icon: Gamepad2, path: ["/games"] },
+  ]
 
   return (
     <>
       {/* 🔹 Spacer to prevent Homepage content overlap */}
-      <div style={{ height: NAVBAR_HEIGHT }} />
+      <div
+        className="transition-all duration-300"
+        style={{ height: isToggle ? (isOpen ? 45 : 125) : NAVBAR_HEIGHT }}
+      />
 
       {/* 🔹 Fixed Navbar */}
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[480px] z-50 grid">
