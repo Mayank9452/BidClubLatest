@@ -55,7 +55,7 @@ const PopupBannerForDuplicateSet = ({
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute z-[50] top-4 right-4 w-10 h-10 rounded-full bg-black/5 hover:bg-white/10 active:scale-90 border-2 border-white/40 flex items-center justify-center transition-all"
+          className="absolute z-[50] top-4 right-4 w-10 h-10 rounded-full bg-black/5 hover:bg-white/10 active:scale-90 border-2 border-pink-900 flex items-center justify-center transition-all"
         >
           <X className="h-5 w-5 text-white/80 hover:text-white" />
         </button>
@@ -135,7 +135,7 @@ const PopupBannerForDuplicateSet = ({
 
           <div className="mt-8">
             <Button
-              className="h-14 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-b border-white/70 transition-all active:scale-95 tracking-[2px] text-sm"
+              className="h-14 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-b border-white/70 transition-all active:scale-95 tracking-[1px] text-sm"
               onClick={onConfirm}
             >
               {t.enterUniqueNumber}

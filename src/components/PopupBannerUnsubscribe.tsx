@@ -151,12 +151,12 @@ const PopupBannerUnsubscribe = ({
           </div>
 
           {data?.title && (
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3">
+            <h2 className="text-xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3">
               {data.title}
             </h2>
           )}
           {data?.description && (
-            <p className="text-[12px] leading-relaxed text-blue-100/70 font-semibold tracking-[1px]">
+            <p className="text-xs leading-relaxed text-blue-100/70 font-semibold tracking-[1px]">
               {data.description}
             </p>
           )}

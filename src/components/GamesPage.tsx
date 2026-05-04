@@ -42,7 +42,7 @@ export default function GamesPage() {
     <>
       <TopBar />
 
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 pt-2 px-2 pb-20">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 pt-2 px-2">
         <div className="max-w-md mx-auto">
           {/* HEADER + AUTO GAME */}
           <div className="rounded-xl relative bg-gradient-to-r from-[#0a0f7ac4] to-pink-700 pt-3 pb-16 px-3 overflow-hidden shadow-lg">

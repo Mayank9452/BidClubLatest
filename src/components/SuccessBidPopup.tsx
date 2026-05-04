@@ -126,7 +126,7 @@ const SuccessBidPopup = ({
           className="w-full text-center relative z-10"
         >
           {/* Celebration Image Visual */}
-          <div className="relative mb-8 flex justify-center">
+          <div className="relative mb-4 flex justify-center">
             <motion.div
               animate={{
                 y: [-6, 6, -6],
@@ -174,7 +174,7 @@ const SuccessBidPopup = ({
                 </div>
 
                 {/* Floating Gems/Stars around the container */}
-                <motion.div
+                {/* <motion.div
                   animate={{ y: [0, -15, 0], rotate: 360 }}
                   transition={{ duration: 5, repeat: Infinity }}
                   className="absolute -top-4 -left-4 w-7 h-7 bg-gradient-to-tr from-yellow-400 to-orange-500 rounded-lg blur-[1px] shadow-lg flex items-center justify-center"
@@ -186,12 +186,12 @@ const SuccessBidPopup = ({
                   animate={{ y: [0, 15, 0], x: [0, 10, 0] }}
                   transition={{ duration: 4, repeat: Infinity, delay: 1 }}
                   className="absolute -bottom-2 -right-4 w-6 h-6 bg-gradient-to-br from-pink-400 to-purple-600 rounded-full blur-[1px] shadow-lg"
-                />
+                /> */}
               </div>
             </motion.div>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-4">
+          <h2 className="text-xl sm:text-3xl font-black bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-4">
             {t.successfullyBidPlaced}
           </h2>
 
@@ -215,7 +215,7 @@ const SuccessBidPopup = ({
 
           <div className="mt-8">
             <Button
-              className="h-14 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-white/20 transition-all active:scale-95 tracking-[2px] text-sm"
+              className="h-14 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-white/20 transition-all active:scale-95 tracking-[1px] text-sm"
               onClick={onConfirm}
             >
               {t.playMoreBids}

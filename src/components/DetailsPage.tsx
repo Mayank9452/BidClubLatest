@@ -33,7 +33,7 @@ export default function DetailsPage() {
 
             <div className="aspect-video flex items-center justify-center">
               <video
-                src={videoUrl}
+                src="https://bidblast.club/assets/frontend/img/introduction.mp4"
                 controls
                 playsInline
                 preload="metadata"
@@ -61,7 +61,7 @@ export default function DetailsPage() {
           {/* Bid Types - Ultra Modern Cards */}
           <div className="space-y-4">
             <div className="text-center mb-2">
-              <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-lg border border-gray-200">
+              <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-lg border border-gray-200">
                 <Zap className="w-5 h-5 text-indigo-600" />
                 <h3 className="text-lg font-bold text-gray-800">{t.chooseGameMode}</h3>
               </div>

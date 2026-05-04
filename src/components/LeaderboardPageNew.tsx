@@ -225,11 +225,11 @@ export default function LeaderboardPageNew() {
                     transition={{ delay: index * 0.03 }}
                   >
                     <button
-                      onClick={() =>
-                        setExpandedUser(
-                          expandedUser === user.id ? null : user.id,
-                        )
-                      }
+                      // onClick={() =>
+                      //   setExpandedUser(
+                      //     expandedUser === user.id ? null : user.id,
+                      //   )
+                      // }
                       className="w-full"
                     >
                       <div className="flex items-center gap-2.5 p-2.5 bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-gray-100 transition-all active:scale-[0.98]">
@@ -333,7 +333,7 @@ export default function LeaderboardPageNew() {
                 </p>
               )}
 
-              {users.length === 0 && status === "success" && (
+              {users.length === 0 && status === "success" &&  (
                 <p className="text-center text-gray-400 py-5">
                   No leaderboard data
                 </p>
