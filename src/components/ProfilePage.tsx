@@ -210,10 +210,10 @@ export default function ProfilePage() {
                     <FileText className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-sm font-bold text-gray-800">
+                    <h3 className="text-sm font-bold text-gray-800 tracking-[0.5px]">
                       {t.terms}
                     </h3>
-                    <p className="text-[10px] text-gray-500 font-bold tracking-[1px]">
+                    <p className="text-[11px] text-gray-500 font-semibold tracking-[0.5px]">
                       {t.readPolicies}
                     </p>
                   </div>
@@ -231,10 +231,10 @@ export default function ProfilePage() {
                     <LogOut className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-sm font-bold text-gray-800">
+                    <h3 className="text-sm font-bold text-gray-800 tracking-[0.5px]">
                       {t.unsubscribe}
                     </h3>
-                    <p className="text-[10px] text-gray-500 font-bold">
+                    <p className="text-[11px] text-gray-500 font-semibold tracking-[0.5px]">
                       {t.leaveService}
                     </p>
                   </div>
@@ -249,10 +249,10 @@ export default function ProfilePage() {
                     🌐
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-gray-800">
+                    <h3 className="text-sm font-bold text-gray-800 tracking-[0.5px]">
                       {t.language}
                     </h3>
-                    <p className="text-[10px] text-gray-500 font-bold">
+                    <p className="text-[11px] text-gray-500 font-semibold tracking-[0.5px]">
                       {language === "en" ? t.english : t.burmese}
                     </p>
                   </div>
@@ -310,17 +310,12 @@ export default function ProfilePage() {
 
               <InfoRow
                 label={t.status}
-                value={
-                  user?.user_status === "1" ? "Subscribed" : "Unsubscribed"
-                }
+                value={user?.user_subscription_status}
                 badge
               />
-
-              <InfoRow
-                label={t.subscription}
-                // value={user?.user_subscription_status || "Free"}
-                value="Daily : 200 Ks"
-              />
+              {user?.user_subscription_status !== "unsub" && (
+                <InfoRow label={t.subscription} value="Daily : 200 Ks" />
+              )}
             </div>
           </div>
         </div>

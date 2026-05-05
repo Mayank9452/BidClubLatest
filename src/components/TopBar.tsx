@@ -19,7 +19,7 @@ export function TopBar({
   const { data: response } = useAppSelector((state) => state.home);
   const user_play_coins = response?.data?.userInfo?.user_play_coins;
   const { data: profileData } = useAppSelector((state) => state.profile);
-  const userPoints = response?.data?.diamonds || profileData?.data?.userPoints;
+  const userPoints = response?.data?.diamonds ?? profileData?.data?.userPoints ?? 0;
 
   const dashboard = useAppSelector((state) => state.dashboard);
   const { t } = useLanguage();

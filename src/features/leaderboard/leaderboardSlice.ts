@@ -22,6 +22,7 @@ const leaderboardSlice = createSlice({
     list: [],
     pageNo: 1,
     hasMore: true,
+    user: null,
     status: "idle",
     error: null,
   },
@@ -30,6 +31,7 @@ const leaderboardSlice = createSlice({
       state.list = [];
       state.pageNo = 1;
       state.hasMore = true;
+      state.user = null;
     },
   },
   extraReducers(builder) {
@@ -43,7 +45,7 @@ const leaderboardSlice = createSlice({
         const response = action.payload?.data;
         if (!response) return;
 
-        const { list, pageNo, hasMore } = response;
+        const { list, pageNo, hasMore, user } = response;
 
         // ✅ Pagination handling
         if (pageNo > 1) {
@@ -54,6 +56,7 @@ const leaderboardSlice = createSlice({
 
         state.pageNo = pageNo;
         state.hasMore = hasMore;
+        state.user = user;
       })
       .addCase(fetchLeaderboard.rejected, (state, action) => {
         state.status = "failed";

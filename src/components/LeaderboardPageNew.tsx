@@ -65,7 +65,7 @@ export default function LeaderboardPageNew() {
     pageNo: 1,
   });
 
-  const { list, status, hasMore } = useAppSelector(
+  const { list, status, hasMore, user } = useAppSelector(
     (state) => state.leaderboard,
   );
 
@@ -347,38 +347,47 @@ export default function LeaderboardPageNew() {
         </div>
 
         {/* Your Rank Card - Optimized Sticky Bottom */}
-        <div className="fixed bottom-20 left-0 right-0 px-3 z-10 pointer-events-none">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 25, delay: 0.5 }}
-            className="max-w-md mx-auto gradient-home-section text-white rounded-xl p-3 shadow-2xl border border-white/10 pointer-events-auto will-change-transform"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                  <span className="text-base font-bold text-white tracking-[1px]">
-                    #47
-                  </span>
+        {user && user.rank !== 0 && (
+          <div className="fixed bottom-20 left-0 right-0 px-3 z-10 pointer-events-none">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 25,
+                delay: 0.5,
+              }}
+              className="max-w-md mx-auto gradient-home-section text-white rounded-xl p-3 shadow-2xl border border-white/10 pointer-events-auto will-change-transform"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                    <span className="text-base font-bold text-white tracking-[1px]">
+                      {user.rank}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-white/80 text-[10px] tracking-[1px] font-semibold">
+                      {t.yourRank}
+                    </p>
+                    <p className="text-white text-xs font-bold tracking-[1px]">
+                      {t.keepClimbing}!
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-white/80 text-[10px] tracking-[1px] font-semibold">
-                    {t.yourRank}
+                <div className="text-right">
+                  <p className="text-xl text-white font-bold">
+                    {Number(user.points || 0).toLocaleString()}
                   </p>
-                  <p className="text-white text-xs font-bold tracking-[1px]">
-                    {t.keepClimbing}!
-                  </p>
+                  {/* <p className="text-white/60 text-[10px] font-semibold tracking-[1px] uppercase">
+                    {t.points}
+                  </p> */}
                 </div>
               </div>
-              <div className="text-right">
-                <p className="text-xl text-white font-bold">3,450</p>
-                <p className="text-white/60 text-[10px] font-semibold tracking-[1px] uppercase">
-                  {t.points}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>
+        )}
       </div>
 
       <BottomNavBar />

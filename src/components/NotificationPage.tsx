@@ -17,6 +17,7 @@ import { BottomNavBar } from "./BottomNavBar";
 import { useLanguage } from "./context/LanguageContext";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { fetchNotification } from "@/features/notification/notificationSlice";
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 const formatDateTime = (dateTimeString) => {
@@ -32,6 +33,7 @@ const formatDateTime = (dateTimeString) => {
 
 export default function NotificationPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { list, status, hasMore, pageNo } = useAppSelector(
     (state) => state.notification,
@@ -283,30 +285,54 @@ export default function NotificationPage() {
               ))}
             </AnimatePresence>
 
-            {filteredNotifications.length === 0 && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                  <Bell className="w-8 h-8 text-gray-400" />
-                </div>
-                <p className="text-gray-500 font-medium">{t.noNotifications}</p>
-              </div>
+            {/* Empty States */}
+            {status === "success" && (
+              <>
+                {(notifications.length === 0 || filteredNotifications.length === 0) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="relative overflow-hidden rounded-3xl bg-white/50 backdrop-blur-md border border-white/20 p-8 text-center shadow-xl mt-2"
+                  >
+                    {/* Decorative Elements */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-3xl -mr-16 -mt-16" />
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl -ml-16 -mb-16" />
+
+                    <div className="relative z-10">
+                      <div className="w-20 h-20 bg-gradient-to-br from-violet-100 to-purple-100 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner ring-4 ring-white">
+                        <Bell className="w-10 h-10 text-violet-400" />
+                      </div>
+
+                      <h3 className="text-lg font-bold text-gray-800 mb-2 tracking-[0.5px]">
+                        {notifications.length === 0
+                          ? t.noNotifications
+                          : (filter === "won" ? t.noWonNotifications : t.noLostNotifications)}
+                      </h3>
+
+                      <p className="text-sm font-semibold text-gray-500 mb-4 px-4 font-medium leading-relaxed">
+                        {notifications.length === 0
+                          ? t.noNotificationsDesc
+                          : t.noFilterNotificationsDesc}
+                      </p>
+
+                      <button
+                        onClick={() => navigate("/")}
+                        className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2 rounded-xl text-sm tracking-[1px] transition-colors duration-150 shadow-md active:shadow-lg"
+                      >
+                        <TrendingUp className="w-4.5 h-4.5" />
+                        {t.startBidding}
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </>
             )}
 
             {/* Loader */}
             {status === "loading" && (
               <p className="text-center text-sm text-gray-500 py-3">
-                Loading more...
+                {t.loadingMore}
               </p>
-            )}
-
-            {/* No Data */}
-            {notifications.length === 0 && status === "success" && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                  <Bell className="w-8 h-8 text-gray-400" />
-                </div>
-                <p className="text-gray-500 font-medium">{t.noNotifications}</p>
-              </div>
             )}
           </div>
         </div>

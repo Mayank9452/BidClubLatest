@@ -9,6 +9,7 @@ import {
   Clock,
   Info,
   Eye,
+  ChevronLeft,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -234,6 +235,12 @@ export default function BiddingPage() {
 
           {/* Global Brand Gradient Header */}
           <div className="relative gradient-home-section py-4 px-3 overflow-hidden rounded-xl mb-4 shadow-xl shadow-pink-200/20 flex flex-col justify-center items-center gap-2">
+            <button
+              onClick={() => navigate(-1)}
+              className="absolute left-3 top-3 p-1 bg-white/40 hover:bg-white/60 rounded-xl backdrop-blur-md transition-all active:scale-95"
+            >
+              <ChevronLeft className="w-5 h-5 text-white" />
+            </button>
             {/* Dashed internal border */}
             <div className="absolute inset-2 border-2 border-dashed border-white/70 rounded-xl pointer-events-none" />
             <div className="relative z-10 max-w-md mx-auto text-center flex flex-col items-center gap-1">

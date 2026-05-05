@@ -3,6 +3,7 @@
 import { TopBar } from "@/components/TopBar";
 import { BottomNavBar } from "@/components/BottomNavBar";
 import { useNavigate } from "react-router-dom";
+import { ChevronLeft } from "lucide-react";
 
 export default function TermsOfUsePage() {
   const navigate = useNavigate();
@@ -14,7 +15,13 @@ export default function TermsOfUsePage() {
 
       <div className="mobile-container py-4  pt-3 px-3">
         {/* Header */}
-        <div className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#0a0f7ac4] to-pink-700 text-white rounded-xl px-3 pb-16 pt-3 shadow-md">
+        <div className="relative flex items-center justify-center gap-3 bg-gradient-to-r from-[#0a0f7ac4] to-pink-700 text-white rounded-xl px-3 pb-16 pt-3 shadow-md">
+          <button
+            onClick={() => navigate(-1)}
+            className="absolute left-3 top-3 p-1 bg-white/40 hover:bg-white/60 rounded-xl transition-all active:scale-95"
+          >
+            <ChevronLeft className="w-5 h-5 text-white" />
+          </button>
 
           <h1 className="text-xl font-extrabold tracking-wide">
             Terms of Use
@@ -22,7 +29,7 @@ export default function TermsOfUsePage() {
         </div>
 
         {/* Content Card */}
-        <div className="bg-white rounded-2xl shadow-xl py-4 px-3 text-[14px] text-gray-900 -mt-12 mx-2">
+        <div className="min-h-screen relative z-10 bg-white rounded-2xl shadow-xl py-6 px-4 text-[14px] text-gray-900 -mt-10 mx-3 border border-gray-100">
 
           <p>
             Hola, Minglaba! and a very warm welcome to the Terms of Use ("Terms") of BidBlast, Tej Studios a firm incorporated,

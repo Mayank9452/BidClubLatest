@@ -24,7 +24,12 @@ const App: React.FC = () => {
   // ✅ Capture testId ONLY once (same like your other portal)
   const [initialTestId] = useState(() => {
     const url = new URL(window.location.href);
-    return url.searchParams.get("testId");
+    const urlTestId = url.searchParams.get("testId");
+    if (urlTestId) {
+      sessionStorage.setItem("testId", urlTestId);
+      return urlTestId;
+    }
+    return sessionStorage.getItem("testId");
   });
 
   // ✅ Call API

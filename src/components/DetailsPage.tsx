@@ -1,12 +1,20 @@
 import React, { useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { TopBar } from "./TopBar";
 import { BottomNavBar } from "./BottomNavBar";
-import { Sparkles, Zap, Clock, Trophy, TrendingUp } from "lucide-react";
+import {
+  Sparkles,
+  Zap,
+  Clock,
+  Trophy,
+  TrendingUp,
+  ChevronLeft,
+} from "lucide-react";
 import { useLanguage } from "./context/LanguageContext";
 
 export default function DetailsPage() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const { t } = useLanguage();
   const videoUrl = state?.videoUrl;
 
@@ -16,8 +24,16 @@ export default function DetailsPage() {
 
       <div className="min-h-screen bg-premium-soft mx-2">
         {/* Top Bar Placeholder */}
-        <div className="gradient-home-section backdrop-blur-2xl border-b border-gray-200 p-4 sticky top-0 shadow-sm mt-2 rounded-xl pb-14">
-          <h1 className="text-lg font-bold text-white text-center">{t.howToPlay}</h1>
+        <div className="relative gradient-home-section backdrop-blur-2xl border-b border-gray-200 p-4 sticky top-0 shadow-sm mt-2 rounded-xl pb-14">
+          <button
+            onClick={() => navigate(-1)}
+            className="absolute left-3 top-3 p-1 bg-white/40 hover:bg-white/60 rounded-xl backdrop-blur-md transition-all active:scale-95"
+          >
+            <ChevronLeft className="w-5 h-5 text-white" />
+          </button>
+          <h1 className="text-lg font-bold text-white text-center">
+            {t.howToPlay}
+          </h1>
         </div>
 
         <div className="max-w-md mx-auto pt-2 pb-2 space-y-4 -mt-14">

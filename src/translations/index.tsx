@@ -201,6 +201,11 @@ export const translations: any = {
     noDailyBidsActive: "No Daily Bids Active",
     noWeeklyBidsActive: "No Weekly Bids Active",
     stayTuned: "Stay tuned for upcoming Bids!",
+    noWonNotifications: "No won notifications found",
+    noLostNotifications: "No lost notifications found",
+    noNotificationsDesc: "You haven't received any updates yet. Join an active bid to start your winning journey!",
+    noFilterNotificationsDesc: "Try changing your filter to see more notification types.",
+    loadingMore: "Loading more...",
   },
 
   my: {
@@ -405,5 +410,10 @@ export const translations: any = {
     noDailyBidsActive: "နေ့စဉ်လေလံ မရှိသေးပါ",
     noWeeklyBidsActive: "အပတ်စဉ်လေလံ မရှိသေးပါ",
     stayTuned: "လာမည့်လေလံများကို စောင့်မျှော်ပေးပါ!",
+    noWonNotifications: "အနိုင်ရရှိသော အသိပေးချက် မရှိပါ",
+    noLostNotifications: "ရှုံးနိမ့်သော အသိပေးချက် မရှိပါ",
+    noNotificationsDesc: "သင်သည် မည်သည့် အပ်ဒိတ်မှ မရရှိသေးပါ။ ဝန်ဆောင်မှုတွင် ပါဝင်ပြီး စတင်လိုက်ပါ။",
+    noFilterNotificationsDesc: "အခြား အသိပေးချက်များကို ကြည့်ရန် စစ်ထုတ်မှုကို ပြောင်းလဲကြည့်ပါ။",
+    loadingMore: "ပိုမိုတင်နေသည်...",
   },
 };
