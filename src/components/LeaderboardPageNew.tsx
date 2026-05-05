@@ -9,6 +9,7 @@ import {
   Award,
   ChevronLeft,
   X,
+  Gem,
 } from "lucide-react";
 import { BottomNavBar } from "./BottomNavBar";
 import { TopBar } from "./TopBar";
@@ -376,13 +377,11 @@ export default function LeaderboardPageNew() {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="flex items-center gap-1.5">
+                  <Gem className="w-5 h-5 text-blue-400 fill-blue-400/20" />
                   <p className="text-xl text-white font-bold">
                     {Number(user.points || 0).toLocaleString()}
                   </p>
-                  {/* <p className="text-white/60 text-[10px] font-semibold tracking-[1px] uppercase">
-                    {t.points}
-                  </p> */}
                 </div>
               </div>
             </motion.div>

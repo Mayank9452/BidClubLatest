@@ -222,25 +222,27 @@ export default function ProfilePage() {
               </button>
 
               {/* Unsubscribe */}
-              <button
-                onClick={handleUnsubscribe}
-                className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-gray-50 to-slate-50 active:from-gray-100 active:to-slate-100 rounded-xl border border-gray-400 transition-all duration-150 active:scale-[0.98]"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-gray-500 to-slate-600 rounded-xl flex items-center justify-center">
-                    <LogOut className="w-5 h-5 text-white" />
+              {user?.user_subscription_status !== "unsub" && (
+                <button
+                  onClick={handleUnsubscribe}
+                  className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-gray-50 to-slate-50 active:from-gray-100 active:to-slate-100 rounded-xl border border-gray-400 transition-all duration-150 active:scale-[0.98]"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-gray-500 to-slate-600 rounded-xl flex items-center justify-center">
+                      <LogOut className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-sm font-bold text-gray-800 tracking-[0.5px]">
+                        {t.unsubscribe}
+                      </h3>
+                      <p className="text-[11px] text-gray-500 font-semibold tracking-[0.5px]">
+                        {t.leaveService}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-left">
-                    <h3 className="text-sm font-bold text-gray-800 tracking-[0.5px]">
-                      {t.unsubscribe}
-                    </h3>
-                    <p className="text-[11px] text-gray-500 font-semibold tracking-[0.5px]">
-                      {t.leaveService}
-                    </p>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
-              </button>
+                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                </button>
+              )}
 
               {/* Language Selector */}
               <div className="flex items-center justify-between p-3.5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-400">
@@ -305,13 +307,14 @@ export default function ProfilePage() {
 
               <InfoRow
                 label={t.memberSince}
-                value={formatDateTime(user?.user_registered_on)?.date || "N/A"}
+                value={formatDateTime(user?.user_added_on)?.date || "N/A"}
               />
 
               <InfoRow
                 label={t.status}
                 value={user?.user_subscription_status}
                 badge
+                badgeClassName={user?.user_subscription_status === "unsub" ? "bg-white text-red-600" : ""}
               />
               {user?.user_subscription_status !== "unsub" && (
                 <InfoRow label={t.subscription} value="Daily : 200 Ks" />
@@ -381,12 +384,12 @@ const StatCard = React.memo(({ label, value, icon, color }: any) => {
   );
 });
 
-const InfoRow = React.memo(({ label, value, badge = false }: any) => {
+const InfoRow = React.memo(({ label, value, badge = false, badgeClassName = "" }: any) => {
   return (
     <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 tracking-[1px]">
       <span className="text-xs font-bold text-white">{label}</span>
       {badge ? (
-        <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg text-[10px] font-bold">
+        <span className={`p-2 rounded-lg text-[10px] font-bold ${badgeClassName || "bg-emerald-100 text-emerald-700"}`}>
           {value}
         </span>
       ) : (
