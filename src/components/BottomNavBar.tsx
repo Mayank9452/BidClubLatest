@@ -361,7 +361,7 @@ export function BottomNavBar({
                         "flex flex-col items-center gap-1 h-auto py-2 px-3 transition-smooth hover:gradient-light/30 font-ex",
                         isActive
                           ? "gradient-light text-black [&_*]:text-black"
-                          : "text-white-foreground hover:text-foreground pb-3 font-extrabold"
+                          : "text-white-foreground hover:text-foreground pb-3 font-semibold"
                       )}
                     >
                       <Icon

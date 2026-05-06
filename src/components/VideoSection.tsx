@@ -24,11 +24,11 @@ export default function VideoSection() {
           {t.aboutBidBlast}
         </h3>
 
-        <p className="text-xs text-gray-700 text-center leading-relaxed font-bold tracking-[0.5px]">
+        <p className="text-xs text-gray-700 text-center leading-relaxed font-bold ">
           {t.welcomeBidBlast}
         </p>
 
-        <p className="text-xs text-center bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent font-semibold tracking-[0.5px]">
+        <p className="text-xs text-center bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent font-semibold ">
           {t.knowMore}
         </p>
 
@@ -41,7 +41,7 @@ export default function VideoSection() {
               });
             }}
           >
-            <span className={`${language === "my" ? "text-[13px]" : "text-sm"} bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2.5 rounded-xl transition-colors duration-150 shadow-md active:shadow-lg flex px-5 tracking-[1px]`}>
+            <span className={`${language === "my" ? "text-sm" : "text-sm"} bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2.5 rounded-xl transition-colors duration-150 shadow-md active:shadow-lg flex px-5 `}>
               {t.getDetails}
             </span>
           </button>

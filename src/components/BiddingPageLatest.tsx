@@ -161,19 +161,18 @@ export default function BiddingPageLatest() {
 
     const tickets = useMemo(() => Array(6).fill(null), []);
 
-    const handleNumberClick = (num: string) => {
+    const handleNumberClick = useCallback((num: string) => {
         if (currentTicket === null) return;
+        setInputValue(prev => {
+            const newValue = prev + num;
+            return newValue.length <= 4 ? newValue : prev;
+        });
+    }, [currentTicket]);
 
-        const newValue = inputValue + num;
-        if (newValue.length <= 4) {
-            setInputValue(newValue);
-        }
-    };
-
-    const handleTicketSelect = (index: number) => {
+    const handleTicketSelect = useCallback((index: number) => {
         setCurrentTicket(index);
         setInputValue(selectedTickets[index] || "");
-    };
+    }, [selectedTickets]);
 
     const handleConfirm = useCallback(() => {
         if (currentTicket !== null && inputValue.length > 0) {
@@ -183,35 +182,35 @@ export default function BiddingPageLatest() {
         }
     }, [currentTicket, inputValue]);
 
-    const handleDelete = () => {
-        setInputValue(inputValue.slice(0, -1));
-    };
+    const handleDelete = useCallback(() => {
+        setInputValue(prev => prev.slice(0, -1));
+    }, []);
 
-    const handleCancelInput = () => {
+    const handleCancelInput = useCallback(() => {
         setInputValue("");
         setCurrentTicket(null);
-    };
+    }, []);
 
-    const handleAutoPick = () => {
+    const handleAutoPick = useCallback(() => {
         const newTickets: { [key: number]: string } = {};
-        tickets.forEach((_, index) => {
+        Array(6).fill(null).forEach((_, index) => {
             const digits = Math.floor(Math.random() * 4) + 1; // 1-4 digits
             const maxNum = Math.pow(10, digits) - 1;
             const minNum = Math.pow(10, digits - 1);
             newTickets[index] = Math.floor(
-                minNum + Math.random() * (maxNum - minNum + 1),
+                minNum + Math.random() * (maxNum - minNum + 1)
             ).toString();
         });
         setSelectedTickets(newTickets);
         setCurrentTicket(null);
         setInputValue("");
-    };
+    }, []);
 
-    const handleClearAll = () => {
+    const handleClearAll = useCallback(() => {
         setSelectedTickets({});
         setCurrentTicket(null);
         setInputValue("");
-    };
+    }, []);
 
     const handleSubmit = useCallback(async (e?: any) => {
         e?.preventDefault();
@@ -252,397 +251,72 @@ export default function BiddingPageLatest() {
         }
     }, [selectedTickets, bidInfo?.bid_id, bidData?.batchCount, bidData?.cycleCount, dispatch]);
 
-    const handlePlayMoreBids = () => {
+    const handlePlayMoreBids = useCallback(() => {
         const encodedBidId = sessionStorage.getItem("bidId");
         if (encodedBidId) {
             dispatch(fetchBidInfo(encodedBidId));
         }
         setSelectedTickets({});
         setShowSuccessPopup(false);
-    };
+    }, [dispatch]);
 
     return (
         <>
             <TopBar />
             <div className="min-h-screen bg-white overflow-x-hidden relative">
-                {/* Jackpot GIF Overlay */}
                 <div className="fixed inset-0 z-[50] overflow-hidden pointer-events-none mix-blend-screen ">
-                    <img
-                        src="/assets/images/jackpot.gif"
-                        className="w-full h-full object-cover"
-                        alt="Jackpot"
-                    />
+                    <img src="/assets/images/jackpot.gif" className="w-full h-full object-cover" alt="Jackpot" />
                 </div>
 
                 <div className="relative z-10 p-2">
-                    {/* Global Brand Gradient Header */}
-                    <div className="relative gradient-home-section py-4 px-3 overflow-hidden rounded-xl mb-4 shadow-xl shadow-pink-200/20 flex flex-col justify-center items-center gap-2">
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="absolute left-3 top-3 p-1 bg-black/20 hover:bg-black/30 rounded-xl backdrop-blur-md transition-all active:scale-95"
-                        >
-                            <ChevronLeft className="w-5 h-5 text-white" />
-                        </button>
-                        <div className="relative z-10 max-w-md mx-auto text-center flex flex-col items-center gap-1">
-                            <h1 className="text-xl font-bold text-white tracking-[1px] drop-shadow-md">
-                                {bidName?.includes("Daily")
-                                    ? `${t.bidDaily} ${bidName?.split(" ")[2]}`
-                                    : `${t.bidWeekly} ${bidName?.split(" ")[2]}`}
-                            </h1>
-                        </div>
-                        <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-                            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                                <span className="text-xs font-semibold text-white tracking-[1px]">
-                                    {t.activeCycle || "Cycle"}
-                                </span>
-                                <div className="bg-white text-pink-600 rounded-lg px-2.5 py-0.5 text-xs font-semibold shadow-lg transform -rotate-2">
-                                    {bidCycle}
-                                </div>
-                            </div>
+                    <HeaderSection
+                        navigate={navigate}
+                        bidName={bidName}
+                        bidCycle={bidCycle}
+                        batchCount={batchCount}
+                        t={t}
+                    />
 
-                            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                                <span className="text-xs font-semibold text-white tracking-[1px]">
-                                    {t.set}
-                                </span>
-                                <div className="bg-indigo-500 text-white rounded-lg px-2.5 py-0.5 text-xs font-semibold shadow-lg transform rotate-2">
-                                    {batchCount}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Small Premium Timer with Enhanced Shadow */}
                     <TimerSection endTime={bidInfo?.bid_end_timestamp} />
 
-                    {/* Content Wrapper */}
                     <div className="max-w-md mx-auto space-y-5">
-                        {/* Note & History Section */}
-                        <div className="relative rounded-xl p-[4px] gradient-home-section shadow-xl">
-                            <div className="border-2 border-dashed border-white/80 rounded-xl p-1">
-                                <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 space-y-3">
-                                    <div className="flex items-start gap-3">
-                                        <div className="bg-rose-50 p-2 rounded-xl">
-                                            <Info className="w-4 h-4 text-rose-500" />
-                                        </div>
-                                        <div className="flex-1">
-                                            <span className="text-sm font-bold text-rose-500 tracking-[0.5px]">{t.note} :-</span>
-                                            <p className="text-xs font-semibold text-slate-600 mt-0.5 tracking-[0.5px]">
-                                                {t.uniqueNumbersNote}
-                                            </p>
-                                        </div>
-                                    </div>
+                        <InstructionSection
+                            t={t}
+                            isShowingFilledSets={isShowingFilledSets}
+                            setIsShowingFilledSets={setIsShowingFilledSets}
+                            hasCompleteSets={allCompleteSets.length > 0}
+                        />
 
-                                    {allCompleteSets && allCompleteSets.length > 0 && (
-                                        <button
-                                            onClick={() => setIsShowingFilledSets(!isShowingFilledSets)}
-                                            className="w-full h-10 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs tracking-[0.5px] font-bold rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 border-2 border-indigo-400"
-                                        >
-                                            {isShowingFilledSets ? (
-                                                <><X className="w-3.5 h-3.5" /><span>{t.hideFilledSets}</span></>
-                                            ) : (
-                                                <><Eye className="w-3.5 h-3.5" /><span>{t.showAllFilledSets}</span></>
-                                            )}
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
+                        <HistoricalSetsSection
+                            isShowingFilledSets={isShowingFilledSets}
+                            completeSets={completeSets}
+                            selectedCycle={selectedCycle}
+                            setSelectedCycle={setSelectedCycle}
+                            bidCycle={bidCycle}
+                            bidName={bidName}
+                            t={t}
+                        />
 
-                        {/* Historical Sets View */}
-                        <AnimatePresence>
-                            {isShowingFilledSets && (completeSets && Object.keys(completeSets).length > 0) && (
-                                <motion.div
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: "auto" }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                    className="space-y-4 overflow-hidden"
-                                >
-                                    {/* Cycle Navigation - Enhanced Scrollbar Hiding */}
-                                    <div className="flex overflow-x-auto gap-3 pb-3 scrollbar-hide px-4 snap-x no-scrollbar" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
-                                        {Array.from({ length: Number(bidCycle || 0) }, (_, i) => i + 1).map((cycleNum) => (
-                                            <button
-                                                key={cycleNum}
-                                                onClick={() => setSelectedCycle(cycleNum)}
-                                                className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-wider transition-all border-2 whitespace-nowrap min-w-[100px] snap-center ${selectedCycle === cycleNum
-                                                    ? "bg-gradient-to-r from-[#ff009c] to-[#bd10e0] text-white border-white shadow-[0_4px_12px_rgba(255,0,156,0.3)] scale-105"
-                                                    : "bg-white text-pink-600 border-pink-300 hover:border-pink-400 shadow-sm"
-                                                    }`}
-                                            >
-                                                {t.cycle} {cycleNum}
-                                            </button>
-                                        ))}
-                                    </div>
+                        <TicketGridSection
+                            t={t}
+                            currentTicket={currentTicket}
+                            selectedTickets={selectedTickets}
+                            handleTicketSelect={handleTicketSelect}
+                        />
 
-                                    {/* Sets Horizontal List */}
-                                    <div className="flex overflow-x-auto gap-4 px-1 scrollbar-hide snap-x pt-6" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none', marginTop: '0' }}>
-                                        {completeSets[selectedCycle.toString()] && completeSets[selectedCycle.toString()].length > 0 ? (
-                                            completeSets[selectedCycle.toString()].map((setData: any, setIndex: number) => {
-                                                const setNumbers = [
-                                                    setData.batch_set_1, setData.batch_set_2, setData.batch_set_3,
-                                                    setData.batch_set_4, setData.batch_set_5, setData.batch_set_6
-                                                ];
-                                                const isWeekly = bidName?.toLowerCase().includes("weekly");
-                                                const themes = isWeekly ? WEEKLY_THEMES : DAILY_THEMES;
-                                                const theme = themes[setIndex % themes.length];
-
-                                                return (
-                                                    <div key={setIndex} className={`${completeSets[selectedCycle.toString()].length === 1 ? "w-full" : "min-w-[85%]"} flex-shrink-0 snap-center relative rounded-2xl p-[4px] ${theme.gradient} shadow-xl`}>
-                                                        <div className="border-2 border-dashed border-white/80 rounded-xl p-1 relative">
-                                                            {/* Historical Header - Absolute Edge Positioned */}
-                                                            <div className={`absolute -top-[2px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center gap-2.5 w-[65%] rounded-xl ${theme.gradient} p-2 shadow-lg border border-white/20`}>
-                                                                <div className="absolute inset-0 bg-white/10 animate-pulse" />
-                                                                <div className="relative z-10 w-7 h-7 bg-white rounded-lg flex items-center justify-center shadow-lg transform -rotate-2">
-                                                                    <Trophy className={`w-3.5 h-3.5 ${theme.accentText}`} />
-                                                                </div>
-                                                                <h3 className="relative z-10 text-[12px] font-black text-white tracking-[1.5px] uppercase drop-shadow-md whitespace-nowrap">
-                                                                    {t.setNumbersTitle?.replace("{0}", setData.batch_bid_batch)}
-                                                                </h3>
-                                                            </div>
-
-                                                            <div className="bg-white/95 backdrop-blur-sm rounded-[14px] p-3 pt-8 relative overflow-hidden">
-                                                                {/* Decorative Background Elements */}
-                                                                <div className="absolute top-[-20px] right-[-20px] w-16 h-16 bg-white/10 rounded-full blur-2xl" />
-                                                                <div className="absolute bottom-[-20px] left-[-20px] w-16 h-16 bg-white/10 rounded-full blur-2xl" />
-
-                                                                <div className="grid grid-cols-2 gap-2">
-                                                                    {setNumbers.map((val, idx) => (
-                                                                        <div key={idx} className="relative rounded-2xl overflow-hidden ring-2 ring-white shadow-md">
-                                                                            <div className={`relative ${theme.gradient} p-2 h-14 flex flex-col items-center justify-center`}>
-                                                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
-                                                                                <div className="absolute inset-1.5 border-2 border-dashed border-white/80 rounded-lg pointer-events-none" />
-
-                                                                                {/* Mini Notches */}
-                                                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-6 bg-[#f8fafc] rounded-r-full" />
-                                                                                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-6 bg-[#f8fafc] rounded-l-full" />
-
-                                                                                <p className="text-sm font-bold text-white drop-shadow-md">
-                                                                                    {val}
-                                                                                </p>
-                                                                                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-white/20 backdrop-blur-sm rounded-full mt-0.5">
-                                                                                    <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
-                                                                                    <span className="text-[8px] font-semibold text-white tracking-[0.5px]">{t.filled}</span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })
-                                        ) : (
-                                            <div className="w-full py-4 bg-gradient-to-br from-slate-50 to-white rounded-2xl border-2 border-dashed border-pink-600 flex items-center justify-center gap-2 relative overflow-hidden">
-                                                {/* Subtle Glow background for empty state */}
-                                                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-indigo-500/5 pointer-events-none" />
-                                                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100 relative z-10">
-                                                    <Info className="w-5 h-5 text-pink-400" />
-                                                </div>
-                                                <p className="text-sm font-semibold text-slate-600 tracking-[0.5px] relative z-10">{t.noSetsCompleted}</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-
-                        {/* Tickets Grid Area */}
-                        <div className="relative">
-                            <div className="absolute -inset-1 rounded-xl blur-2xl opacity-20 bg-indigo-500" />
-                            <div className="relative rounded-xl backdrop-blur-2xl p-[4px] gradient-home-section shadow-xl">
-                                <div className="border-2 border-dashed border-white/80 rounded-xl p-1 relative">
-
-
-                                    <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3">
-                                        <div className="flex items-center justify-center gap-3 w-[80%] mx-auto relative overflow-hidden rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 p-2 shadow-xl mb-4 backdrop-blur-2xl">
-                                            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-xl transform -rotate-3">
-                                                <Sparkles className="w-5 h-5 text-pink-500" fill="currentColor" />
-                                            </div>
-                                            <h2 className="text-lg font-bold text-white tracking-[1px]">{t.fillYourTickets}</h2>
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-2 mb-2">
-                                            {tickets.map((_, index) => {
-                                                const isSelected = currentTicket === index;
-                                                const hasValue = selectedTickets[index];
-                                                const ticketColor = hasValue ? "gradient-diamond" : "gradient-button-gold";
-
-                                                return (
-                                                    <motion.button
-                                                        layout
-                                                        key={index}
-                                                        onClick={() => handleTicketSelect(index)}
-                                                        className={`relative group active:scale-95 transition-all duration-300 ${isSelected ? "z-10 scale-105" : ""}`}
-                                                    >
-                                                        <div className={`relative rounded-3xl overflow-hidden ${isSelected ? "ring-4 ring-pink-500/20 shadow-2xl" : "shadow-lg shadow-pink-200/20"}`}>
-                                                            <div className={`relative ${ticketColor} p-4 h-20 flex flex-col items-center justify-center`}>
-                                                                {hasValue && <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />}
-                                                                <div className={`absolute inset-2 border-2 border-dashed rounded-xl pointer-events-none ${hasValue ? "border-white/70" : "border-pink-600/60"}`} />
-                                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-[#f8fafc] rounded-r-full shadow-inner" />
-                                                                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-[#f8fafc] rounded-l-full shadow-inner" />
-
-                                                                {hasValue ? (
-                                                                    <div className="relative z-10 flex flex-col items-center">
-                                                                        <p className="text-xl font-bold text-white drop-shadow-md">{hasValue}</p>
-                                                                        <div className="flex items-center gap-1 px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded-full">
-                                                                            <Check className="w-3 h-3 text-white" />
-                                                                            <span className="text-[9px] font-semibold text-white tracking-[0.5px]">{t.filled}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                ) : (
-                                                                    <div className="relative z-10 text-center">
-                                                                        <p className="text-xs font-bold text-indigo-600 tracking-[0.3px] mb-1">{t.ticket} {index + 1}</p>
-                                                                        <p className="text-[11px] font-bold text-[#ff0067] tracking-[0.3px]">{t.tapToEnter}</p>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </motion.button>
-                                                );
-                                            })}
-                                        </div>
-
-                                        {Object.keys(selectedTickets).length === 6 && (
-                                            <div className="flex justify-center">
-                                                <div className="px-4 py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl shadow-xl border border-white/20">
-                                                    <p className="text-xs font-bold text-white tracking-[3px]">✨ {t.goodLuck}! ✨</p>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Input & Keypad Section */}
-                        <div className="relative rounded-xl p-[4px] gradient-home-section shadow-2xl">
-                            <div className="border-2 border-dashed border-white/80 rounded-xl p-1">
-                                <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3">
-                                    <AnimatePresence>
-                                        {currentTicket !== null && (
-                                            <motion.div
-                                                initial={{ opacity: 0, height: 0 }}
-                                                animate={{ opacity: 1, height: "auto" }}
-                                                exit={{ opacity: 0, height: 0 }}
-                                                className="overflow-hidden border-b border-indigo-50 pb-2"
-                                            >
-                                                <div className="flex items-center justify-between mb-4">
-                                                    <div className="flex flex-col border-l-4 border-pink-500 pl-3">
-                                                        <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent tracking-widest">
-                                                            Ticket - {currentTicket + 1}
-                                                        </h3>
-                                                        <span className="text-xs font-bold text-slate-600 tracking-[0.5px] mt-1">
-                                                            {t.enterTicketNumber}
-                                                        </span>
-                                                    </div>
-                                                    <button onClick={handleCancelInput} className="w-10 h-10 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl flex items-center justify-center shadow-lg transition-transform active:scale-90">
-                                                        <X className="w-6 h-6 text-white" />
-                                                    </button>
-                                                </div>
-
-                                                <div className="flex justify-center gap-2 mb-6">
-                                                    {[0, 1, 2, 3].map((i) => {
-                                                        const isFilled = !!inputValue[i];
-                                                        const isNext = inputValue.length === i;
-                                                        return (
-                                                            <motion.div
-                                                                key={i}
-                                                                animate={isFilled ? { scale: [1, 1.1, 1] } : isNext ? { scale: [1, 1.05, 1] } : {}}
-                                                                transition={isNext ? { repeat: Infinity, duration: 1.5 } : {}}
-                                                                className={`w-12 h-14 rounded-xl border-2 flex items-center justify-center text-xl font-bold transition-all duration-300
-                                  ${isFilled ? 'border-pink-500 text-pink-600 bg-pink-50/50 shadow-[0_0_10px_rgba(236,72,153,0.2)]' :
-                                                                        isNext ? 'border-indigo-500 text-indigo-600 bg-indigo-50 shadow-[0_0_15px_rgba(99,102,241,0.2)]' :
-                                                                            'border-indigo-300 text-slate-200 bg-slate-50'}`}
-                                                            >
-                                                                {inputValue[i] || "•"}
-                                                            </motion.div>
-                                                        );
-                                                    })}
-                                                </div>
-
-                                                <div className="flex gap-3">
-                                                    <button
-                                                        onClick={handleDelete}
-                                                        disabled={inputValue.length === 0}
-                                                        className="flex-1 py-3.5 bg-gradient-to-r from-rose-400 to-rose-600 text-white rounded-xl font-bold text-xs tracking-widest active:scale-95 disabled:opacity-70 flex items-center justify-center gap-2 shadow-lg shadow-rose-200/50"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                        {t.delete}
-                                                    </button>
-                                                    <button
-                                                        onClick={handleConfirm}
-                                                        disabled={inputValue.length === 0}
-                                                        className="flex-1 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-bold text-xs tracking-widest shadow-lg shadow-emerald-200/50 active:scale-95 transition-transform flex items-center justify-center gap-2"
-                                                    >
-                                                        <Check className="w-4 h-4" />
-                                                        {t.confirm}
-                                                    </button>
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-
-                                    <div className="grid grid-cols-5 gap-1 mb-4 mt-2">
-                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
-                                            <motion.button
-                                                key={num}
-                                                whileTap={{ scale: 0.9 }}
-                                                disabled={currentTicket === null || inputValue.length >= 4}
-                                                onClick={() => handleNumberClick(num.toString())}
-                                                className="h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 border-2 border-white text-white text-xl font-bold flex items-center justify-center shadow-lg active:opacity-90 disabled:opacity-90"
-                                            >
-                                                {num}
-                                            </motion.button>
-                                        ))}
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-2">
-                                        <button
-                                            type="button"
-                                            onClick={handleAutoPick}
-                                            className="py-4 bg-indigo-600 text-white font-bold text-xs tracking-[0.5px] rounded-2xl shadow-xl active:scale-95 flex items-center justify-center gap-2 border border-white/10"
-                                        >
-                                            <Shuffle className="w-4 h-4" />
-                                            {t.autoPick}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={handleClearAll}
-                                            className="py-4 bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold text-xs tracking-[0.5px] rounded-2xl shadow-xl active:scale-95 flex items-center justify-center gap-2 border border-white/10"
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                            {t.clearAll}
-                                        </button>
-                                    </div>
-
-                                    <motion.button
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        type="button"
-                                        disabled={Object.keys(selectedTickets).length !== 6}
-                                        className={`w-full mx-auto py-4 rounded-xl font-bold text-sm tracking-[1px] transition-all duration-500 flex items-center justify-center gap-3 active:scale-95 mt-4
-                      ${Object.keys(selectedTickets).length === 6
-                                                ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-[0_10px_30px_rgba(255,0,156,0.4)]"
-                                                : "bg-indigo-100 text-indigo-600 border-2 border-indigo-400 opacity-80"
-                                            }`}
-                                        onClick={handleSubmit}
-                                    >
-                                        {Object.keys(selectedTickets).length === 6 ? (
-                                            <div className="flex items-center gap-2">
-                                                <Trophy className="w-5 h-5 animate-bounce" />
-                                                <span>{t.submitAllTickets}</span>
-                                            </div>
-                                        ) : (
-                                            <div className="flex items-center gap-2">
-                                                <span>{t.fillAllTickets}</span>
-                                                <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-[10px] font-bold">
-                                                    {Object.keys(selectedTickets).length}/6
-                                                </span>
-                                            </div>
-                                        )}
-                                    </motion.button>
-                                </div>
-                            </div>
-                        </div>
+                        <KeypadSection
+                            t={t}
+                            currentTicket={currentTicket}
+                            inputValue={inputValue}
+                            handleCancelInput={handleCancelInput}
+                            handleDelete={handleDelete}
+                            handleConfirm={handleConfirm}
+                            handleNumberClick={handleNumberClick}
+                            handleAutoPick={handleAutoPick}
+                            handleClearAll={handleClearAll}
+                            handleSubmit={handleSubmit}
+                            selectedTicketsCount={Object.keys(selectedTickets).length}
+                        />
                     </div>
                 </div>
             </div>
@@ -698,13 +372,13 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
                         <div className="w-6 h-6 bg-rose-50 rounded-lg flex items-center justify-center">
                             <Clock className="w-3.5 h-3.5 text-rose-500 animate-[spin_4s_linear_infinite]" />
                         </div>
-                        <span className="text-xs font-semibold text-slate-600 tracking-[1px]">
+                        <span className="text-xs font-semibold text-slate-600 ">
                             {t.endingIn || "Ending In"}
                         </span>
                     </div>
                     <div className="flex items-center gap-1 px-2 py-0.5 bg-emerald-50 rounded-full border border-emerald-300">
                         <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse" />
-                        <span className="text-[11px] font-bold text-emerald-600 tracking-[0.5px]">Live</span>
+                        <span className="text-[11px] font-bold text-emerald-600 ">Live</span>
                     </div>
                 </div>
 
@@ -721,7 +395,7 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
                                     </div>
                                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/10 to-transparent rounded-b-lg pointer-events-none" />
                                 </div>
-                                <span className="text-[10px] font-bold text-slate-600 tracking-[0.5px]">
+                                <span className="text-[10px] font-bold text-slate-600 ">
                                     {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort][i]}
                                 </span>
                             </div>
@@ -735,3 +409,369 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
         </div>
     );
 });
+
+// ── Sub-components ───────────────────────────────────────────────────────────
+
+const HeaderSection = React.memo(({ navigate, bidName, bidCycle, batchCount, t }: any) => (
+    <div className="relative gradient-home-section py-4 px-3 overflow-hidden rounded-xl mb-4 shadow-xl shadow-pink-200/20 flex flex-col justify-center items-center gap-2">
+        <button
+            onClick={() => navigate(-1)}
+            className="absolute left-3 top-3 p-1 bg-black/20 hover:bg-black/30 rounded-xl backdrop-blur-md transition-all active:scale-95"
+        >
+            <ChevronLeft className="w-5 h-5 text-white" />
+        </button>
+        <div className="relative z-10 max-w-md mx-auto text-center flex flex-col items-center gap-1">
+            <h1 className="text-xl font-bold text-white  drop-shadow-md">
+                {bidName?.includes("Daily")
+                    ? `${t.bidDaily} ${bidName?.split(" ")[2]}`
+                    : `${t.bidWeekly} ${bidName?.split(" ")[2]}`}
+            </h1>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
+                <span className="text-xs font-semibold text-white ">
+                    {t.activeCycle || "Cycle"}
+                </span>
+                <div className="bg-white text-pink-600 rounded-lg px-2.5 py-0.5 text-xs font-semibold shadow-lg transform -rotate-2">
+                    {bidCycle}
+                </div>
+            </div>
+
+            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
+                <span className="text-xs font-semibold text-white ">
+                    {t.set}
+                </span>
+                <div className="bg-indigo-500 text-white rounded-lg px-2.5 py-0.5 text-xs font-semibold shadow-lg transform rotate-2">
+                    {batchCount}
+                </div>
+            </div>
+        </div>
+    </div>
+));
+
+const InstructionSection = React.memo(({ t, isShowingFilledSets, setIsShowingFilledSets, hasCompleteSets }: any) => (
+    <div className="relative rounded-xl p-[4px] gradient-home-section shadow-xl">
+        <div className="border-2 border-dashed border-white/80 rounded-xl p-1">
+            <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3 space-y-3">
+                <div className="flex items-start gap-3">
+                    <div className="bg-rose-50 p-2 rounded-xl">
+                        <Info className="w-4 h-4 text-rose-500" />
+                    </div>
+                    <div className="flex-1">
+                        <span className="text-sm font-bold text-rose-500 ">{t.note} :-</span>
+                        <p className="text-xs font-semibold text-slate-600 mt-0.5 ">
+                            {t.uniqueNumbersNote}
+                        </p>
+                    </div>
+                </div>
+
+                {hasCompleteSets && (
+                    <button
+                        onClick={() => setIsShowingFilledSets(!isShowingFilledSets)}
+                        className="w-full h-10 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs  font-bold rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 border-2 border-indigo-400"
+                    >
+                        {isShowingFilledSets ? (
+                            <><X className="w-3.5 h-3.5" /><span>{t.hideFilledSets}</span></>
+                        ) : (
+                            <><Eye className="w-3.5 h-3.5" /><span>{t.showAllFilledSets}</span></>
+                        )}
+                    </button>
+                )}
+            </div>
+        </div>
+    </div>
+));
+
+const HistoricalSetsSection = React.memo(({ isShowingFilledSets, completeSets, selectedCycle, setSelectedCycle, bidCycle, bidName, t }: any) => {
+    if (!isShowingFilledSets || !completeSets || Object.keys(completeSets).length === 0) return null;
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="space-y-4 overflow-hidden"
+        >
+            <div className="flex justify-center items-center overflow-x-auto gap-3 pb-3 scrollbar-hide px-4 snap-x no-scrollbar" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
+                {Array.from({ length: Number(bidCycle || 0) }, (_, i) => i + 1).map((cycleNum) => (
+                    <button
+                        key={cycleNum}
+                        onClick={() => setSelectedCycle(cycleNum)}
+                        className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-wider transition-all border-2 whitespace-nowrap min-w-[100px] snap-center ${selectedCycle === cycleNum
+                            ? "bg-gradient-to-r from-[#ff009c] to-[#bd10e0] text-white border-white shadow-[0_4px_12px_rgba(255,0,156,0.3)] scale-105"
+                            : "bg-white text-pink-600 border-pink-300 hover:border-pink-400 shadow-sm"
+                            }`}
+                    >
+                        {t.cycle} {cycleNum}
+                    </button>
+                ))}
+            </div>
+
+            <div className="flex overflow-x-auto gap-4 px-1 scrollbar-hide snap-x pt-6" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none', marginTop: '0' }}>
+                {completeSets[selectedCycle.toString()] && completeSets[selectedCycle.toString()].length > 0 ? (
+                    completeSets[selectedCycle.toString()].map((setData: any, setIndex: number) => {
+                        const setNumbers = [
+                            setData.batch_set_1, setData.batch_set_2, setData.batch_set_3,
+                            setData.batch_set_4, setData.batch_set_5, setData.batch_set_6
+                        ];
+                        const isWeekly = bidName?.toLowerCase().includes("weekly");
+                        const themes = isWeekly ? WEEKLY_THEMES : DAILY_THEMES;
+                        const theme = themes[setIndex % themes.length];
+
+                        return (
+                            <div key={setIndex} className={`${completeSets[selectedCycle.toString()].length === 1 ? "w-full" : "min-w-[85%]"} flex-shrink-0 snap-center relative rounded-2xl p-[4px] ${theme.gradient} shadow-xl`}>
+                                <div className="border-2 border-dashed border-white/80 rounded-xl p-1 relative">
+                                    <div className={`absolute -top-[2px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center gap-2.5 w-[65%] rounded-xl ${theme.gradient} p-2 shadow-lg border border-white/20`}>
+                                        <div className="absolute inset-0 bg-white/10 animate-pulse" />
+                                        <div className="relative z-10 w-7 h-7 bg-white rounded-lg flex items-center justify-center shadow-lg transform -rotate-2">
+                                            <Trophy className={`w-3.5 h-3.5 ${theme.accentText}`} />
+                                        </div>
+                                        <h3 className="relative z-10 text-[12px] font-black text-white tracking-[1.5px] uppercase drop-shadow-md whitespace-nowrap">
+                                            {t.setNumbersTitle?.replace("{0}", setData.batch_bid_batch)}
+                                        </h3>
+                                    </div>
+
+                                    <div className="bg-white/95 backdrop-blur-sm rounded-[14px] p-3 pt-8 relative overflow-hidden">
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {setNumbers.map((val, idx) => (
+                                                <div key={idx} className="relative rounded-2xl overflow-hidden shadow-md">
+                                                    <div
+                                                        className={`relative ${theme.gradient} p-2 h-14 flex flex-col items-center justify-center`}
+                                                        style={{
+                                                            WebkitMaskImage: 'radial-gradient(circle 1px at left, transparent 98%, black 100%), radial-gradient(circle 13px at right, transparent 98%, black 100%)',
+                                                            WebkitMaskComposite: 'source-in',
+                                                            maskImage: 'radial-gradient(circle 13px at left, transparent 98%, black 100%), radial-gradient(circle 13px at right, transparent 98%, black 100%)',
+                                                            maskComposite: 'intersect'
+                                                        }}
+                                                    >
+                                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                                                        <div className="absolute inset-1.5 border-2 border-dashed border-white/80 rounded-lg pointer-events-none" />
+                                                        <p className="text-sm font-bold text-white drop-shadow-md">{val}</p>
+                                                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-white/20 backdrop-blur-sm rounded-full mt-0.5">
+                                                            <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                                                            <span className="text-[8px] font-semibold text-white ">{t.filled}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })
+                ) : (
+                    <div className="w-full py-4 bg-gradient-to-br from-slate-50 to-white rounded-2xl border-2 border-dashed border-pink-600 flex items-center justify-center gap-2 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-indigo-500/5 pointer-events-none" />
+                        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100 relative z-10">
+                            <Info className="w-5 h-5 text-pink-400" />
+                        </div>
+                        <p className="text-sm font-semibold text-slate-600  relative z-10">{t.noSetsCompleted}</p>
+                    </div>
+                )}
+            </div>
+        </motion.div>
+    );
+});
+
+const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handleTicketSelect }: any) => (
+    <div className="relative">
+        <div className="absolute -inset-1 rounded-xl blur-2xl opacity-20 bg-indigo-500" />
+        <div className="relative rounded-xl backdrop-blur-2xl p-[4px] gradient-home-section shadow-xl">
+            <div className="border-2 border-dashed border-white/80 rounded-xl p-1 relative">
+                <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3">
+                    <div className="flex items-center justify-center gap-3 w-[80%] mx-auto relative overflow-hidden rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 p-2 shadow-xl mb-4 backdrop-blur-2xl">
+                        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-xl transform -rotate-3">
+                            <Sparkles className="w-5 h-5 text-pink-500" fill="currentColor" />
+                        </div>
+                        <h2 className="text-lg font-bold text-white ">{t.fillYourTickets}</h2>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 mb-2">
+                        {Array(6).fill(null).map((_, index) => {
+                            const isSelected = currentTicket === index;
+                            const hasValue = selectedTickets[index];
+                            const ticketColor = hasValue ? "gradient-diamond" : "gradient-button-gold";
+
+                            return (
+                                <motion.button
+                                    layout
+                                    key={index}
+                                    onClick={() => handleTicketSelect(index)}
+                                    className={`relative group active:scale-95 transition-all duration-300 ${isSelected ? "z-10 scale-105" : ""}`}
+                                >
+                                    <div className={`relative rounded-3xl overflow-hidden ${isSelected ? "" : ""}`}>
+                                        <div
+                                            className={`relative ${ticketColor} p-4 h-20 flex flex-col items-center justify-center`}
+                                            style={{
+                                                WebkitMaskImage: 'radial-gradient(circle 15px at left, transparent 98%, black 100%), radial-gradient(circle 15px at right, transparent 98%, black 100%)',
+                                                WebkitMaskComposite: 'source-in',
+                                                maskImage: 'radial-gradient(circle 15px at left, transparent 98%, black 100%), radial-gradient(circle 15px at right, transparent 98%, black 100%)',
+                                                maskComposite: 'intersect'
+                                            }}
+                                        >
+                                            {hasValue && <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />}
+                                            <div className={`absolute inset-2 border-2 border-dashed rounded-xl pointer-events-none transition-all duration-300 ${isSelected ? "border-[3px] border-white scale-[1.02] z-20 animate-[pulse_4s_ease-in-out_infinite]" : (hasValue ? "border-white" : "border-black")}`} />
+
+                                            {hasValue ? (
+                                                <div className="relative z-10 flex flex-col items-center">
+                                                    <p className="text-xl font-bold text-white drop-shadow-md">{hasValue}</p>
+                                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded-full">
+                                                        <Check className="w-3 h-3 text-white" />
+                                                        <span className="text-[9px] font-semibold text-white ">{t.filled}</span>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="relative z-10 text-center">
+                                                    <p className="text-xs font-bold text-indigo-600 tracking-[0.3px] mb-1">{t.ticket} {index + 1}</p>
+                                                    <p className="text-[11px] font-bold text-[#ff0067] tracking-[0.3px]">{t.tapToEnter}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </motion.button>
+                            );
+                        })}
+                    </div>
+
+                    {Object.keys(selectedTickets).length === 6 && (
+                        <div className="flex justify-center">
+                            <div className="px-4 py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl shadow-xl border border-white/20">
+                                <p className="text-xs font-bold text-white tracking-[3px]">✨ {t.goodLuck}! ✨</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    </div>
+));
+
+const KeypadSection = React.memo(({
+    t, currentTicket, inputValue, handleCancelInput, handleDelete,
+    handleConfirm, handleNumberClick, handleAutoPick, handleClearAll, handleSubmit, selectedTicketsCount
+}: any) => (
+    <div className="relative rounded-xl p-[4px] gradient-home-section shadow-2xl">
+        <div className="border-2 border-dashed border-white/80 rounded-xl p-1">
+            <div className="bg-white/95 backdrop-blur-xl rounded-lg p-3">
+                <AnimatePresence>
+                    {currentTicket !== null && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="overflow-hidden border-b border-indigo-50 pb-2"
+                        >
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="flex flex-col border-l-4 border-pink-500 pl-3">
+                                    <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent tracking-widest">
+                                        Ticket - {currentTicket + 1}
+                                    </h3>
+                                    <span className="text-xs font-bold text-slate-600  mt-1">
+                                        {t.enterTicketNumber}
+                                    </span>
+                                </div>
+                                <button onClick={handleCancelInput} className="w-10 h-10 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl flex items-center justify-center shadow-lg transition-transform active:scale-90">
+                                    <X className="w-6 h-6 text-white" />
+                                </button>
+                            </div>
+
+                            <div className="flex justify-center gap-2 mb-6">
+                                {[0, 1, 2, 3].map((i) => {
+                                    const isFilled = !!inputValue[i];
+                                    const isNext = inputValue.length === i;
+                                    return (
+                                        <div
+                                            key={i}
+                                            className={`w-12 h-14 rounded-xl border-2 flex items-center justify-center text-xl font-bold transition-all duration-300
+                              ${isFilled ? 'border-pink-500 text-pink-600 bg-pink-50/50 shadow-[0_0_10px_rgba(236,72,153,0.2)] scale-105' :
+                                                    isNext ? 'border-indigo-500 text-indigo-600 bg-indigo-50 shadow-[0_0_15px_rgba(99,102,241,0.2)]' :
+                                                        'border-indigo-300 text-slate-200 bg-slate-50'}`}
+                                        >
+                                            {inputValue[i] || "•"}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={handleDelete}
+                                    disabled={inputValue.length === 0}
+                                    className="flex-1 py-3.5 bg-gradient-to-r from-rose-400 to-rose-600 text-white rounded-xl font-bold text-xs tracking-widest active:scale-95 disabled:opacity-70 flex items-center justify-center gap-2 shadow-lg shadow-rose-200/50"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                    {t.delete}
+                                </button>
+                                <button
+                                    onClick={handleConfirm}
+                                    disabled={inputValue.length === 0}
+                                    className="flex-1 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-bold text-xs tracking-widest shadow-lg shadow-emerald-200/50 active:scale-95 transition-transform flex items-center justify-center gap-2"
+                                >
+                                    <Check className="w-4 h-4" />
+                                    {t.confirm}
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                <div className="grid grid-cols-5 gap-1 mb-4 mt-2">
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
+                        <button
+                            key={num}
+                            disabled={currentTicket === null || inputValue.length >= 4}
+                            onClick={() => handleNumberClick(num.toString())}
+                            className="h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 border-2 border-white text-white text-xl font-bold flex items-center justify-center shadow-lg active:scale-95 active:opacity-90 disabled:opacity-90 will-change-transform"
+                        >
+                            {num}
+                        </button>
+                    ))}
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                    <button
+                        type="button"
+                        onClick={handleAutoPick}
+                        className="py-4 bg-indigo-600 text-white font-bold text-xs  rounded-2xl shadow-xl active:scale-95 flex items-center justify-center gap-2 border border-white/10"
+                    >
+                        <Shuffle className="w-4 h-4" />
+                        {t.autoPick}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={handleClearAll}
+                        className="py-4 bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold text-xs  rounded-2xl shadow-xl active:scale-95 flex items-center justify-center gap-2 border border-white/10"
+                    >
+                        <Trash2 className="w-4 h-4" />
+                        {t.clearAll}
+                    </button>
+                </div>
+
+                <button
+                    type="button"
+                    disabled={selectedTicketsCount !== 6}
+                    className={`w-full mx-auto py-4 rounded-xl font-bold text-sm  transition-all duration-500 flex items-center justify-center gap-3 active:scale-95 mt-4
+                  ${selectedTicketsCount === 6
+                            ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-[0_10px_30px_rgba(255,0,156,0.4)]"
+                            : "bg-indigo-100 text-indigo-600 border-2 border-indigo-400 opacity-80"
+                        }`}
+                    onClick={handleSubmit}
+                >
+                    {selectedTicketsCount === 6 ? (
+                        <div className="flex items-center gap-2">
+                            <Trophy className="w-5 h-5 animate-bounce" />
+                            <span>{t.submitAllTickets}</span>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-2">
+                            <span>{t.fillAllTickets}</span>
+                            <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-[10px] font-bold">
+                                {selectedTicketsCount}/6
+                            </span>
+                        </div>
+                    )}
+                </button>
+            </div>
+        </div>
+    </div>
+));

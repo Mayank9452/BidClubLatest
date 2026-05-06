@@ -78,7 +78,7 @@ export function TopBar({
             {/* LEFT: LOGO */}
             <div className="flex items-center gap-2 cursor-pointer">
               <div className="flex items-center h-16">
-                <h1 className="text-xl font-bold gradient-bid-blue bg-clip-text text-white">
+                <h1 className="text-2xl font-bold gradient-bid-blue bg-clip-text text-white">
                   BidBlast
                 </h1>
               </div>

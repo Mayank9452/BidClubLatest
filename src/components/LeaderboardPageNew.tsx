@@ -156,12 +156,12 @@ export default function LeaderboardPageNew() {
                   fill="currentColor"
                 />
               </div>
-              <h1 className="text-[22px] font-bold text-white tracking-[0.5px]">
+              <h1 className="text-[22px] font-bold text-white ">
                 {t.leaderboard}
               </h1>
             </div>
 
-            <p className="text-center text-white text-sm font-semibold tracking-[0.5px] mb-4">
+            <p className="text-center text-white text-sm font-semibold  mb-4">
               {t.leaderboardDesc}
             </p>
 
@@ -185,7 +185,7 @@ export default function LeaderboardPageNew() {
                       }}
                     />
                   )}
-                  <span className="relative z-10 tracking-[0.5px] text-sm font-bold">
+                  <span className="relative z-10  text-sm font-bold">
                     {tab === "allTime" ? t.allTime : t[tab]}
                   </span>
                 </button>
@@ -196,7 +196,7 @@ export default function LeaderboardPageNew() {
 
         {/* Top 3 Podium - Compact for mobile */}
         <div className="relative z-10 -mt-20 px-3 mb-4">
-          <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-1 pb-0 border border-gray-100">
+          <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl pb-0 border border-gray-100">
             <div className="flex items-end justify-center  bg-white rounded-2xl">
               {/* 2nd Place */}
               {topThree[1] && <PodiumCard user={topThree[1]} rank={2} />}
@@ -214,7 +214,7 @@ export default function LeaderboardPageNew() {
 
         {/* Rest of Rankings - Mobile optimized */}
         <div className="max-w-md mx-auto px-3">
-          <div className="bg-white rounded-2xl shadow-lg p-3 border border-gray-100 ">
+          <div className="bg-white rounded-2xl shadow-xl p-3 border border-gray-100 ">
             <h2 className="text-lg font-bold text-gray-700 mb-3 text-center">
               {t.topPlayers}
             </h2>
@@ -269,14 +269,14 @@ export default function LeaderboardPageNew() {
                           <h3 className="text-sm font-bold text-gray-800 leading-tight truncate">
                             {user.name}
                           </h3>
-                          <p className="text-xs text-gray-600 font-semibold tracking-[1px]">
+                          <p className="text-xs text-gray-600 font-semibold ">
                             {user.bids} {t.bids}🔥
                           </p>
                         </div>
 
                         {/* Score */}
                         <div className="text-right me-0.5">
-                          <div className="flex items-center justify-end gap-1 text-[15px] font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                          <div className="flex items-center justify-end gap-1 text-base font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
                             <div className="relative">
                               <img
                                 src="/assets/images/diamond3.png"
@@ -288,7 +288,7 @@ export default function LeaderboardPageNew() {
                               {/* <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/90 to-transparent 
                                 animate-[shimmer_2s_linear_infinite] opacity-50 rotate-[25deg] pointer-events-none rounded-full" /> */}
                             </div>
-                            <span className="text-xs tracking-[0.5px]">{user.score.toLocaleString()}</span>
+                            <span className="text-xs ">{user.score.toLocaleString()}</span>
                           </div>
                           {/* <div className="flex items-center justify-end gap-0.5 text-[10px] text-emerald-600 font-bold">
                           <TrendingUp className="w-2.5 h-2.5" />
@@ -365,15 +365,15 @@ export default function LeaderboardPageNew() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                    <span className="text-base font-bold text-white tracking-[1px]">
+                    <span className="text-base font-bold text-white ">
                       {user.rank}
                     </span>
                   </div>
                   <div>
-                    <p className="text-white/80 text-sm tracking-[0.5px] font-semibold">
+                    <p className="text-white/80 text-sm  font-semibold">
                       {t.yourRank}
                     </p>
-                    <p className="text-white text-xs font-semibold tracking-[0.5px]">
+                    <p className="text-white text-xs font-semibold ">
                       {t.keepClimbing}
                     </p>
                   </div>
@@ -524,7 +524,7 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
           <span>{user.score.toLocaleString()}</span>
         </div>
 
-        <p className={`font-bold tracking-[0.5px] ${current.text}`}>
+        <p className={`font-bold  ${current.text}`}>
           {user.bids.toLocaleString()} {t.bids}
         </p>
       </div>

@@ -236,7 +236,7 @@ export default function BiddingPage() {
                         {/* Dashed internal border */}
                         <div className="absolute inset-2 border-2 border-dashed border-white/70 rounded-xl pointer-events-none" />
                         <div className="relative z-10 max-w-md mx-auto text-center flex flex-col items-center gap-1">
-                            <h1 className="text-xl font-bold text-white tracking-[1px] drop-shadow-md">
+                            <h1 className="text-xl font-bold text-white  drop-shadow-md">
                                 {bidName?.includes("Daily")
                                     ? `${t.bidDaily} ${bidName?.split(" ")[2]}`
                                     : `${t.bidWeekly} ${bidName?.split(" ")[2]}`}
@@ -244,7 +244,7 @@ export default function BiddingPage() {
                         </div>
                         <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
                             <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                                <span className="text-[10px] font-bold text-white uppercase tracking-[2px] opacity-80">
+                                <span className="text-[10px] font-bold text-white uppercase opacity-80">
                                     {t.activeCycle || "Cycle"}
                                 </span>
                                 <div className="bg-white text-pink-600 rounded-lg px-2.5 py-0.5 text-[12px] font-bold shadow-lg transform -rotate-2">
@@ -253,7 +253,7 @@ export default function BiddingPage() {
                             </div>
 
                             <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                                <span className="text-[10px] font-bold text-white uppercase tracking-[2px] opacity-80">
+                                <span className="text-[10px] font-bold text-white uppercase opacity-80">
                                     Set
                                 </span>
                                 <div className="bg-indigo-500 text-white rounded-lg px-2.5 py-0.5 text-[12px] font-bold shadow-lg transform rotate-2">
@@ -281,7 +281,7 @@ export default function BiddingPage() {
                                                 {unit}
                                             </span>
                                         </div>
-                                        <span className="text-[10px] tracking-[1px] font-bold text-pink-500/90 mt-1.5">
+                                        <span className="text-[10px]  font-bold text-pink-500/90 mt-1.5">
                                             {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort][i]}
                                         </span>
                                     </div>
@@ -303,14 +303,14 @@ export default function BiddingPage() {
                                 <Info className="w-4 h-4 text-white font-bold" />
                             </div>
                             <div className="flex flex-col justify-center gap-0.5">
-                                <span className="text-[12px] font-bold text-[#ff0000] uppercase tracking-[1px]">{t.note} :-</span>
+                                <span className="text-[12px] font-bold text-[#ff0000] uppercase ">{t.note} :-</span>
                                 <p className="text-[11px] font-semibold text-white tracking-widest leading-relaxed">
                                     {t.uniqueNumbersNote}
                                 </p>
                                 {completeSets && completeSets.length > 0 && (
                                     <button
                                         onClick={() => setIsShowingFilledSets(!isShowingFilledSets)}
-                                        className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 backdrop-blur-xl text-white text-[11px] font-bold rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5 tracking-[2px] uppercase group overflow-hidden relative"
+                                        className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 backdrop-blur-xl text-white text-[11px] font-bold rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5 uppercase group overflow-hidden relative"
                                     >
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                                         {isShowingFilledSets ? (
@@ -367,7 +367,7 @@ export default function BiddingPage() {
                                                                 {/* Header for Historical Set */}
                                                                 <div className="flex items-center justify-center gap-2 w-[70%] mx-auto relative overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 to-[#fd0075] p-1.5 shadow-lg mb-4 backdrop-blur-2xl">
                                                                     <Trophy className="w-4 h-4 text-white" />
-                                                                    <h3 className="text-[12px] font-bold text-white tracking-[1px]">
+                                                                    <h3 className="text-[12px] font-bold text-white ">
                                                                         {t.setNumbersTitle.replace("{0}", setData.batch_bid_batch)}
                                                                     </h3>
                                                                 </div>
@@ -392,7 +392,7 @@ export default function BiddingPage() {
                                                                                 </p>
                                                                                 <div className="flex items-center gap-1 px-1.5 py-0.5 bg-white/20 backdrop-blur-sm rounded-full mt-0.5">
                                                                                     <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
-                                                                                    <span className="text-[8px] font-bold text-white tracking-[1px]">{t.filled}</span>
+                                                                                    <span className="text-[8px] font-bold text-white ">{t.filled}</span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -423,7 +423,7 @@ export default function BiddingPage() {
                                                     fill="currentColor"
                                                 />
                                             </div>
-                                            <h2 className="text-[15px] font-bold text-white tracking-[1px]">
+                                            <h2 className="text-base font-bold text-white ">
                                                 {t.fillYourTickets}
                                             </h2>
                                         </div>
@@ -485,14 +485,14 @@ export default function BiddingPage() {
                                                                                     className="w-3.5 h-3.5 text-white"
                                                                                     strokeWidth={3}
                                                                                 />
-                                                                                <span className="text-[10px] font-bold text-white tracking-[1px]">
+                                                                                <span className="text-[10px] font-bold text-white ">
                                                                                     {t.filled}
                                                                                 </span>
                                                                             </div>
                                                                         </motion.div>
                                                                     ) : (
                                                                         <div className="relative z-10 text-center">
-                                                                            <p className="text-[11px] font-bold text-indigo-900  tracking-[2px] mb-1">
+                                                                            <p className="text-[11px] font-bold text-indigo-900  mb-1">
                                                                                 {t.ticket} {index + 1}
                                                                             </p>
                                                                             <p className="text-[12px] font-bold text-[#ff0067] ">
@@ -654,7 +654,7 @@ export default function BiddingPage() {
                                 whileTap={{ scale: 0.98 }}
                                 type="button"
                                 disabled={Object.keys(selectedTickets).length !== 6}
-                                className={`w-fit mx-auto py-3 px-6 rounded-lg font-bold text-lg tracking-[1px] shadow-2xl transition-all flex items-center justify-center gap-3  
+                                className={`w-fit mx-auto py-3 px-6 rounded-lg font-bold text-lg  shadow-2xl transition-all flex items-center justify-center gap-3  
                 ${Object.keys(selectedTickets).length === 6
                                         ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-pink-500/20"
                                         : "bg-gradient-to-r from-pink-400 to-rose-600 text-white border border-slate-200 cursor-not-allowed"

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
-import { Trophy, Sparkles, X } from "lucide-react";
+import { Sparkles, X } from "lucide-react";
 import { useLanguage } from "./context/LanguageContext";
 
 interface SuccessBidPopupProps {
@@ -30,37 +30,43 @@ const SuccessBidPopup = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 backdrop-blur-md"
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 backdrop-blur-[2px] will-change-transform"
       style={{ marginTop: "0px" }}
     >
+      {/* Fireworks layer */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <img
+          src="/assets/images/firework.gif"
+          className="absolute top-0 right-5 max-w-[480px]"
+          loading="lazy"
+          alt=""
+        />
+        <img
+          src="/assets/images/firework.gif"
+          className="absolute top-12 left-5 max-w-[480px]"
+          loading="lazy"
+          alt=""
+        />
+        <img
+          src="/assets/images/firework.gif"
+          className="absolute bottom-10 left-5 max-w-[480px]"
+          loading="lazy"
+          alt=""
+        />
+        <img
+          src="/assets/images/firework.gif"
+          className="absolute bottom-0 right-5 max-w-[480px]"
+          loading="lazy"
+          alt=""
+        />
+      </div>
 
-      <img
-        src="/assets/images/firework.gif"
-        className="fixed object-cover top-0 right-5 max-w-[480px] mx-auto"
-        loading="lazy"
-        alt=""
-      /><img
-        src="/assets/images/firework.gif"
-        className="fixed object-cover top-12 left-5 max-w-[480px] mx-auto"
-        loading="lazy"
-        alt=""
-      /><img
-        src="/assets/images/firework.gif"
-        className="fixed object-cover bottom-10 left-5 max-w-[480px] mx-auto"
-        loading="lazy"
-        alt=""
-      /><img
-        src="/assets/images/firework.gif"
-        className="fixed object-cover bottom-0 right-5 max-w-[480px] mx-auto"
-        loading="lazy"
-        alt=""
-      />
       <motion.div
-        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 40, scale: 0.95 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative gradient-popup-premium backdrop-blur-3xl rounded-[2.5rem] max-w-sm w-[85%] p-6 border border-white/20 shadow-[0_25px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(236,72,153,0.1)] flex flex-col items-center gap-4 overflow-hidden"
+        exit={{ opacity: 0, y: 30, scale: 0.95 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="relative gradient-popup-premium backdrop-blur-md rounded-[2.5rem] max-w-sm w-[85%] p-6 border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center gap-4 overflow-hidden will-change-transform"
       >
         {/* Glowing Corner Accents */}
         <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-yellow-500 rounded-tl-[2.5rem] pointer-events-none" />
@@ -90,16 +96,13 @@ const SuccessBidPopup = ({
               style={{ left: `${5 + i * 18}%` }}
             >
               <div className="relative">
-                {/* Balloon Body */}
                 <div
                   className={`w-10 h-14 rounded-full shadow-xl ${i % 3 === 0 ? "bg-gradient-to-t from-pink-600 to-pink-400" :
                     i % 3 === 1 ? "bg-gradient-to-t from-yellow-500 to-yellow-300" :
                       "bg-gradient-to-t from-blue-500 to-blue-300"
                     } opacity-30 backdrop-blur-[1px]`}
                 />
-                {/* Highlight */}
                 <div className="absolute top-2 left-2 w-3 h-5 bg-white/40 rounded-full blur-[1px]" />
-                {/* Balloon String */}
                 <div className="w-[1px] h-16 bg-gradient-to-b from-white/30 to-transparent mx-auto" />
               </div>
             </motion.div>
@@ -107,8 +110,8 @@ const SuccessBidPopup = ({
         </div>
 
         {/* Luminous Ambient Glows */}
-        <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[80%] bg-pink-500/10 blur-[100px] rounded-full pointer-events-none animate-pulse" />
-        <div className="absolute bottom-[-20%] left-[-20%] w-[80%] h-[80%] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none animate-pulse" />
+        <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[80%] bg-pink-500/10 blur-[60px] rounded-full pointer-events-none animate-pulse" />
+        <div className="absolute bottom-[-20%] left-[-20%] w-[80%] h-[80%] bg-blue-500/10 blur-[80px] rounded-full pointer-events-none animate-pulse" />
 
         {/* Close Button */}
         <button
@@ -120,17 +123,17 @@ const SuccessBidPopup = ({
 
         {/* Content */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
+          transition={{ delay: 0.15, duration: 0.3 }}
           className="w-full text-center relative z-10"
         >
           {/* Celebration Image Visual */}
           <div className="relative mb-4 flex justify-center">
             <motion.div
               animate={{
-                y: [-6, 6, -6],
-                rotate: [-2, 2, -2]
+                y: [-4, 4, -4],
+                rotate: [-1, 1, -1]
               }}
               transition={{
                 duration: 4,
@@ -139,63 +142,44 @@ const SuccessBidPopup = ({
               }}
               className="relative group"
             >
-              {/* Outer Atmosphere Glow */}
-              <div className="absolute -inset-6 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-indigo-500/20 blur-3xl rounded-full opacity-70 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute -inset-6 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-indigo-500/20 blur-xl rounded-full opacity-80 group-hover:opacity-100 transition-opacity" />
 
               <div className="relative w-24 h-24">
-                {/* The Container */}
-                <div className="absolute inset-0 rounded-[2rem]">
-                  <div className="w-full h-full flex items-center justify-center overflow-hidden relative">
-                    {/* Golden internal light */}
-                    <div className="absolute inset-0 " />
-
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="w-full h-full flex items-center justify-center relative">
                     <img
                       src="/assets/robotavatar/4.png"
-                      className="w-full h-full object-cover relative z-10 "
+                      className="w-full h-full object-cover relative z-10"
                       alt="Success Robot"
+                      loading="lazy"
                     />
 
                     {/* Floating Sparkle Particles */}
                     <motion.div
                       animate={{ scale: [0, 1.2, 0], opacity: [0, 1, 0] }}
                       transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                      className="absolute top-4 right-4"
+                      className="absolute top-4 right-4 z-20"
                     >
                       <Sparkles className="w-4 h-4 text-yellow-400" />
                     </motion.div>
                     <motion.div
                       animate={{ scale: [0, 1, 0], opacity: [0, 0.8, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity, delay: 1.2 }}
-                      className="absolute bottom-4 left-4"
+                      className="absolute bottom-4 left-4 z-20"
                     >
                       <Sparkles className="w-3 h-3 text-pink-400" />
                     </motion.div>
                   </div>
                 </div>
-
-                {/* Floating Gems/Stars around the container */}
-                {/* <motion.div
-                  animate={{ y: [0, -15, 0], rotate: 360 }}
-                  transition={{ duration: 5, repeat: Infinity }}
-                  className="absolute -top-4 -left-4 w-7 h-7 bg-gradient-to-tr from-yellow-400 to-orange-500 rounded-lg blur-[1px] shadow-lg flex items-center justify-center"
-                >
-                  <div className="w-3 h-3 bg-white/40 rounded-full" />
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, 15, 0], x: [0, 10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                  className="absolute -bottom-2 -right-4 w-6 h-6 bg-gradient-to-br from-pink-400 to-purple-600 rounded-full blur-[1px] shadow-lg"
-                /> */}
               </div>
             </motion.div>
           </div>
 
-          <h2 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-4">
+          <h2 className="text-xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3">
             {t.successfullyBidPlaced}
           </h2>
 
-          <p className="text-xs leading-relaxed text-blue-100 font-semibold tracking-[0.5px]">
+          <p className="text-sm leading-relaxed text-blue-100 mb-8">
             {Number(batchCount) === 5 ? (
               <>
                 {t.successSet5Message}
@@ -213,12 +197,12 @@ const SuccessBidPopup = ({
             )}
           </p>
 
-          <div className="mt-8">
+          <div className="w-full">
             <Button
-              className="h-14 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-white/20 transition-all active:scale-95 tracking-[1px] text-sm"
+              className="h-12 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-white/20 transition-all active:scale-95 text-base"
               onClick={onConfirm}
             >
-              {t.playMoreBids}
+              {t.playMore}
             </Button>
           </div>
         </motion.div>

@@ -226,7 +226,7 @@ export default function NotificationPage() {
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                   <Bell className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="text-xl font-bold text-white tracking-[1px]">
+                <h1 className="text-xl font-bold text-white ">
                   {t.notifications}
                 </h1>
               </div>
@@ -239,7 +239,7 @@ export default function NotificationPage() {
               </div> */}
             </div>
 
-            <p className="text-center text-white/80 text-xs font-semibold tracking-[1px] mb-4">
+            <p className="text-center text-white/80 text-xs font-semibold  mb-4">
               {t.bidUpdates}
             </p>
 
@@ -387,7 +387,7 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
 
               <div>
                 <h3 className="text-base font-bold text-gray-800">{bidName}</h3>
-                <p className="text-[10px] text-gray-500 font-semibold tracking-[1px]">
+                <p className="text-[10px] text-gray-500 font-semibold ">
                   {timestamp}
                 </p>
               </div>

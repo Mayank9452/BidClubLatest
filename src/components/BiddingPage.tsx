@@ -231,7 +231,7 @@ export default function BiddingPage() {
           />
         </div>
 
-        <div className="relative z-10 p-2 pb-8">
+        <div className="relative z-10 p-2">
 
           {/* Global Brand Gradient Header */}
           <div className="relative gradient-home-section py-4 px-3 overflow-hidden rounded-xl mb-4 shadow-xl shadow-pink-200/20 flex flex-col justify-center items-center gap-2">
@@ -244,7 +244,7 @@ export default function BiddingPage() {
             {/* Dashed internal border */}
             <div className="absolute inset-2 border-2 border-dashed border-white/70 rounded-xl pointer-events-none" />
             <div className="relative z-10 max-w-md mx-auto text-center flex flex-col items-center gap-1">
-              <h1 className="text-xl font-bold text-white tracking-[1px] drop-shadow-md">
+              <h1 className="text-xl font-bold text-white  drop-shadow-md">
                 {bidName?.includes("Daily")
                   ? `${t.bidDaily} ${bidName?.split(" ")[2]}`
                   : `${t.bidWeekly} ${bidName?.split(" ")[2]}`}
@@ -252,7 +252,7 @@ export default function BiddingPage() {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
               <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                <span className="text-xs font-semibold text-white tracking-[0.5px]">
+                <span className="text-xs font-semibold text-white ">
                   {t.activeCycle || "Cycle"}
                 </span>
                 <div className="bg-white text-pink-600 rounded-lg px-2.5 py-0.5 text-xs font-semibold shadow-lg transform -rotate-2">
@@ -261,7 +261,7 @@ export default function BiddingPage() {
               </div>
 
               <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                <span className="text-xs font-semibold text-white tracking-[1px]">
+                <span className="text-xs font-semibold text-white ">
                   {t.set}
                 </span>
                 <div className="bg-indigo-500 text-white rounded-lg px-2.5 py-0.5 text-[12px] font-bold shadow-lg transform rotate-2">
@@ -277,19 +277,19 @@ export default function BiddingPage() {
           {/* Note & Show Filled Sets Button */}
           <div className="flex flex-col items-center gap-3 mb-4 w-[100%] mx-auto relative z-10">
             {/* Unique Numbers Note */}
-            <div className="flex items-start gap-3 bg-indigo-500/10 backdrop-blur-md border border-white/50 rounded-2xl p-3 w-full shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+            <div className="flex items-start gap-3 bg-indigo-500/10 border border-white/50 rounded-2xl p-3 w-full shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
               <div className="bg-[#ff0000] p-2 rounded-xl mt-0.5">
                 <Info className="w-4 h-4 text-white font-bold" />
               </div>
               <div className="flex flex-col justify-center gap-1.5">
-                <span className="text-xs font-semibold text-[#ff0000] tracking-[1px]">{t.note} :-</span>
-                <p className="text-xs font-semibold text-white/90 tracking-[1px]">
+                <span className="text-xs font-semibold text-[#ff0000] ">{t.note} :-</span>
+                <p className="text-xs font-semibold text-white/90 ">
                   {t.uniqueNumbersNote}
                 </p>
                 {allCompleteSets && allCompleteSets.length > 0 && (
                   <button
                     onClick={() => setIsShowingFilledSets(!isShowingFilledSets)}
-                    className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 backdrop-blur-xl text-white text-xs font-semibold rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5 tracking-[1px] group overflow-hidden relative"
+                    className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 text-white text-xs font-semibold rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5  group overflow-hidden relative"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                     {isShowingFilledSets ? (
@@ -326,12 +326,12 @@ export default function BiddingPage() {
                     className="overflow-hidden"
                   >
                     {/* Cycle Navigation - Enhanced Scrollbar Hiding */}
-                    <div className="flex overflow-x-auto gap-3 pb-4 px-4 snap-x scrollbar-hide no-scrollbar" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
+                    <div className="flex justify-center items-center overflow-x-auto gap-3 pb-4 px-4 snap-x scrollbar-hide no-scrollbar" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
                       {Array.from({ length: Number(bidCycle || 0) }, (_, i) => i + 1).map((cycleNum) => (
                         <button
                           key={cycleNum}
                           onClick={() => setSelectedCycle(cycleNum)}
-                          className={`snap-center flex-shrink-0 px-6 py-3 rounded-xl text-xs font-bold tracking-[1px] transition-all duration-300 border-2 whitespace-nowrap min-w-[100px] ${selectedCycle === cycleNum
+                          className={`snap-center flex-shrink-0 px-6 py-3 rounded-xl text-xs font-bold  transition-all duration-300 border-2 whitespace-nowrap min-w-[100px] ${selectedCycle === cycleNum
                             ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-white shadow-lg scale-105"
                             : "bg-white/10 text-white/60 border-white/20 hover:bg-white/20"
                             }`}
@@ -341,7 +341,7 @@ export default function BiddingPage() {
                       ))}
                     </div>
 
-                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 px-1 scrollbar-hide">
+                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-1 scrollbar-hide">
                       {completeSets && completeSets[selectedCycle.toString()] && completeSets[selectedCycle.toString()].length > 0 ? (
                         completeSets[selectedCycle.toString()].map((setData: any, setIndex: number) => {
                           const setNumbers = [
@@ -357,13 +357,13 @@ export default function BiddingPage() {
                               key={setIndex}
                               className={`${completeSets[selectedCycle.toString()].length === 1 ? "w-full" : "min-w-[80%]"} flex-shrink-0 snap-center relative`}
                             >
-                              <div className="absolute -inset-1 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-xl blur-xl" />
-                              <div className="relative rounded-xl p-2 shadow-2xl border border-white/40 bg-white/5 backdrop-blur-sm">
+                              <div className="absolute -inset-1 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-xl" />
+                              <div className="relative rounded-xl p-2 shadow-2xl border border-white/40 ">
                                 <div className="border-2 border-dashed border-white/60 rounded-xl p-3">
                                   {/* Header for Historical Set */}
-                                  <div className="flex items-center justify-center gap-2 w-[70%] mx-auto relative overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 to-[#fd0075] p-1.5 shadow-lg mb-4 backdrop-blur-2xl">
+                                  <div className="flex items-center justify-center gap-2 w-[70%] mx-auto rounded-xl bg-gradient-to-r from-indigo-500 to-[#fd0075] p-1.5 mb-4">
                                     <Trophy className="w-4 h-4 text-white" />
-                                    <h3 className="text-[12px] font-bold text-white tracking-[1px]">
+                                    <h3 className="text-xs text-white font-semibold ">
                                       {t.setNumbersTitle.replace("{0}", setData.batch_bid_batch)}
                                     </h3>
                                   </div>
@@ -373,11 +373,19 @@ export default function BiddingPage() {
                                     {setNumbers.map((val, idx) => (
                                       <div
                                         key={idx}
-                                        className="relative rounded-2xl overflow-hidden ring-2 ring-white shadow-md"
+                                        className="relative rounded-2xl overflow-hidden shadow-md"
                                       >
-                                        <div className="relative bg-[linear-gradient(to_right,_#fb9f35,_#fe0d68)] p-2 h-14 flex flex-col items-center justify-center">
+                                        <div
+                                          className="relative bg-[linear-gradient(to_right,_#fb9f35,_#fe0d68)] p-2 h-14 flex flex-col items-center justify-center"
+                                          style={{
+                                            WebkitMaskImage: 'radial-gradient(circle 13px at left, transparent 98%, black 100%), radial-gradient(circle 13px at right, transparent 98%, black 100%)',
+                                            WebkitMaskComposite: 'source-in',
+                                            maskImage: 'radial-gradient(circle 13px at left, transparent 98%, black 100%), radial-gradient(circle 13px at right, transparent 98%, black 100%)',
+                                            maskComposite: 'intersect'
+                                          }}
+                                        >
                                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
-                                          <div className="absolute inset-1.5 border-2 border-dashed border-white/80 rounded-lg pointer-events-none" />
+                                          <div className="absolute inset-1.5 border-2 border-dashed border-white rounded-lg pointer-events-none" />
 
                                           {/* Mini Notches */}
                                           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-6 bg-[#f8fafc] rounded-r-full" />
@@ -388,7 +396,7 @@ export default function BiddingPage() {
                                           </p>
                                           <div className="flex items-center gap-1 px-1.5 py-0.5 bg-white/20 backdrop-blur-sm rounded-full mt-0.5">
                                             <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
-                                            <span className="text-[8px] font-bold text-white tracking-[1px]">{t.filled}</span>
+                                            <span className="text-[8px] font-bold text-white ">{t.filled}</span>
                                           </div>
                                         </div>
                                       </div>
@@ -400,9 +408,9 @@ export default function BiddingPage() {
                           );
                         })
                       ) : (
-                        <div className="w-full flex flex-col items-center justify-center py-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/90 border-dashed">
+                        <div className="w-full flex flex-col items-center justify-center py-4  backdrop-blur-md rounded-2xl border border-white/90 border-dashed">
                           <Info className="w-8 h-8 text-white mb-2" />
-                          <p className="text-white/90 font-semibold text-sm tracking-[1px]">
+                          <p className="text-white/90 font-semibold text-sm ">
                             {t.noSetsCompleted}
                           </p>
                         </div>
@@ -427,7 +435,7 @@ export default function BiddingPage() {
                           fill="currentColor"
                         />
                       </div>
-                      <h2 className="text-[15px] font-bold text-white tracking-[1px]">
+                      <h2 className="text-base font-bold text-white ">
                         {t.fillYourTickets}
                       </h2>
                     </div>
@@ -456,10 +464,16 @@ export default function BiddingPage() {
                               className={`relative group active:scale-95 transition-all duration-300 ${isSelected ? "z-10 scale-105" : ""}`}
                             >
                               <div
-                                className={`relative rounded-3xl overflow-hidden ${isSelected ? "ring-4 ring-pink-500/20 shadow-2xl" : "shadow-lg shadow-pink-200/20"}`}
+                                className={`relative rounded-3xl overflow-hidden ${isSelected ? "" : ""}`}
                               >
                                 <div
                                   className={`relative ${ticketColor} p-4 h-20 flex flex-col items-center justify-center`}
+                                  style={{
+                                    WebkitMaskImage: 'radial-gradient(circle 15px at left, transparent 98%, black 100%), radial-gradient(circle 15px at right, transparent 98%, black 100%)',
+                                    WebkitMaskComposite: 'source-in',
+                                    maskImage: 'radial-gradient(circle 15px at left, transparent 98%, black 100%), radial-gradient(circle 15px at right, transparent 98%, black 100%)',
+                                    maskComposite: 'intersect'
+                                  }}
                                 >
                                   {/* Shimmer for filled */}
                                   {hasValue && (
@@ -468,12 +482,12 @@ export default function BiddingPage() {
 
                                   {/* Dashed internal border */}
                                   <div
-                                    className={`absolute inset-2 border-2 border-dashed rounded-xl pointer-events-none ${hasValue ? "border-white/70" : "border-black"}`}
+                                    className={`absolute inset-2 border-2 border-dashed rounded-xl pointer-events-none transition-all duration-300 ${isSelected ? "border-[3px] border-white scale-[1.02] z-20 animate-[pulse_4s_ease-in-out_infinite]" : (hasValue ? "border-white" : "border-black")}`}
                                   />
 
                                   {/* Premium Notches - Matched to Body Color #f8fafc */}
-                                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-[#f8fafc] rounded-r-full shadow-inner" />
-                                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-[#f8fafc] rounded-l-full shadow-inner" />
+                                  {/* <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-[#f8fafc] rounded-r-full shadow-inner" />
+                                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-[#f8fafc] rounded-l-full shadow-inner" /> */}
 
                                   {hasValue ? (
                                     <motion.div
@@ -489,17 +503,17 @@ export default function BiddingPage() {
                                           className="w-3.5 h-3.5 text-white"
                                           strokeWidth={3}
                                         />
-                                        <span className="text-[10px] font-bold text-white tracking-[1px]">
+                                        <span className="text-[10px] font-bold text-white ">
                                           {t.filled}
                                         </span>
                                       </div>
                                     </motion.div>
                                   ) : (
                                     <div className="relative z-10 text-center">
-                                      <p className="text-xs font-bold text-indigo-900  tracking-[1px] mb-1">
+                                      <p className="text-xs font-bold text-indigo-900   mb-1">
                                         {t.ticket} {index + 1}
                                       </p>
-                                      <p className="text-[11px] font-bold text-[#ff0067] tracking-[0.5px]">
+                                      <p className="text-[11px] font-bold text-[#ff0067] ">
                                         {t.tapToEnter}
                                       </p>
                                     </div>
@@ -512,14 +526,21 @@ export default function BiddingPage() {
                       </AnimatePresence>
                     </div>
 
-                    {/* Good Luck Badge */}
-                    <div className="flex justify-center ">
-                      <div className="px-4 py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl shadow-xl border border-white/20">
-                        <p className="text-xs font-bold text-white tracking-[3px] ">
-                          ✨ {t.goodLuck}! ✨
-                        </p>
-                      </div>
-                    </div>
+                    {/* Good Luck Badge - Only show when all 6 tickets are filled */}
+                    {Object.keys(selectedTickets).length === 6 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex justify-center mt-4"
+                      >
+                        <div className="px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl shadow-xl border border-white/20 relative overflow-hidden group">
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                          <p className="text-sm font-bold text-white tracking-[3px] animate-pulse">
+                            ✨ {t.goodLuck}! ✨
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -541,7 +562,7 @@ export default function BiddingPage() {
                           <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-widest">
                             Ticket - {currentTicket + 1}
                           </h3>
-                          <span className="text-xs font-bold text-white/60 tracking-[0.5px] mt-1">
+                          <span className="text-xs font-bold text-white/60  mt-1">
                             {t.enterTicketNumber}
                           </span>
                         </div>
@@ -568,7 +589,7 @@ export default function BiddingPage() {
                         <button
                           onClick={handleDelete}
                           disabled={inputValue.length === 0}
-                          className="flex-1 bg-gradient-to-r from-[#ff009c] to-[#ff4b2b] border-2 border-white/30 text-white rounded-2xl py-4 font-bold text-xs tracking-[1px] shadow-[0_10px_20px_rgba(255,0,156,0.3)] active:scale-95 transition-all flex items-center justify-center gap-2 hover:brightness-110"
+                          className="flex-1 bg-gradient-to-r from-[#ff009c] to-[#ff4b2b] border-2 border-white/30 text-white rounded-2xl py-4 font-bold text-xs  shadow-[0_10px_20px_rgba(255,0,156,0.3)] active:scale-95 transition-all flex items-center justify-center gap-2 hover:brightness-110"
                         >
                           <Trash2 className="w-4 h-4" />
                           {t.delete}
@@ -576,7 +597,7 @@ export default function BiddingPage() {
                         <button
                           onClick={handleConfirm}
                           disabled={inputValue.length === 0}
-                          className="flex-1 bg-gradient-to-r from-[#00b09b] to-[#96c93d] border-2 border-white/30 text-white rounded-2xl py-4 font-bold text-xs tracking-[1px] shadow-[0_10px_20px_rgba(0,176,155,0.3)] active:scale-95 transition-all flex items-center justify-center gap-2 hover:brightness-110"
+                          className="flex-1 bg-gradient-to-r from-[#00b09b] to-[#96c93d] border-2 border-white/30 text-white rounded-2xl py-4 font-bold text-xs  shadow-[0_10px_20px_rgba(0,176,155,0.3)] active:scale-95 transition-all flex items-center justify-center gap-2 hover:brightness-110"
                         >
                           <Check className="w-4 h-4" />
                           {t.confirm}
@@ -612,7 +633,7 @@ export default function BiddingPage() {
                   <button
                     type="button"
                     onClick={handleAutoPick}
-                    className="bg-indigo-600 text-white font-bold text-xs tracking-[1px] py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
+                    className="bg-indigo-600 text-white font-bold text-xs  py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
                   >
                     <Shuffle className="w-4 h-4" />
                     {t.autoPick}
@@ -620,7 +641,7 @@ export default function BiddingPage() {
                   <button
                     type="button"
                     onClick={handleClearAll}
-                    className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold text-xs tracking-[1px] py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
+                    className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold text-xs  py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
                   >
                     <Trash2 className="w-4 h-4" />
                     {t.clearAll}
@@ -634,7 +655,7 @@ export default function BiddingPage() {
                 whileTap={{ scale: 0.98 }}
                 type="button"
                 disabled={Object.keys(selectedTickets).length !== 6}
-                className={`w-fit mx-auto py-3 px-6 rounded-lg font-bold text-sm tracking-[1px] shadow-2xl transition-all flex items-center justify-center gap-3  
+                className={`w-fit mx-auto py-3 px-6 rounded-lg font-bold text-sm  shadow-2xl transition-all flex items-center justify-center gap-3  
                 ${Object.keys(selectedTickets).length === 6
                     ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-pink-500/20 border border-white"
                     : "bg-gradient-to-r from-pink-400 to-rose-600 text-white border border-white cursor-not-allowed"
@@ -706,21 +727,21 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
   return (
     <div className="relative z-20 -mt-10 mb-4 mx-auto w-[85%] max-w-[320px]">
       {/* Subtle Outer Glow */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl blur-[2px] opacity-20" />
+      <div className="absolute -inset-0.5 to-rose-500 rounded-2xl blur-[2px] opacity-20" />
 
-      <div className="relative bg-black/20 backdrop-blur-xl rounded-2xl p-2 shadow-xl border border-white/50">
+      <div className="relative bg-black/10 backdrop-blur-xl rounded-2xl p-2 shadow-xl border border-white/50">
         <div className="flex items-center justify-between mb-1 px-4">
           <div className="flex items-center gap-1.5">
             <div className="w-6 h-6 bg-rose-50 rounded-lg flex items-center justify-center">
               <Clock className="w-3.5 h-3.5 text-rose-500 animate-[spin_4s_linear_infinite]" />
             </div>
-            <span className="text-xs font-semibold text-white tracking-[1px]">
+            <span className="text-xs font-semibold text-white ">
               {t.endingIn || "Ending In"}
             </span>
           </div>
           <div className="flex items-center gap-1 px-2 py-0.5 bg-emerald-50 rounded-full border border-emerald-300">
             <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-[11px] font-bold text-emerald-600 tracking-[0.5px]">Live</span>
+            <span className="text-[11px] font-bold text-emerald-600 ">Live</span>
           </div>
         </div>
 
@@ -737,7 +758,7 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
                   </div>
                   <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/10 to-transparent rounded-b-lg pointer-events-none" />
                 </div>
-                <span className="text-[10px] font-bold text-white/80 tracking-[0.5px]">
+                <span className="text-[10px] font-bold text-white/80 ">
                   {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort][i]}
                 </span>
               </div>

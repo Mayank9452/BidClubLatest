@@ -99,7 +99,7 @@ export default function LeaderboardNew({
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 {/* <Zap className="w-5 h-5 text-indigo-600 fill-indigo-600" /> */}
-                <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-[1px]">
+                <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent ">
                   {t.rankings}
                 </h2>
               </div>
@@ -128,7 +128,7 @@ export default function LeaderboardNew({
                       }}
                     />
                   )}
-                  <span className="relative z-10 tracking-[0.5px] text-sm">
+                  <span className="relative z-10  text-sm">
                     {tab === "weekly" ? t.weekly : t.monthly}
                   </span>
                 </button>
@@ -188,7 +188,7 @@ hover:from-violet-200 hover:to-indigo-200 rounded-[1.5rem] transition-all durati
                     <h4 className="text-sm font-bold text-slate-800">
                       {user.phone}
                     </h4>
-                    <span className="text-xs font-bold text-pink-600 tracking-[0.5px]">
+                    <span className="text-xs font-bold text-pink-600 ">
                       {user.bids} {t.bids}
                     </span>
                   </div>
@@ -221,7 +221,7 @@ hover:from-violet-200 hover:to-indigo-200 rounded-[1.5rem] transition-all durati
 
         {/* Action Button - Neon Style */}
         <button
-          className="relative z-10 w-full mt-2 py-4 bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white rounded-2xl font-bold text-sm shadow-xl shadow-purple-200 hover:shadow-purple-300 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 tracking-[1px]"
+          className="relative z-10 w-full mt-2 py-4 bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white rounded-2xl font-bold text-sm shadow-xl shadow-purple-200 hover:shadow-purple-300 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 "
           onClick={() => {
             navigate("/leaderboard");
           }}
@@ -397,7 +397,7 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
           <span>{user.score.toLocaleString()}</span>
         </p> */}
 
-        <p className={`font-bold tracking-[0.5px] ${current.text}`}>
+        <p className={`font-bold  ${current.text}`}>
           {user.bids.toLocaleString()} {t.bids}
         </p>
       </div>

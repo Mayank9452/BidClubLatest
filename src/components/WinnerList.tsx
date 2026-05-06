@@ -180,11 +180,11 @@ export default function WinnerList({ lastWeeklyWinners }) {
                   <div className="w-full h-full bg-yellow-300 rounded-full shadow-[0_0_6px_rgba(253,224,71,0.9)]" />
                 </div>
               ))}
-              <h1 className="text-[22px] font-bold text-white tracking-[0.5px]">
+              <h1 className="text-[22px] font-bold text-white ">
                 {t.weeklyWinners}
               </h1>
             </div>
-            <p className="text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
+            <p className="text-center text-white/90 text-sm font-semibold ">
               {t.congratulationsChampions}
             </p>
           </div>
@@ -313,7 +313,7 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
       /> */}
 
       {/* Avatar + Info */}
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-evenly gap-1">
         <div className="flex-shrink-0 relative">
           <div className="w-12 h-12 rounded-xl bg-white/30 p-0.5 border-2 border-white/40 shadow-xl">
             <div className="w-full h-full rounded-lg overflow-hidden bg-white">
@@ -341,7 +341,7 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
         <div className="flex flex-col justify-center w-[50%] gap-1">
           <div className="text-sm font-bold text-white">{winner.phone}</div>
           <div className="flex flex-col justify-center gap-1">
-            <div className="text-[11px] font-semibold text-white tracking-[1px] italic leading-none">
+            <div className="text-[11px] font-semibold text-white  italic leading-none">
               {t.uniqueBidNumber}
             </div>
             <div className="text-[11px] font-semibold leading-none">

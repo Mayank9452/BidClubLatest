@@ -11,11 +11,27 @@ import { useLanguage } from "@/components/context/LanguageContext";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import BidCardDemoNew from "@/components/BidCardDemoNew";
 import BiddingHammer from "@/components/BiddingHammer";
+import LowBalancePopup from "@/components/LowBalancePopup";
+import { useState, useEffect } from "react";
 export default function HomePage() {
   const { t } = useLanguage();
   const dispatch = useAppDispatch();
   const { data: response } = useAppSelector((state) => state.home);
+  const [showLowBalance, setShowLowBalance] = useState(false);
 
+  const userPlayCoins = response?.data?.userInfo?.user_play_coins;
+  const avatarUrl = response?.data?.userInfo?.user_avatar;
+
+  useEffect(() => {
+    // Only show if balance is 0 or less
+    if (response?.status === "success" && userPlayCoins !== undefined && userPlayCoins < 1) {
+      const alreadyShown = sessionStorage.getItem("lowBalanceShown");
+      if (!alreadyShown) {
+        setShowLowBalance(true);
+        sessionStorage.setItem("lowBalanceShown", "true");
+      }
+    }
+  }, [response?.status, userPlayCoins]);
   return (
     <>
       <TopBar />
@@ -47,9 +63,9 @@ export default function HomePage() {
               <div className="flex-shrink-0 -mt-2">
                 <BiddingHammer className="w-12 h-12" />
               </div>
-              <span className="text-[22px] font-bold tracking-[0.5px]">{t.liveBidding || "Live Bidding"}</span>
+              <span className="text-[22px] font-bold ">{t.liveBidding || "Live Bidding"}</span>
             </h2>
-            <p className="text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
+            <p className="text-center text-white/90 text-sm font-semibold ">
               {t.liveBidDescription || "Play now and win Atom Rewards"}
             </p>
           </div>
@@ -75,11 +91,11 @@ export default function HomePage() {
             ⚡ How to Play
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white tracking-[0.5px]">
+            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white ">
               <PlayCircle className="h-5 w-5 text-white" />
               {t.howToPlay}
             </h2>
-            <p className="mt-1 text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
+            <p className="mt-1 text-center text-white/90 text-sm font-semibold ">
               {t.howToPlayDescription || "Get started with our easy-to-follow guide!"}
             </p>
           </div>
@@ -103,11 +119,11 @@ export default function HomePage() {
             ⚡ Live Activity
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white tracking-[0.5px]">
+            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white ">
               <Activity className="h-5 w-5 text-white" />
               {t.liveActivity}
             </h2>
-            <p className="mt-1 text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
+            <p className="mt-1 text-center text-white/90 text-sm font-semibold ">
               {t.liveActivityDescription || "See what other players are up to in real-time!"}
             </p>
           </div>
@@ -130,11 +146,11 @@ export default function HomePage() {
             ⚡ Leaderboard
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white tracking-[0.5px]">
+            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white ">
               <Trophy className="h-5 w-5 text-white" />
               {t.leaderboard}
             </h2>
-            <p className="mt-1 text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
+            <p className="mt-1 text-center text-white/90 text-sm font-semibold ">
               {t.top5Rankings || "Top 5 Players and their rankings"}
             </p>
           </div>
@@ -151,6 +167,12 @@ export default function HomePage() {
       </div>
 
       <BottomNavBar />
+
+      <LowBalancePopup
+        visible={showLowBalance}
+        onClose={() => setShowLowBalance(false)}
+        avatarUrl={avatarUrl}
+      />
     </>
   );
 }

@@ -33,7 +33,7 @@ export default function DetailsPage() {
           >
             <ChevronLeft className="w-5 h-5 text-white" />
           </button>
-          <h1 className="text-[22px] font-bold text-white flex items-center justify-center gap-2 tracking-[0.5px]">
+          <h1 className="text-[22px] font-bold text-white flex items-center justify-center gap-2 ">
             <Gamepad2 className="w-6 h-6 text-white" />
             {t.howToPlay}
           </h1>
@@ -110,7 +110,7 @@ export default function DetailsPage() {
                     </div>
                     <div className="relative">
                       <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur-md opacity-50" />
-                      <span className="relative text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-full shadow-lg tracking-[0.5px]">
+                      <span className="relative text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-full shadow-lg ">
                         🔥 {t.popular}
                       </span>
                     </div>
@@ -120,12 +120,12 @@ export default function DetailsPage() {
                     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 p-4 border border-indigo-100">
                       <div className="absolute top-0 right-0 w-16 h-16 bg-indigo-400/10 rounded-full blur-xl" />
                       <p className="text-3xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent relative">4</p>
-                      <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.totalCycles}</p>
+                      <p className="text-xs text-gray-600 font-semibold mt-1 ">{t.totalCycles}</p>
                     </div>
                     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-2 border border-purple-100">
                       <div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl" />
-                      <p className="text-3xl font-bold bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative tracking-[0.5px]">6h</p>
-                      <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.perCycle}</p>
+                      <p className="text-3xl font-bold bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative ">6h</p>
+                      <p className="text-xs text-gray-600 font-semibold mt-1 ">{t.perCycle}</p>
                     </div>
                   </div>
                 </div>
@@ -148,15 +148,15 @@ export default function DetailsPage() {
                         </div>
                       </div>
                       <div>
-                        <h4 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent tracking-[0.5px]">
+                        <h4 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent ">
                           {t.weeklyBid}
                         </h4>
-                        <p className="text-xs text-gray-500 font-semibold tracking-[0.5px]">{t.strategicGameplay}</p>
+                        <p className="text-xs text-gray-500 font-semibold ">{t.strategicGameplay}</p>
                       </div>
                     </div>
                     <div className="relative">
                       <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-md opacity-50" />
-                      <span className="relative text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1.5 rounded-full shadow-lg tracking-[0.5px]">
+                      <span className="relative text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1.5 rounded-full shadow-lg ">
                         ⭐ {t.trending}
                       </span>
                     </div>

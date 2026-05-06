@@ -35,7 +35,7 @@ const ActivityItem = React.memo(({ activity, gradientClass, t }: { activity: any
             <h3 className="text-xs font-bold text-white leading-tight whitespace-normal break-words w-full">
               {activity.user_phone}
             </h3>
-            <p className="text-xs font-semibold text-white/90 tracking-[0.5px] italic whitespace-normal break-words w-full mt-0.5">
+            <p className="text-xs font-semibold text-white/90  italic whitespace-normal break-words w-full mt-0.5">
               {activity.newMessage}
             </p>
           </div>

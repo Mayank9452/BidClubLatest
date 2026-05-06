@@ -53,11 +53,22 @@ const CanvasGame = React.memo(() => {
     }, 2000);
   };
 
+  const isVisible = useRef(true);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
+    // Intersection Observer to pause when off-screen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible.current = entry.isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(canvas);
 
     const resize = () => {
       if (canvas.offsetWidth) {
@@ -69,6 +80,11 @@ const CanvasGame = React.memo(() => {
     window.addEventListener("resize", resize);
 
     const update = () => {
+      if (!isVisible.current) {
+        gameLoopRef.current = requestAnimationFrame(update);
+        return;
+      }
+
       frameCount.current++;
       framesSinceLastObstacle.current++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -196,6 +212,7 @@ const CanvasGame = React.memo(() => {
 
     gameLoopRef.current = requestAnimationFrame(update);
     return () => {
+      observer.disconnect();
       if (gameLoopRef.current) cancelAnimationFrame(gameLoopRef.current);
       if (restartTimeoutRef.current) clearTimeout(restartTimeoutRef.current);
       window.removeEventListener("resize", resize);

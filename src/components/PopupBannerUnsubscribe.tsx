@@ -142,14 +142,14 @@ const PopupBannerUnsubscribe = ({
             </h2>
           )}
           {data?.description && (
-            <p className="text-xs text-blue-100/80 font-semibold tracking-[0.5px]">
+            <p className="text-sm text-blue-100 leading-relaxed">
               {data.description}
             </p>
           )}
 
           <div className="mt-8 space-y-3">
             <Button
-              className="h-12 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-white/20 transition-all active:scale-95 tracking-[1px]"
+              className="text-base h-12 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-white/20 transition-all active:scale-95 "
               onClick={() => {
                 onConfirm?.();
                 onClose?.();

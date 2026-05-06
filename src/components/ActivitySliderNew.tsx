@@ -245,7 +245,7 @@ export default function ActivitySliderNew({ updatedData }) {
                     <h3 className="text-sm font-bold text-white leading-tight whitespace-normal">
                       {activity.user_phone}
                     </h3>
-                    <p className="text-[10px] font-semibold text-white tracking-[1px] italic">
+                    <p className="text-[10px] font-semibold text-white  italic">
                       {activity.newMessage}
                     </p>
                   </div>

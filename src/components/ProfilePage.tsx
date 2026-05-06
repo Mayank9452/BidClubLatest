@@ -128,12 +128,12 @@ export default function ProfilePage() {
               <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                 <User className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-[22px] font-bold text-white tracking-[0.5px]">
+              <h1 className="text-[22px] font-bold text-white ">
                 {t.myProfile}
               </h1>
             </div>
 
-            <p className="text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
+            <p className="text-center text-white/90 text-sm font-semibold ">
               {t.manageAccount}
             </p>
           </div>
@@ -212,10 +212,10 @@ export default function ProfilePage() {
                     <FileText className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-[15px] font-semibold text-gray-800 tracking-[0.2px]">
+                    <h3 className="text-base font-semibold text-gray-800 ">
                       {t.terms}
                     </h3>
-                    <p className="text-[13px] text-gray-500 font-semibold tracking-[0.5px]">
+                    <p className="text-sm text-gray-500 font-semibold ">
                       {t.readPolicies}
                     </p>
                   </div>
@@ -234,10 +234,10 @@ export default function ProfilePage() {
                       <LogOut className="w-5 h-5 text-white" />
                     </div>
                     <div className="text-left">
-                      <h3 className="text-[15px] font-semibold text-gray-800 tracking-[0.2px]">
+                      <h3 className="text-base font-semibold text-gray-800 ">
                         {t.unsubscribe}
                       </h3>
-                      <p className="text-[13px] text-gray-500 font-semibold tracking-[0.5px]">
+                      <p className="text-sm text-gray-500 font-semibold ">
                         {t.leaveService}
                       </p>
                     </div>
@@ -253,10 +253,10 @@ export default function ProfilePage() {
                     🌐
                   </div>
                   <div>
-                    <h3 className="text-[15px] font-semibold text-gray-800 tracking-[0.2px]">
+                    <h3 className="text-base font-semibold text-gray-800 ">
                       {t.language}
                     </h3>
-                    <p className="text-[13px] text-gray-500 font-semibold tracking-[0.5px]">
+                    <p className="text-sm text-gray-500 font-semibold ">
                       {language === "en" ? t.english : t.burmese}
                     </p>
                   </div>
@@ -265,7 +265,7 @@ export default function ProfilePage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => changeLanguage("en")}
-                    className={`px-2 py-1 rounded text-[13px] font-semibold tracking-[0.5px] ${language === "en"
+                    className={`px-2 py-1 rounded text-sm font-semibold  ${language === "en"
                       ? "bg-blue-500 text-white"
                       : "bg-gray-100 text-gray-600"
                       }`}
@@ -275,7 +275,7 @@ export default function ProfilePage() {
 
                   <button
                     onClick={() => changeLanguage("my")}
-                    className={`px-2 py-1 rounded text-[13px] font-semibold tracking-[0.5px] ${language === "my"
+                    className={`px-2 py-1 rounded text-sm font-semibold  ${language === "my"
                       ? "bg-blue-500 text-white"
                       : "bg-gray-100 text-gray-600"
                       }`}
@@ -298,7 +298,7 @@ export default function ProfilePage() {
           {/* Additional Info Card */}
           <div className="mt-4 gradient-home-section active:from-purple-700 active:to-rose-700 rounded-2xl shadow-md border border-gray-100 p-4">
             <div className="text-sm font-bold mb-3 text-center">
-              <h3 className="text-[15px] font-bold text-white mb-3 tracking-[0.5px]">
+              <h3 className="text-base font-bold text-white mb-3 ">
                 {t.accountInfo}
               </h3>
             </div>
@@ -375,7 +375,7 @@ const StatCard = React.memo(({ label, value, icon, color }: any) => {
       </div>
       <div className="text-center relative z-10">
         <p className="text-base font-bold leading-none mb-0.5">{value}</p>
-        <p className="text-xs font-semibold  tracking-[1px] text-white">
+        <p className="text-xs font-semibold   text-white">
           {label}
         </p>
       </div>
@@ -389,10 +389,10 @@ const StatCard = React.memo(({ label, value, icon, color }: any) => {
 
 const InfoRow = React.memo(({ label, value, badge = false, badgeClassName = "" }: any) => {
   return (
-    <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 tracking-[1px]">
-      <span className="text-xs font-bold text-white">{label}</span>
+    <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 ">
+      <span className="text-sm font-semibold text-white">{label}</span>
       {badge ? (
-        <span className={`p-2 rounded-lg text-xs font-bold ${badgeClassName || "bg-emerald-100 text-emerald-700"}`}>
+        <span className={`p-2 rounded-lg text-sm font-semibold ${badgeClassName || "bg-emerald-100 text-emerald-700"}`}>
           {value}
         </span>
       ) : (
