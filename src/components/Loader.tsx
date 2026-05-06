@@ -43,7 +43,7 @@ export default function WaitLoader({ isOverlay = false }: { isOverlay?: boolean 
       </div>
 
       <div className="relative flex flex-col items-center gap-12 text-center">
-        
+
         {/* ── CENTRAL ANIMATION (GAVEL & STAND) ── */}
         <div className="relative scale-150">
           {/* Gavel Hammer */}
@@ -121,7 +121,7 @@ export default function WaitLoader({ isOverlay = false }: { isOverlay?: boolean 
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -10, opacity: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="text-white text-xl font-bold tracking-widest uppercase italic"
+              className="text-white text-xl font-bold tracking-widest italic"
               style={{ textShadow: "0 0 15px rgba(251, 191, 36, 0.4)" }}
             >
               {phrases[index]}

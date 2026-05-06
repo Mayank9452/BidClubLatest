@@ -47,9 +47,9 @@ export default function HomePage() {
               <div className="flex-shrink-0 -mt-2">
                 <BiddingHammer className="w-12 h-12" />
               </div>
-              <span className="text-xl tracking-[1px]">{t.liveBidding || "Live Bidding"}</span>
+              <span className="text-[22px] font-bold tracking-[0.5px]">{t.liveBidding || "Live Bidding"}</span>
             </h2>
-            <p className="text-center text-white/90 text-xs font-semibold tracking-[1px]">
+            <p className="text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
               {t.liveBidDescription || "Play now and win Atom Rewards"}
             </p>
           </div>
@@ -75,11 +75,11 @@ export default function HomePage() {
             ⚡ How to Play
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white">
+            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white tracking-[0.5px]">
               <PlayCircle className="h-5 w-5 text-white" />
               {t.howToPlay}
             </h2>
-            <p className="mt-1 text-center text-white/90 text-xs font-semibold tracking-[1px]">
+            <p className="mt-1 text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
               {t.howToPlayDescription || "Get started with our easy-to-follow guide!"}
             </p>
           </div>
@@ -103,11 +103,11 @@ export default function HomePage() {
             ⚡ Live Activity
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white">
+            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white tracking-[0.5px]">
               <Activity className="h-5 w-5 text-white" />
               {t.liveActivity}
             </h2>
-            <p className="mt-1 text-center text-white/90 text-xs font-semibold tracking-[1px]">
+            <p className="mt-1 text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
               {t.liveActivityDescription || "See what other players are up to in real-time!"}
             </p>
           </div>
@@ -130,11 +130,11 @@ export default function HomePage() {
             ⚡ Leaderboard
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white tracking-[1px]">
+            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white tracking-[0.5px]">
               <Trophy className="h-5 w-5 text-white" />
               {t.leaderboard}
             </h2>
-            <p className="mt-1 text-center text-white/90 text-xs font-semibold tracking-[1px]">
+            <p className="mt-1 text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
               {t.top5Rankings || "Top 5 Players and their rankings"}
             </p>
           </div>

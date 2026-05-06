@@ -237,7 +237,7 @@ export default function BiddingPage() {
           <div className="relative gradient-home-section py-4 px-3 overflow-hidden rounded-xl mb-4 shadow-xl shadow-pink-200/20 flex flex-col justify-center items-center gap-2">
             <button
               onClick={() => navigate(-1)}
-              className="absolute left-3 top-3 p-1 bg-white/40 hover:bg-white/60 rounded-xl backdrop-blur-md transition-all active:scale-95"
+              className="absolute left-3 top-3 p-1 bg-black/20 hover:bg-black/40 rounded-xl backdrop-blur-md transition-all active:scale-95 border border-white/40"
             >
               <ChevronLeft className="w-5 h-5 text-white" />
             </button>
@@ -252,16 +252,16 @@ export default function BiddingPage() {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
               <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                <span className="text-[10px] font-bold text-white uppercase tracking-[2px] opacity-80">
+                <span className="text-xs font-semibold text-white tracking-[0.5px]">
                   {t.activeCycle || "Cycle"}
                 </span>
-                <div className="bg-white text-pink-600 rounded-lg px-2.5 py-0.5 text-[12px] font-bold shadow-lg transform -rotate-2">
+                <div className="bg-white text-pink-600 rounded-lg px-2.5 py-0.5 text-xs font-semibold shadow-lg transform -rotate-2">
                   {bidCycle}
                 </div>
               </div>
 
               <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md rounded-full px-4 py-1.5 border border-white/20 shadow-sm shadow-yellow-400 animate-pulse">
-                <span className="text-[10px] font-bold text-white uppercase tracking-[2px] opacity-80">
+                <span className="text-xs font-semibold text-white tracking-[1px]">
                   {t.set}
                 </span>
                 <div className="bg-indigo-500 text-white rounded-lg px-2.5 py-0.5 text-[12px] font-bold shadow-lg transform rotate-2">
@@ -281,15 +281,15 @@ export default function BiddingPage() {
               <div className="bg-[#ff0000] p-2 rounded-xl mt-0.5">
                 <Info className="w-4 h-4 text-white font-bold" />
               </div>
-              <div className="flex flex-col justify-center gap-0.5">
-                <span className="text-[12px] font-bold text-[#ff0000] uppercase tracking-[1px]">{t.note} :-</span>
-                <p className="text-[11px] font-semibold text-white tracking-widest leading-relaxed">
+              <div className="flex flex-col justify-center gap-1.5">
+                <span className="text-xs font-semibold text-[#ff0000] tracking-[1px]">{t.note} :-</span>
+                <p className="text-xs font-semibold text-white/90 tracking-[1px]">
                   {t.uniqueNumbersNote}
                 </p>
                 {allCompleteSets && allCompleteSets.length > 0 && (
                   <button
                     onClick={() => setIsShowingFilledSets(!isShowingFilledSets)}
-                    className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 backdrop-blur-xl text-white text-[11px] font-bold rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5 tracking-[2px] group overflow-hidden relative"
+                    className="w-full h-12 bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 backdrop-blur-xl text-white text-xs font-semibold rounded-2xl shadow-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-2.5 tracking-[1px] group overflow-hidden relative"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                     {isShowingFilledSets ? (
@@ -325,13 +325,13 @@ export default function BiddingPage() {
                     exit={{ opacity: 0, height: 0 }}
                     className="overflow-hidden"
                   >
-                    {/* Cycle Tabs */}
-                    <div className="flex flex-row justify-center items-center gap-2 mb-6 pb-2 px-1 overflow-x-auto scrollbar-hide">
+                    {/* Cycle Navigation - Enhanced Scrollbar Hiding */}
+                    <div className="flex overflow-x-auto gap-3 pb-4 px-4 snap-x scrollbar-hide no-scrollbar" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
                       {Array.from({ length: Number(bidCycle || 0) }, (_, i) => i + 1).map((cycleNum) => (
                         <button
                           key={cycleNum}
                           onClick={() => setSelectedCycle(cycleNum)}
-                          className={`px-4 py-3 rounded-xl text-[10px] font-bold tracking-[1px] transition-all duration-300 border-2 whitespace-nowrap min-w-[90px] ${selectedCycle === cycleNum
+                          className={`snap-center flex-shrink-0 px-6 py-3 rounded-xl text-xs font-bold tracking-[1px] transition-all duration-300 border-2 whitespace-nowrap min-w-[100px] ${selectedCycle === cycleNum
                             ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-white shadow-lg scale-105"
                             : "bg-white/10 text-white/60 border-white/20 hover:bg-white/20"
                             }`}
@@ -433,7 +433,7 @@ export default function BiddingPage() {
                     </div>
 
                     {/* Tickets Grid */}
-                    <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="grid grid-cols-2 gap-2 mb-4">
                       <AnimatePresence mode="popLayout">
                         {tickets.map((_, index) => {
                           const isSelected = currentTicket === index;
@@ -496,10 +496,10 @@ export default function BiddingPage() {
                                     </motion.div>
                                   ) : (
                                     <div className="relative z-10 text-center">
-                                      <p className="text-[11px] font-bold text-indigo-900  tracking-[2px] mb-1">
+                                      <p className="text-xs font-bold text-indigo-900  tracking-[1px] mb-1">
                                         {t.ticket} {index + 1}
                                       </p>
-                                      <p className="text-[12px] font-bold text-[#ff0067] ">
+                                      <p className="text-[11px] font-bold text-[#ff0067] tracking-[0.5px]">
                                         {t.tapToEnter}
                                       </p>
                                     </div>
@@ -537,11 +537,13 @@ export default function BiddingPage() {
                       {/* Dashed internal border */}
                       <div className="absolute inset-2 border-2 border-dashed border-white/70 rounded-xl pointer-events-none" />
                       <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
-                            <span className="text-sm font-bold text-indigo-600">{currentTicket + 1}</span>
-                          </div>
-                          <h3 className="text-sm font-bold text-white uppercase tracking-widest">{t.enterTicketNumber}</h3>
+                        <div className="flex flex-col border-l-4 border-pink-500 pl-3">
+                          <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-widest">
+                            Ticket - {currentTicket + 1}
+                          </h3>
+                          <span className="text-xs font-bold text-white/60 tracking-[0.5px] mt-1">
+                            {t.enterTicketNumber}
+                          </span>
                         </div>
                         <button onClick={handleCancelInput} className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white/50 hover:text-white">
                           <X className="w-6 h-6" />
@@ -566,15 +568,17 @@ export default function BiddingPage() {
                         <button
                           onClick={handleDelete}
                           disabled={inputValue.length === 0}
-                          className="flex-1 bg-gradient-to-r from-[#ff084b] to-[#f43f5e] border border-white text-white rounded-2xl py-4 font-bold text-xs tracking-widest shadow-lg shadow-rose-500/20 active:scale-95 transition-transform"
+                          className="flex-1 bg-gradient-to-r from-[#ff009c] to-[#ff4b2b] border-2 border-white/30 text-white rounded-2xl py-4 font-bold text-xs tracking-[1px] shadow-[0_10px_20px_rgba(255,0,156,0.3)] active:scale-95 transition-all flex items-center justify-center gap-2 hover:brightness-110"
                         >
+                          <Trash2 className="w-4 h-4" />
                           {t.delete}
                         </button>
                         <button
                           onClick={handleConfirm}
                           disabled={inputValue.length === 0}
-                          className="flex-1 bg-gradient-to-r from-[#11998e] to-[#38ef7d] border border-white text-white rounded-2xl py-4 font-bold text-xs tracking-widest shadow-lg shadow-emerald-500/30 active:scale-95 transition-transform"
+                          className="flex-1 bg-gradient-to-r from-[#00b09b] to-[#96c93d] border-2 border-white/30 text-white rounded-2xl py-4 font-bold text-xs tracking-[1px] shadow-[0_10px_20px_rgba(0,176,155,0.3)] active:scale-95 transition-all flex items-center justify-center gap-2 hover:brightness-110"
                         >
+                          <Check className="w-4 h-4" />
                           {t.confirm}
                         </button>
                       </div>
@@ -604,11 +608,11 @@ export default function BiddingPage() {
 
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={handleAutoPick}
-                    className="bg-indigo-600 text-white font-bold text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
+                    className="bg-indigo-600 text-white font-bold text-xs tracking-[1px] py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
                   >
                     <Shuffle className="w-4 h-4" />
                     {t.autoPick}
@@ -616,7 +620,7 @@ export default function BiddingPage() {
                   <button
                     type="button"
                     onClick={handleClearAll}
-                    className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold text-[10px] tracking-widest py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
+                    className="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold text-xs tracking-[1px] py-4 rounded-2xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 border border-white"
                   >
                     <Trash2 className="w-4 h-4" />
                     {t.clearAll}
@@ -632,17 +636,23 @@ export default function BiddingPage() {
                 disabled={Object.keys(selectedTickets).length !== 6}
                 className={`w-fit mx-auto py-3 px-6 rounded-lg font-bold text-sm tracking-[1px] shadow-2xl transition-all flex items-center justify-center gap-3  
                 ${Object.keys(selectedTickets).length === 6
-                    ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-pink-500/20"
-                    : "bg-gradient-to-r from-pink-400 to-rose-600 text-white border border-slate-200 cursor-not-allowed"
+                    ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-pink-500/20 border border-white"
+                    : "bg-gradient-to-r from-pink-400 to-rose-600 text-white border border-white cursor-not-allowed"
                   }`}
                 onClick={handleSubmit}
               >
                 {Object.keys(selectedTickets).length === 6 ? (
-                  <>{t.submitAllTickets}</>
+                  <div className="flex items-center gap-2">
+                    <Trophy className="w-5 h-5 animate-bounce" />
+                    <span>{t.submitAllTickets}</span>
+                  </div>
                 ) : (
-                  <>
-                    {t.fillAllTickets} ({Object.keys(selectedTickets).length}/6)
-                  </>
+                  <div className="flex items-center gap-2">
+                    <span>{t.fillAllTickets}</span>
+                    <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                      {Object.keys(selectedTickets).length}/6
+                    </span>
+                  </div>
                 )}
               </motion.button>
 
@@ -694,27 +704,49 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
   }, [endTime]);
 
   return (
-    <div className="flex flex-col items-center justify-center -mt-12 bg-white backdrop-blur-2xl w-[85%] rounded-xl p-2 mx-auto mb-4">
-      <div className="flex items-center justify-center gap-2">
-        {timeLeft.split(" : ").map((unit, i) => (
-          <div key={i} className="flex items-center justify-center gap-2">
-            <div className="flex flex-col items-center justify-center">
-              <div className="relative bg-[#ff084bcc]/80 backdrop-blur-lg border border-white/80 rounded-xl w-12 h-12 flex items-center justify-center shadow-2xl">
-                <span className="text-lg font-bold text-white tabular-nums drop-shadow-lg">
-                  {unit}
+    <div className="relative z-20 -mt-10 mb-4 mx-auto w-[85%] max-w-[320px]">
+      {/* Subtle Outer Glow */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl blur-[2px] opacity-20" />
+
+      <div className="relative bg-black/20 backdrop-blur-xl rounded-2xl p-2 shadow-xl border border-white/50">
+        <div className="flex items-center justify-between mb-1 px-4">
+          <div className="flex items-center gap-1.5">
+            <div className="w-6 h-6 bg-rose-50 rounded-lg flex items-center justify-center">
+              <Clock className="w-3.5 h-3.5 text-rose-500 animate-[spin_4s_linear_infinite]" />
+            </div>
+            <span className="text-xs font-semibold text-white tracking-[1px]">
+              {t.endingIn || "Ending In"}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 px-2 py-0.5 bg-emerald-50 rounded-full border border-emerald-300">
+            <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse" />
+            <span className="text-[11px] font-bold text-emerald-600 tracking-[0.5px]">Live</span>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center gap-2">
+          {timeLeft.split(" : ").map((unit, i) => (
+            <React.Fragment key={i}>
+              <div className="flex flex-col items-center gap-1">
+                <div className="relative">
+                  <div className="w-12 h-12 bg-gradient-to-br from-rose-500 via-pink-500 to-orange-500 rounded-lg flex items-center justify-center shadow-md">
+                    <div className="absolute inset-[1px] border border-white/20 rounded-[7px]" />
+                    <span className="text-lg font-black text-white tabular-nums drop-shadow-sm">
+                      {unit}
+                    </span>
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/10 to-transparent rounded-b-lg pointer-events-none" />
+                </div>
+                <span className="text-[10px] font-bold text-white/80 tracking-[0.5px]">
+                  {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort][i]}
                 </span>
               </div>
-              <span className="text-[10px] tracking-[1px] font-bold text-pink-500/90 mt-1.5">
-                {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort][i]}
-              </span>
-            </div>
-            {i < 3 && (
-              <div className="text-xl font-bold text-[#ff084bcc] mb-5 animate-pulse">
-                :
-              </div>
-            )}
-          </div>
-        ))}
+              {i < 3 && (
+                <div className="text-2xl font-extrabold text-white/80 -mt-4 animate-pulse">:</div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </div>
   );

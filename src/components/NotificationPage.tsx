@@ -19,12 +19,13 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { fetchNotification } from "@/features/notification/notificationSlice";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import WaitLoader from "./Loader";
 
 const formatDateTime = (dateTimeString) => {
   const d = dayjs(dateTimeString);
 
   return {
-    date: d.format("D MMM YYYY").toLowerCase(),
+    date: d.format("D MMM YYYY").toUpperCase(),
     time: d.format("h:mm A"),
   };
 };
@@ -127,7 +128,7 @@ export default function NotificationPage() {
       endDate: end.date,
       endTime: end.time,
       won: item.reward_prize_text !== "No prize won",
-      diamondCredit: t.diamondEarned?.replace("{0}", diamondAmount.toString()) || `Diamond earned: ${diamondAmount}`,
+      diamondCredit: t.diamondEarned?.replace("{0}", diamondAmount.toString()) || `Diamond earned : ${diamondAmount}`,
       prize: formatPrize(item.reward_prize_text),
       timestamp: formatTimeAgo(item.batch_datetime),
       rank: Number(item.cycle_reward_rank),
@@ -176,7 +177,7 @@ export default function NotificationPage() {
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                   <Bell className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="text-xl font-bold text-white tracking-[1px]">
+                <h1 className="text-[22px] font-bold text-white tracking-[0.5px]">
                   {t.notifications}
                 </h1>
               </div>
@@ -189,7 +190,7 @@ export default function NotificationPage() {
               </div> */}
             </div>
 
-            <p className="text-center text-white/80 text-xs font-semibold tracking-[1px] mb-4">
+            <p className="text-center text-white/90 text-sm font-semibold tracking-[0.5px] mb-4">
               {t.bidUpdates}
             </p>
 
@@ -250,7 +251,7 @@ export default function NotificationPage() {
                   )}
 
                   {/* ✅ Text */}
-                  <span className="relative text-xs tracking-[1px]">
+                  <span className="relative text-sm font-semibold tracking-[0.5px]">
                     {tab === "all" ? t.all : tab === "won" ? t.won : t.lost}
                   </span>
                 </button>
@@ -338,6 +339,7 @@ export default function NotificationPage() {
         </div>
       </div>
       <BottomNavBar />
+      {status === "loading" && pageNo === 1 && <WaitLoader isOverlay />}
     </>
   );
 }
@@ -394,8 +396,8 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
               </div>
 
               <div>
-                <h3 className="text-base font-bold text-gray-800">{bidName}</h3>
-                <p className="text-[10px] text-gray-500 font-semibold tracking-[1px]">
+                <h3 className="text-base font-bold text-gray-800 tracking-[0.5px]">{bidName}</h3>
+                <p className="text-xs text-gray-500 font-semibold tracking-[0.5px]">
                   {timestamp}
                 </p>
               </div>
@@ -418,7 +420,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
             <div className="gradient-notification-won rounded-lg p-2.5 mb-2.5">
               <div className="flex items-center gap-2 mb-1">
                 <Gift className="w-4 h-4 text-white" />
-                <p className="text-xs font-semibold text-white/90 tracking-wider">
+                <p className="text-sm font-semibold text-white/90 tracking-[0.5px]">
                   {/* {t.yourPrize} */}
                   {prize}
                 </p>
@@ -426,7 +428,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
 
               <div className="flex items-center gap-2 mb-1">
                 <Gem className="w-4 h-4 text-white inline mr-1" />
-                <p className="text-white text-[11px] font-semibold tracking-[0.5px]">
+                <p className="text-white text-xs font-semibold tracking-[1px]">
                   {diamondCredit}
                 </p>
               </div>
@@ -449,7 +451,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
                 <div className="w-5 h-5 bg-gray-300 rounded-lg flex items-center justify-center">
                   <X className="w-4 h-4" strokeWidth={3} />
                 </div>
-                <p className="text-xs font-semibold tracking-wider">
+                <p className="text-sm font-semibold tracking-[0.5px]">
                   {/* {t.yourPrize} */}
                   {t.noPrize}
                 </p>
@@ -457,7 +459,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
 
               <div className="ms-0.5 flex items-center gap-1.5 mb-1 text-pink-600">
                 <Gem className="w-4 h-4 inline mr-1" />
-                <p className="text-[11px] font-semibold tracking-[1px]">
+                <p className="text-xs font-semibold tracking-[1px]">
                   {diamondCredit}
                 </p>
               </div>
@@ -469,23 +471,23 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
             <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-lg p-2 border border-violet-300">
               <div className="flex items-center gap-1 mb-0.5">
                 <Calendar className="w-3 h-3 text-violet-600" />
-                <span className="text-[9px] tracking-[1px] font-bold text-violet-600">
+                <span className="text-xs tracking-[1px] font-bold text-violet-600">
                   {t.start}
                 </span>
               </div>
-              <p className="text-[10px] font-bold text-gray-800 tracking-[1px]">{startDate}</p>
-              <p className="text-[9px] text-gray-600 font-bold tracking-[1px]">{startTime}</p>
+              <p className="text-[11px] font-semibold text-gray-800 tracking-[1px]">{startDate}</p>
+              <p className="text-[10px] text-gray-600 font-semibold tracking-[1px]">{startTime}</p>
             </div>
 
             <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg p-2 border border-indigo-300">
               <div className="flex items-center gap-1 mb-0.5">
                 <Clock className="w-3 h-3 text-indigo-600" />
-                <span className="text-[9px] tracking-[1px] font-bold text-indigo-600">
+                <span className="text-xs tracking-[1px] font-bold text-indigo-600">
                   {t.end}
                 </span>
               </div>
-              <p className="text-[10px] font-bold text-gray-800 tracking-[1px]">{endDate}</p>
-              <p className="text-[9px] text-gray-600 font-bold tracking-[1px]">{endTime}</p>
+              <p className="text-[11px] font-semibold text-gray-800 tracking-[1px]">{endDate}</p>
+              <p className="text-[10px] text-gray-600 font-semibold tracking-[1px]">{endTime}</p>
             </div>
           </div>
 

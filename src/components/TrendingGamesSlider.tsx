@@ -38,12 +38,12 @@ export default function TrendingGamesSlider() {
               <div className=" backdrop-blur-sm rounded-xl flex items-center justify-center">
                 <Gamepad2 className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-xl font-bold text-white tracking-[1px]">
+              <h1 className="text-[22px] font-bold text-white tracking-[0.5px]">
                 {t.trendingGames}
               </h1>
 
             </div>
-            <p className="mt-1 text-center text-white/90 text-[13px] font-semibold tracking-[1px]">{t.popularGamesDescription}</p>
+            <p className="mt-1 text-center text-white/90 text-sm font-semibold tracking-[0.5px]">{t.popularGamesDescription}</p>
           </div>
 
           {/* 🔹 SLIDER INSIDE GRADIENT */}

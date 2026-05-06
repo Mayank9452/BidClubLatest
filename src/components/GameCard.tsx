@@ -41,7 +41,7 @@ const GameCard = React.memo(({ game, index, bgClass, onPlay }: GameCardProps) =>
       <div className="p-2">
         <Button
           size="xs"
-          className="bg-white/20 mt-1 hover:bg-white/30 border w-full text-[10px] h-7 border-white/30 text-white backdrop-blur-sm transition-smooth font-bold"
+          className="bg-white/20 mt-1 hover:bg-white/30 border w-full text-xs h-7 border-white/30 text-white backdrop-blur-sm transition-smooth font-semibold tracking-[0.3px]"
         >
           <Play className="w-3 h-3 mr-1" /> {t.playNow}
         </Button>

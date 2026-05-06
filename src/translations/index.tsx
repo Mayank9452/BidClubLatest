@@ -114,11 +114,11 @@ export const translations: any = {
     multipleChances: "Multiple chances to win daily",
     joinAnyCycle: "Join any cycle, anytime",
     playYourPace: "Play at your own pace",
-    independentCycles: "Each cycle is independent",
+    independentCycles: "Each Bid is independent",
 
     winBigPrizes: "Win Big Prizes!",
     prizeDescription:
-      "Winners are announced at the end of each cycle. Prizes are awarded based on your rank and performance.",
+      "Winners are announced at the end of each Bid. Prizes are awarded based on your rank and performance.",
 
     morePlayMoreChance: "🔥 The more you play, the better your chances!",
     trending: "Trending",
@@ -129,7 +129,7 @@ export const translations: any = {
     fillYourTickets: "Fill Your Tickets",
     ticket: "Ticket",
     tapToEnter: "Tap to Enter",
-    filled: "FILLED",
+    filled: "Filled",
     goodLuck: "GOOD LUCK",
     enterTicketNumber: "Enter Ticket Number",
     delete: "Delete",

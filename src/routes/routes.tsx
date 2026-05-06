@@ -1,6 +1,8 @@
+import BiddingPageLatest from "@/components/BiddingPageLatest";
 import { lazy } from "react";
+import { useAppSelector } from "@/app/hooks";
 
-const ModernBiddingPage = lazy(() => import("@/components/BiddingPage"));
+const BiddingPage = lazy(() => import("@/components/BiddingPage"));
 const DetailsPage = lazy(() => import("@/components/DetailsPage"));
 const GamesPage = lazy(() => import("@/components/GamesPage"));
 const LeaderboardPageNew = lazy(() => import("@/components/LeaderboardPageNew"));
@@ -9,6 +11,24 @@ const PlayGamesUpdatedNew = lazy(() => import("@/components/PlayGamesUpdatedNew"
 const ProfilePage = lazy(() => import("@/components/ProfilePage"));
 const TermsOfUsePage = lazy(() => import("@/components/TermsOfUsePage"));
 const HomePage = lazy(() => import("@/pages/HomePage"));
+
+const SPECIFIC_USER_PHONE = "959729081679";
+
+const UserSpecificRoute = ({
+  latest: LatestComponent,
+  original: OriginalComponent,
+}: {
+  latest: React.ComponentType;
+  original: React.ComponentType;
+}) => {
+  const { data: homeData } = useAppSelector((state) => state.home);
+  const userPhone = homeData?.data?.userInfo?.user_phone;
+
+  if (userPhone === SPECIFIC_USER_PHONE) {
+    return <LatestComponent />;
+  }
+  return <OriginalComponent />;
+};
 
 const routes = [
   { path: "/", element: <HomePage /> },
@@ -35,7 +55,7 @@ const routes = [
   },
   {
     path: "/biddingPage",
-    element: <ModernBiddingPage />,
+    element: <UserSpecificRoute latest={BiddingPageLatest} original={BiddingPage} />,
   },
   {
     path: "/games",
@@ -48,3 +68,4 @@ const routes = [
 ];
 
 export { routes };
+

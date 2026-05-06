@@ -32,17 +32,17 @@ const ActivityItem = React.memo(({ activity, gradientClass, t }: { activity: any
             </div>
           </div>
           <div className="w-[130px] flex flex-col items-start justify-center overflow-hidden">
-            <h3 className="text-[12px] font-bold text-white leading-tight whitespace-normal break-words w-full">
+            <h3 className="text-xs font-bold text-white leading-tight whitespace-normal break-words w-full">
               {activity.user_phone}
             </h3>
-            <p className="text-[11px] font-semibold text-white/90 tracking-[0.5px] italic whitespace-normal break-words w-full leading-tight mt-0.5">
+            <p className="text-xs font-semibold text-white/90 tracking-[0.5px] italic whitespace-normal break-words w-full mt-0.5">
               {activity.newMessage}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-          <span className="text-[9px] font-bold text-white/70 uppercase tracking-widest">
+          <span className="text-xs font-bold text-white/70 tracking--[0.5px]">
             {t.live}
           </span>
         </div>

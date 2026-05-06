@@ -9,6 +9,8 @@ import {
   Trophy,
   TrendingUp,
   ChevronLeft,
+  Gamepad2,
+  Gamepad,
 } from "lucide-react";
 import { useLanguage } from "./context/LanguageContext";
 
@@ -27,11 +29,12 @@ export default function DetailsPage() {
         <div className="relative gradient-home-section backdrop-blur-2xl border-b border-gray-200 p-4 sticky top-0 shadow-sm mt-2 rounded-xl pb-14">
           <button
             onClick={() => navigate(-1)}
-            className="absolute left-3 top-3 p-1 bg-white/40 hover:bg-white/60 rounded-xl backdrop-blur-md transition-all active:scale-95"
+            className="absolute left-3 top-3 p-1 bg-black/20 hover:bg-black/30 rounded-xl backdrop-blur-md transition-all active:scale-95"
           >
             <ChevronLeft className="w-5 h-5 text-white" />
           </button>
-          <h1 className="text-lg font-bold text-white text-center">
+          <h1 className="text-[22px] font-bold text-white flex items-center justify-center gap-2 tracking-[0.5px]">
+            <Gamepad2 className="w-6 h-6 text-white" />
             {t.howToPlay}
           </h1>
         </div>
@@ -59,7 +62,7 @@ export default function DetailsPage() {
           </div>
 
           {/* Hero Welcome Card */}
-          <div className="relative overflow-hidden rounded-3xl gradient-hero-vibrant p-5 shadow-2xl">
+          <div className="relative overflow-hidden rounded-xl gradient-hero-vibrant p-5 shadow-2xl">
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
 
@@ -78,14 +81,14 @@ export default function DetailsPage() {
           <div className="space-y-4">
             <div className="text-center mb-2">
               <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-lg border border-gray-200">
-                <Zap className="w-5 h-5 text-indigo-600" />
+                <Gamepad className="w-5 h-5 text-indigo-600" />
                 <h3 className="text-lg font-bold text-gray-800">{t.chooseGameMode}</h3>
               </div>
             </div>
 
             {/* Daily Bid */}
             <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 p-[2px] shadow-2xl shadow-indigo-500/40 active:scale-[0.97] transition-all cursor-pointer">
-              <div className="relative bg-white rounded-[22px] p-5 h-full">
+              <div className="relative bg-white rounded-[22px] p-4 h-full">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-2xl" />
                 <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-400/20 to-pink-400/20 rounded-full blur-2xl" />
 
@@ -119,7 +122,7 @@ export default function DetailsPage() {
                       <p className="text-3xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent relative">4</p>
                       <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.totalCycles}</p>
                     </div>
-                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-4 border border-purple-100">
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-2 border border-purple-100">
                       <div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl" />
                       <p className="text-3xl font-bold bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent relative tracking-[0.5px]">6h</p>
                       <p className="text-xs text-gray-600 font-semibold mt-1 tracking-[0.5px]">{t.perCycle}</p>

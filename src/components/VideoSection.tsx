@@ -4,7 +4,7 @@ import { useLanguage } from "./context/LanguageContext";
 
 export default function VideoSection() {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <div className="flex justify-center bg-gradient-to-br from-violet-50 to-indigo-50 rounded-2xl shadow-lg -mt-[4.2rem] relative mx-1">
@@ -24,12 +24,12 @@ export default function VideoSection() {
           {t.aboutBidBlast}
         </h3>
 
-        <p className="text-xs text-gray-800 text-center leading-relaxed font-bold tracking-[1px]">
+        <p className="text-xs text-gray-700 text-center leading-relaxed font-bold tracking-[0.5px]">
           {t.welcomeBidBlast}
         </p>
 
-        <p className="text-xs text-center bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent font-semibold">
-          {t.toKnowMore}
+        <p className="text-xs text-center bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent font-semibold tracking-[0.5px]">
+          {t.knowMore}
         </p>
 
         <div className="flex justify-center">
@@ -41,7 +41,7 @@ export default function VideoSection() {
               });
             }}
           >
-            <span className="bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2.5 rounded-xl text-sm transition-colors duration-150 shadow-md active:shadow-lg flex px-6 tracking-[1px]">
+            <span className={`${language === "my" ? "text-[13px]" : "text-sm"} bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2.5 rounded-xl transition-colors duration-150 shadow-md active:shadow-lg flex px-5 tracking-[1px]`}>
               {t.getDetails}
             </span>
           </button>

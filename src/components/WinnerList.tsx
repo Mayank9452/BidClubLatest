@@ -92,7 +92,7 @@ const generateSparkles = (count: number) => {
 export default function WinnerList({ lastWeeklyWinners }) {
   const { t } = useLanguage();
 
-  const cardSparkles = useMemo(() => generateSparkles(12), []);
+  const cardSparkles = useMemo(() => generateSparkles(20), []);
 
   const weeklyWinners = useMemo(() => {
     if (!Array.isArray(lastWeeklyWinners)) return [];
@@ -180,11 +180,11 @@ export default function WinnerList({ lastWeeklyWinners }) {
                   <div className="w-full h-full bg-yellow-300 rounded-full shadow-[0_0_6px_rgba(253,224,71,0.9)]" />
                 </div>
               ))}
-              <h1 className="text-xl font-bold text-white tracking-[1px]">
+              <h1 className="text-[22px] font-bold text-white tracking-[0.5px]">
                 {t.weeklyWinners}
               </h1>
             </div>
-            <p className="text-center text-white/90 text-[13px] font-semibold tracking-[1px]">
+            <p className="text-center text-white/90 text-sm font-semibold tracking-[0.5px]">
               {t.congratulationsChampions}
             </p>
           </div>
@@ -341,10 +341,10 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
         <div className="flex flex-col justify-center w-[50%] gap-1">
           <div className="text-sm font-bold text-white">{winner.phone}</div>
           <div className="flex flex-col justify-center gap-1">
-            <div className="text-[10px] font-semibold text-white tracking-[1px] italic leading-none">
+            <div className="text-[11px] font-semibold text-white tracking-[1px] italic leading-none">
               {t.uniqueBidNumber}
             </div>
-            <div className="text-[10px] font-semibold leading-none">
+            <div className="text-[11px] font-semibold leading-none">
               {winner.uniqueNumber}
             </div>
             {/* {winner.rank === 1 && (
@@ -358,8 +358,8 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
           {/* Top Row: Rank & Icon */}
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="flex items-center justify-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-white" />
-              <span className="text-[9px] font-bold text-white uppercase tracking-widest">
+              {/* <div className="w-2 h-2 rounded-full bg-white" /> */}
+              <span className="text-[10px] font-semibold text-white uppercase tracking-widest">
                 {t.rank} {winner.rank}
               </span>
             </div>

@@ -18,7 +18,7 @@ export default function TermsOfUsePage() {
         <div className="relative flex items-center justify-center gap-3 bg-gradient-to-r from-[#0a0f7ac4] to-pink-700 text-white rounded-xl px-3 pb-16 pt-3 shadow-md">
           <button
             onClick={() => navigate(-1)}
-            className="absolute left-3 top-3 p-1 bg-white/40 hover:bg-white/60 rounded-xl transition-all active:scale-95"
+            className="absolute left-3 top-3 p-1 bg-black/20 hover:bg-black/30 rounded-xl backdrop-blur-md transition-all active:scale-95"
           >
             <ChevronLeft className="w-5 h-5 text-white" />
           </button>

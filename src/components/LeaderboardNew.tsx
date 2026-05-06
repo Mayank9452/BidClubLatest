@@ -128,7 +128,7 @@ export default function LeaderboardNew({
                       }}
                     />
                   )}
-                  <span className="relative z-10 tracking-[1px] text-xs">
+                  <span className="relative z-10 tracking-[0.5px] text-sm">
                     {tab === "weekly" ? t.weekly : t.monthly}
                   </span>
                 </button>
@@ -159,8 +159,8 @@ export default function LeaderboardNew({
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="group relative flex items-center justify-between p-4 bg-gradient-to-r from-indigo-100 via-purple-200 to-indigo-100 
-hover:from-indigo-200 hover:via-purple-300 hover:to-indigo-200 rounded-[1.5rem] transition-all duration-300 shadow-sm"
+                className="group relative flex items-center justify-between p-4 bg-gradient-to-br from-violet-100 to-indigo-100 
+hover:from-violet-200 hover:to-indigo-200 rounded-[1.5rem] transition-all duration-300 shadow-sm"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-6 text-center font-bold text-slate-800 group-hover:text-slate-900 transition-colors">
@@ -188,7 +188,7 @@ hover:from-indigo-200 hover:via-purple-300 hover:to-indigo-200 rounded-[1.5rem] 
                     <h4 className="text-sm font-bold text-slate-800">
                       {user.phone}
                     </h4>
-                    <span className="text-[10px] font-bold text-pink-800 uppercase tracking-wider">
+                    <span className="text-xs font-bold text-pink-600 tracking-[0.5px]">
                       {user.bids} {t.bids}
                     </span>
                   </div>
@@ -359,7 +359,7 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
 
         {/* Rank Badge */}
         <div
-          className={`absolute -bottom-2 left-1/2 -translate-x-1/2 ${current.badge} text-[10px] font-bold w-7 h-7 flex items-center justify-center rounded-xl shadow-lg border-2 border-white`}
+          className={`absolute -bottom-2 left-1/2 -translate-x-1/2 ${current.badge} text-xs font-bold w-7 h-7 flex items-center justify-center rounded-xl shadow-lg border-2 border-white`}
         >
           {rank}
         </div>
@@ -371,12 +371,12 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
       </div>
 
       {/* User Info */}
-      <div className="text-center flex flex-col justify-center items-center gap-2">
-        <p className="text-xs font-bold text-slate-800 truncate px-1">
+      <div className="text-center flex flex-col justify-center items-center gap-2 text-xs">
+        <p className=" font-bold text-slate-800 truncate px-1">
           {user.phone}
         </p>
         <div className="text-right">
-          <div className="flex items-center justify-center gap-1 text-sm font-bold text-indigo-600">
+          <div className="flex items-center justify-center gap-1 font-bold text-indigo-600">
             <div className="relative ">
               <img
                 src="/assets/images/diamond3.png"
@@ -397,7 +397,7 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
           <span>{user.score.toLocaleString()}</span>
         </p> */}
 
-        <p className={`text-[10px] font-bold tracking-[1px] ${current.text}`}>
+        <p className={`font-bold tracking-[0.5px] ${current.text}`}>
           {user.bids.toLocaleString()} {t.bids}
         </p>
       </div>

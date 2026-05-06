@@ -142,7 +142,7 @@ const PopupBannerUnsubscribe = ({
             </h2>
           )}
           {data?.description && (
-            <p className="text-xs leading-relaxed text-blue-100/70 font-semibold tracking-[1px]">
+            <p className="text-xs text-blue-100/80 font-semibold tracking-[0.5px]">
               {data.description}
             </p>
           )}

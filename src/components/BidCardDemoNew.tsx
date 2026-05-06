@@ -176,14 +176,14 @@ const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number
         </div>
 
         {/* bid name */}
-        <p className="relative z-10 text-[12px] font-bold text-white tracking-[1px] text-center px-3 truncate max-w-full">
+        <p className="relative z-10 text-xs font-bold text-white tracking-[1px] text-center px-3 truncate max-w-full">
           {bid.name}
         </p>
 
         {/* prize strip */}
         <div className="relative z-10  rounded-lg px-3 flex items-center gap-1.5 ">
           <Trophy className="w-3 h-3 text-white/90" strokeWidth={2.5} />
-          <span className="text-[10px] font-bold text-white uppercase tracking-[1px]">
+          <span className="text-xs font-bold text-white tracking-[0.5px]">
             {t.winAmount} {formatPrize(Number(bid.prize))} {t.atomData}
           </span>
         </div>
@@ -206,14 +206,14 @@ const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number
               strokeWidth={2.5}
             />
             <span
-              className={`text-[9px] font-bold uppercase tracking-widest ${theme.accentText}`}
+              className={`text-xs font-semibold tracking-[0.5px] ${theme.accentText}`}
             >
               {t.endsIn}
             </span>
           </div>
           <div className="flex flex-col items-center">
             {/* Time Values with colons */}
-            <div className="flex items-center justify-center text-[11px] font-bold text-red-500 tracking-[1px] tabular-nums">
+            <div className="flex items-center justify-center text-xs font-bold text-red-500 tracking-[1px] tabular-nums">
               {timeLeft.split(" : ").map((t: string, i: number) => (
                 <div key={i} className="flex items-center">
                   <span className="w-[26px] text-center">{t}</span>
@@ -223,7 +223,7 @@ const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number
             </div>
 
             {/* Labels aligned under numbers */}
-            <div className="flex justify-center text-[10px] text-gray-400 font-semibold tracking-widest mt-[2px]">
+            <div className="flex justify-center text-[10px] text-gray-600 font-semibold tracking-widest mt-[2px]">
               {[t.daysShort, t.hoursShort, t.minutesShort, t.secondsShort].map((label, i) => (
                 <div key={i} className="flex items-center">
                   <span className="w-[26px] text-center">{label}</span>
@@ -237,14 +237,14 @@ const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number
         {/* Stats */}
         <div className="grid grid-cols-2 gap-1.5">
           <div
-            className={`bg-white border-2 ${theme.border} rounded-xl p-1.5 flex flex-col items-center gap-0.5`}
+            className={`bg-white border-2 ${theme.border} rounded-xl p-1.5 flex flex-col items-center gap-0.5 text-xs`}
           >
             <Users
               className={`w-3.5 h-3.5 ${theme.accentText}`}
               strokeWidth={2.5}
             />
             <span
-              className={`text-[8px] font-bold uppercase tracking-widest ${theme.accentText}`}
+              className={`font-semibold tracking-[0.5px] ${theme.accentText}`}
             >
               {t.players}
             </span>
@@ -257,7 +257,7 @@ const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number
           >
             <RefreshCw className={`w-3.5 h-3.5 ${theme.accentText}`} />
             <span
-              className={`text-[8px] font-bold uppercase tracking-widest text-center ${theme.accentText}`}
+              className={`text-xs font-semibold tracking-[0.5px] text-center ${theme.accentText}`}
             >
               {t.cycle}
             </span>
@@ -362,7 +362,7 @@ export default function BidCardDemo() {
                 }}
               />
             )}
-            <span className="relative z-10 text-white font-bold tracking-[1px] text-[12px]">
+            <span className="relative z-10 text-white font-semibold tracking-[1px] text-sm">
               {tab === "Daily" ? t.daily : t.weekly}
             </span>
           </button>
