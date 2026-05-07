@@ -180,7 +180,7 @@ export default function WinnerList({ lastWeeklyWinners }) {
                   <div className="w-full h-full bg-yellow-300 rounded-full shadow-[0_0_6px_rgba(253,224,71,0.9)]" />
                 </div>
               ))}
-              <h1 className="text-[22px] font-bold text-white ">
+              <h1 className="text-xl font-bold text-white ">
                 {t.weeklyWinners}
               </h1>
             </div>
@@ -192,7 +192,7 @@ export default function WinnerList({ lastWeeklyWinners }) {
 
         {/* Scrolling Section */}
         <div className="relative -mt-20 mx-1">
-          <div className="relative overflow-hidden py-2">
+          <div className="relative overflow-hidden py-2 pb-1">
             <div
               className={`
     flex gap-4 px-4 will-change-transform

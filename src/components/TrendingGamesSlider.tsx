@@ -38,7 +38,7 @@ export default function TrendingGamesSlider() {
               <div className=" backdrop-blur-sm rounded-xl flex items-center justify-center">
                 <Gamepad2 className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-[22px] font-bold text-white ">
+              <h1 className="text-xl font-bold text-white ">
                 {t.trendingGames}
               </h1>
 

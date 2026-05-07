@@ -177,7 +177,7 @@ export default function NotificationPage() {
                 <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                   <Bell className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="text-[22px] font-bold text-white ">
+                <h1 className="text-xl font-bold text-white ">
                   {t.notifications}
                 </h1>
               </div>

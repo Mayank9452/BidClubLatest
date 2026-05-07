@@ -776,7 +776,7 @@ html {
     }
 
     /* .font-pop{
-    font-family: "Poppins" !important;
+    font-family: inherit !important;
   } */
 
     @media(max-width: 400px) {
@@ -1073,7 +1073,7 @@ html {
 
 .loader-container p {
     margin-top: 10px;
-    font-family: 'Poppins', sans-serif;
+    font-family: inherit;
     color: #374151;
     /* Dark gray text */
 }

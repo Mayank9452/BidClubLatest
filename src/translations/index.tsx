@@ -130,7 +130,7 @@ export const translations: any = {
     ticket: "Ticket",
     tapToEnter: "Tap to Enter",
     filled: "Filled",
-    goodLuck: "GOOD LUCK",
+    goodLuck: "Good Luck",
     enterTicketNumber: "Enter Ticket Number",
     delete: "Delete",
     confirm: "Confirm",

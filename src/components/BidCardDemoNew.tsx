@@ -344,7 +344,7 @@ export default function BidCardDemo() {
   return (
     <div className="rounded-2xl">
       {/* Tab Switcher */}
-      <div className="flex bg-white/30 backdrop-blur-sm p-1 rounded-xl shadow-xl mx-5 mb-5 border border-white/20">
+      <div className="flex bg-white/30 backdrop-blur-sm p-1 rounded-xl shadow-xl mx-5 mb-4 border border-white/20">
         {["Daily", "Weekly"].map((tab) => (
           <button
             key={tab}
@@ -403,7 +403,7 @@ export default function BidCardDemo() {
         <div ref={scrollRef} className="overflow-hidden">
           <motion.div
             key={activeTab}
-            className="flex gap-3 cursor-grab active:cursor-grabbing pb-4 w-max will-change-transform"
+            className="flex gap-2 cursor-grab active:cursor-grabbing w-max will-change-transform"
             drag="x"
             dragConstraints={scrollRef}
             dragElastic={0.02}

@@ -24,11 +24,11 @@ export default function VideoSection() {
           {t.aboutBidBlast}
         </h3>
 
-        <p className="text-xs text-gray-700 text-center leading-relaxed font-bold ">
+        <p className="text-sm text-gray-700 text-center leading-relaxed font-semibold ">
           {t.welcomeBidBlast}
         </p>
 
-        <p className="text-xs text-center bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent font-semibold ">
+        <p className="text-xs text-center bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent font-semibold leading-relaxed">
           {t.knowMore}
         </p>
 

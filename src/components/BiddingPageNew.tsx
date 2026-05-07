@@ -511,7 +511,7 @@ export default function BiddingPage() {
                                         {/* Good Luck Badge */}
                                         <div className="flex justify-center ">
                                             <div className="px-4 py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl shadow-xl border border-white/20">
-                                                <p className="text-xs font-bold text-white tracking-[3px] ">
+                                                <p className="text-xs font-bold text-white  ">
                                                     ✨ {t.goodLuck}! ✨
                                                 </p>
                                             </div>

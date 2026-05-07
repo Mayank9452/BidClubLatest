@@ -624,7 +624,7 @@ const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handl
                     {Object.keys(selectedTickets).length === 6 && (
                         <div className="flex justify-center">
                             <div className="px-4 py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl shadow-xl border border-white/20">
-                                <p className="text-xs font-bold text-white tracking-[3px]">✨ {t.goodLuck}! ✨</p>
+                                <p className="text-xs font-bold text-white ">✨ {t.goodLuck}! ✨</p>
                             </div>
                         </div>
                     )}

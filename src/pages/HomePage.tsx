@@ -63,7 +63,7 @@ export default function HomePage() {
               <div className="flex-shrink-0 -mt-2">
                 <BiddingHammer className="w-12 h-12" />
               </div>
-              <span className="text-[22px] font-bold ">{t.liveBidding || "Live Bidding"}</span>
+              <span className="text-xl font-bold ">{t.liveBidding || "Live Bidding"}</span>
             </h2>
             <p className="text-center text-white/90 text-sm font-semibold ">
               {t.liveBidDescription || "Play now and win Atom Rewards"}
@@ -91,7 +91,7 @@ export default function HomePage() {
             ⚡ How to Play
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white ">
+            <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white ">
               <PlayCircle className="h-5 w-5 text-white" />
               {t.howToPlay}
             </h2>
@@ -107,7 +107,7 @@ export default function HomePage() {
         <section
           className="
   rounded-3xl
-  p-2
+  p-2 pb-0 pt-0
   "
           style={{ opacity: 1, transform: "none" }}
         >
@@ -119,7 +119,7 @@ export default function HomePage() {
             ⚡ Live Activity
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white ">
+            <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white ">
               <Activity className="h-5 w-5 text-white" />
               {t.liveActivity}
             </h2>
@@ -138,7 +138,7 @@ export default function HomePage() {
         <section
           className="
   rounded-3xl
-  p-2
+  p-2 pt-0
   "
           style={{ opacity: 1, transform: "none" }}
         >
@@ -146,7 +146,7 @@ export default function HomePage() {
             ⚡ Leaderboard
           </h2> */}
           <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
-            <h2 className="flex items-center justify-center gap-2 text-[22px] font-bold text-white ">
+            <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white ">
               <Trophy className="h-5 w-5 text-white" />
               {t.leaderboard}
             </h2>

@@ -156,7 +156,7 @@ export default function LeaderboardPageNew() {
                   fill="currentColor"
                 />
               </div>
-              <h1 className="text-[22px] font-bold text-white ">
+              <h1 className="text-xl font-bold text-white ">
                 {t.leaderboard}
               </h1>
             </div>

@@ -128,7 +128,7 @@ export default function ProfilePage() {
               <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                 <User className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-[22px] font-bold text-white ">
+              <h1 className="text-xl font-bold text-white ">
                 {t.myProfile}
               </h1>
             </div>
@@ -144,7 +144,7 @@ export default function ProfilePage() {
           <div className="bg-white  rounded-2xl shadow-xl border border-gray-100/40 overflow-hidden">
             {/* Profile Image Section */}
             <div className="relative pt-2">
-              <div className="flex flex-col items-center mx-2 p-2 bg-white rounded-xl">
+              <div className="flex flex-col items-center mx-2 bg-white rounded-xl">
                 {/* Avatar with Edit Button */}
                 <div className="relative ">
                   <motion.div className="relative">

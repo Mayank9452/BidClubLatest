@@ -29,11 +29,11 @@ export default function DetailsPage() {
         <div className="relative gradient-home-section backdrop-blur-2xl border-b border-gray-200 p-4 sticky top-0 shadow-sm mt-2 rounded-xl pb-14">
           <button
             onClick={() => navigate(-1)}
-            className="absolute left-3 top-3 p-1 bg-black/20 hover:bg-black/30 rounded-xl backdrop-blur-md transition-all active:scale-95"
+            className="absolute left-3 top-3 p-1 bg-white/95 hover:bg-white rounded-xl backdrop-blur-md transition-all active:scale-95"
           >
-            <ChevronLeft className="w-5 h-5 text-white" />
+            <ChevronLeft className="w-5 h-5 text-indigo-600" />
           </button>
-          <h1 className="text-[22px] font-bold text-white flex items-center justify-center gap-2 ">
+          <h1 className="text-xl font-bold text-white flex items-center justify-center gap-2 ">
             <Gamepad2 className="w-6 h-6 text-white" />
             {t.howToPlay}
           </h1>

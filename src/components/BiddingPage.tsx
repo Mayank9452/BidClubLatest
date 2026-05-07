@@ -535,7 +535,7 @@ export default function BiddingPage() {
                       >
                         <div className="px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl shadow-xl border border-white/20 relative overflow-hidden group">
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                          <p className="text-sm font-bold text-white tracking-[3px] animate-pulse">
+                          <p className="text-sm font-bold text-white  animate-pulse">
                             ✨ {t.goodLuck}! ✨
                           </p>
                         </div>

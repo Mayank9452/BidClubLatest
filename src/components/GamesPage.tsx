@@ -32,7 +32,7 @@ const GamesHeader = React.memo(({ t }: { t: any }) => (
         <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
           <Gamepad2 className="w-6 h-6 text-white" />
         </div>
-        <h1 className="text-[22px] font-bold text-white ">
+        <h1 className="text-xl font-bold text-white ">
           {t?.gamesTitle || "Games"}
         </h1>
       </div>
@@ -63,7 +63,7 @@ const TrendingSection = React.memo(({ t, language }: { t: any; language: string 
 ));
 
 const GamesList = React.memo(({ games, onPlay }: { games: any[]; onPlay: (url: string) => void }) => (
-  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 py-2 ">
+  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 py-2 ">
     {games.map((game: any, index: number) => (
       <GameCard
         key={game.game_id}
