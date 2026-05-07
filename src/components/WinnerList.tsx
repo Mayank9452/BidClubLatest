@@ -92,7 +92,7 @@ const generateSparkles = (count: number) => {
 export default function WinnerList({ lastWeeklyWinners }) {
   const { t } = useLanguage();
 
-  const cardSparkles = useMemo(() => generateSparkles(20), []);
+  const cardSparkles = useMemo(() => generateSparkles(5), []);
 
   const weeklyWinners = useMemo(() => {
     if (!Array.isArray(lastWeeklyWinners)) return [];
