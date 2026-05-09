@@ -59,7 +59,7 @@ export default function WaitLoader({ isOverlay = false }: { isOverlay?: boolean 
               ease: "easeInOut",
             }}
             className="relative z-20 origin-right"
-            style={{ transformOrigin: "85% 75%" }}
+            style={{ transformOrigin: "85% 75%", position: "relative", top: "-20px" }}
           >
             <svg viewBox="0 0 100 100" className="w-20 h-20 drop-shadow-2xl">
               <path
@@ -67,6 +67,7 @@ export default function WaitLoader({ isOverlay = false }: { isOverlay?: boolean 
                 stroke="url(#loaderGold)"
                 strokeWidth="8"
                 strokeLinecap="round"
+                fill="url(#loaderGold)"
               />
               <circle cx="83" cy="78" r="5" fill="#ca8a04" />
               <g transform="translate(10, 20) rotate(-40 25 25)">
@@ -122,7 +123,10 @@ export default function WaitLoader({ isOverlay = false }: { isOverlay?: boolean 
               exit={{ y: -10, opacity: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="text-white text-xl font-bold tracking-widest italic"
-              style={{ textShadow: "0 0 15px rgba(251, 191, 36, 0.4)" }}
+              style={{
+                textShadow: "0 0 15px rgba(251, 191, 36, 0.4)",
+                fontFamily: "'Atom Sans', sans-serif"
+              }}
             >
               {phrases[index]}
             </motion.p>

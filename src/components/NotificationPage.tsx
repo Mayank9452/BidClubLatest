@@ -118,7 +118,7 @@ export default function NotificationPage() {
     const end = formatDateTime(`${item.bid_end_date} ${item.bid_end_time}`);
 
     // Deterministic diamond credit based on batch_id
-    const diamondAmount = (Number(item.batch_id) % 10) + 1;
+    const diamondAmount = item.diamond_earned || 0;
 
     return {
       id: item.batch_id,
@@ -128,6 +128,7 @@ export default function NotificationPage() {
       endDate: end.date,
       endTime: end.time,
       won: item.reward_prize_text !== "No prize won",
+      diamondAmount: diamondAmount,
       diamondCredit: t.diamondEarned?.replace("{0}", diamondAmount.toString()) || `Diamond earned : ${diamondAmount}`,
       prize: formatPrize(item.reward_prize_text),
       timestamp: formatTimeAgo(item.batch_datetime),
@@ -353,6 +354,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
     endTime,
     won,
     prize,
+    diamondAmount,
     diamondCredit,
     timestamp,
   } = notification;
@@ -417,7 +419,7 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
 
           {/* Prize Info */}
           {won ? (
-            <div className="gradient-notification-won rounded-lg p-2.5 mb-2.5">
+            <div className="gradient-notification-won rounded-xl p-2.5 mb-2.5">
               <div className="flex items-center gap-2 mb-1">
                 <Gift className="w-4 h-4 text-white" />
                 <p className="text-sm font-semibold text-white/90 ">
@@ -426,12 +428,12 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 mb-1">
+              {diamondAmount !== 0 && <div className="flex items-center gap-2 mb-1">
                 <Gem className="w-4 h-4 text-white inline mr-1" />
                 <p className="text-white text-xs font-semibold ">
                   {diamondCredit}
                 </p>
-              </div>
+              </div>}
             </div>
           ) : (
             <div className="bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-violet-300 transition-all active:scale-[0.98] rounded-lg p-2.5 mb-2.5">
@@ -457,12 +459,12 @@ const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any
                 </p>
               </div>
 
-              <div className="ms-0.5 flex items-center gap-1.5 mb-1 text-pink-600">
+              {diamondAmount !== 0 && <div className="ms-0.5 flex items-center gap-1.5 mb-1 text-pink-600">
                 <Gem className="w-4 h-4 inline mr-1" />
                 <p className="text-xs font-semibold ">
                   {diamondCredit}
                 </p>
-              </div>
+              </div>}
             </div>
           )}
 

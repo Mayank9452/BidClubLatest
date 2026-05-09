@@ -13,7 +13,7 @@ import userJackpotSpinsReducer from '../features/userJackpotSpins/userJackpotSpi
 import userSpinsInfoReducer from '../features/spinsInfo/spinInfoSlice';
 import participantRewardReducer from "../features/participantReward/participantRewardSlice";
 // ✅ Import your new profile image slice (NOT inside auth)
-import profileImageReducer from '../features/profile/updateProfileSlice';
+import profileImageReducer from '../features/bidProfile/updateProfileSlice';
 import summerRewardReducer from '../features/summerReward/summerRewardSlice'; // ✅ new
 
 import homeReducer from '../features/home/homeSlice'; // 🔥 HomeAPI

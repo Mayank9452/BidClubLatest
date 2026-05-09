@@ -46,11 +46,11 @@ const profileSlice = createSlice({
       //   });
       //   // ✅ Handle 401
       //   console.log("action.error::", action.error);
-        
+
       //   const error = action.error as any;
       //   if (error.code === 401) {
       //     console.log(error);
-          
+
       //     const dispatch = (action.meta as any).dispatch as AppDispatch;
       //     dispatch(logout());
       //   }
@@ -67,7 +67,7 @@ const profileSlice = createSlice({
           variant: "destructive",
           duration: 1000,
         });
-        
+
         // ✅ Handle 401 Unauthorized
         // if (errorPayload?.code === 401) {
         //   console.log("errorPayload:", errorPayload);

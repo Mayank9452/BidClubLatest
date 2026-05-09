@@ -53,9 +53,13 @@ const routes = [
     path: "/profile",
     element: <ProfilePage />,
   },
+  // {
+  //   path: "/biddingPage",
+  //   element: <UserSpecificRoute latest={BiddingPageLatest} original={BiddingPage} />,
+  // },
   {
     path: "/biddingPage",
-    element: <UserSpecificRoute latest={BiddingPageLatest} original={BiddingPage} />,
+    element: <BiddingPageLatest />,
   },
   {
     path: "/games",

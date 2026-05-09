@@ -130,7 +130,8 @@ export default function HomePage() {
 
           <ActivitySlider
             activities={ACTIVITY_FEED}
-            updatedData={response?.data?.latest_joined_users}
+            latestJoined={response?.data?.latest_joined_users}
+            winners={response?.data?.liveActivityWinners}
           />
         </section>
 

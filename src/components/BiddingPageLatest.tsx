@@ -28,6 +28,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { checkUniqueNumbers } from "@/features/uniqueNumber/uniqueNumberSlice";
 import { placeBid } from "@/features/placebid/placeBidSlice";
 import { fetchBidInfo } from "@/features/bid/bidSlice";
+import { fetchHomeData } from "@/features/home/homeSlice";
 
 // ── Static Styles (Optimized for Mobile) ──────────────────────────────────────
 const TICKET_MASK_STYLE = {
@@ -310,13 +311,28 @@ export default function BiddingPageLatest() {
     }, [selectedTickets, bidInfo?.bid_id, bidData?.batchCount, bidData?.cycleCount, dispatch]);
 
     const handlePlayMoreBids = useCallback(() => {
+        if (bidData?.joinedStatus === false) {
+            const userId = bidData?.userId;
+            if (userId) {
+                try {
+                    const decodedId = atob(userId);
+                    const parsedId = parseInt(decodedId, 10);
+                    if (!isNaN(parsedId)) {
+                        dispatch(fetchHomeData(parsedId));
+                    }
+                } catch (e) {
+                    // console.error("Error decoding userId:", e);
+                }
+            }
+        }
+
         const encodedBidId = sessionStorage.getItem("bidId");
         if (encodedBidId) {
             dispatch(fetchBidInfo(encodedBidId));
         }
         setSelectedTickets({});
         setShowSuccessPopup(false);
-    }, [dispatch]);
+    }, [dispatch, bidData?.joinedStatus, bidData?.userId]);
 
     return (
         <>
@@ -453,7 +469,7 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
 // ── Sub-components ───────────────────────────────────────────────────────────
 
 const HeaderSection = React.memo(({ navigate, bidName, t }: any) => (
-    <div className="relative gradient-home-section py-4 px-3 pb-6 overflow-hidden rounded-xl mb-4 shadow-xl shadow-pink-200/20 flex flex-col justify-center items-center gap-2 transform-gpu translate-z-0">
+    <div className="relative gradient-home-section py-4 px-3 pb-7 overflow-hidden rounded-xl mb-4 shadow-xl shadow-pink-200/20 flex flex-col justify-center items-center gap-2 transform-gpu translate-z-0">
         <button
             onClick={() => navigate(-1)}
             className="absolute left-3 top-3 p-1 bg-white/95 hover:bg-white rounded-xl backdrop-blur-sm transition-all active:scale-95 shadow-sm border border-white/10"
@@ -511,9 +527,9 @@ const HistoricalSetsSection = React.memo(({ isShowingFilledSets, completeSets, s
                     <button
                         key={cycleNum}
                         onClick={() => setSelectedCycle(cycleNum)}
-                        className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-wider transition-all border-2 whitespace-nowrap min-w-[80px] snap-center transform-gpu translate-z-0 ${selectedCycle === cycleNum
+                        className={`px-2 py-3 rounded-xl text-xs font-bold tracking-wider transition-all border-2 whitespace-nowrap min-w-[80px] max-auto snap-center transform-gpu translate-z-0 ${selectedCycle === cycleNum
                             ? "bg-gradient-to-r from-[#ff009c] to-[#bd10e0] text-white border-white shadow-[0_4px_12px_rgba(255,0,156,0.3)] scale-105"
-                            : "bg-pink-100 text-pink-600 border-pink-300 hover:border-pink-400 shadow-sm"
+                            : "bg-pink-50 text-pink-600 border-pink-300 hover:border-pink-400 shadow-sm"
                             }`}
                     >
                         {t.cycle} {cycleNum}
@@ -535,12 +551,12 @@ const HistoricalSetsSection = React.memo(({ isShowingFilledSets, completeSets, s
                         return (
                             <div key={setIndex} className={`${completeSets[selectedCycle.toString()].length === 1 ? "w-full" : "min-w-[85%]"} flex-shrink-0 snap-center relative rounded-2xl p-[4px] ${theme.gradient} shadow-xl transform-gpu translate-z-0`}>
                                 <div className="border-2 border-dashed border-white/80 rounded-xl p-1 relative">
-                                    <div className={`absolute -top-[2px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center gap-2.5 w-[65%] rounded-xl ${theme.gradient} p-2`} style={SET_MASK_STYLE}>
+                                    <div className={`absolute -top-[2px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center gap-2.5 w-[55%] rounded-xl ${theme.gradient} p-2`} style={SET_MASK_STYLE}>
                                         <div className="absolute inset-0 bg-white/10 animate-pulse" />
                                         <div className="relative z-10 w-7 h-7 bg-white rounded-lg flex items-center justify-center shadow-lg transform -rotate-2">
                                             <Hammer className={`w-3.5 h-3.5 ${theme.accentText}`} />
                                         </div>
-                                        <h3 className="relative z-10 text-[12px] font-black text-white tracking-[1.5px] uppercase drop-shadow-md whitespace-nowrap">
+                                        <h3 className="relative z-10 text-[12px] font-black text-white tracking-[1.5px] uppercase whitespace-nowrap">
                                             {t.setNumbersTitle?.replace("{0}", setData.batch_bid_batch)}
                                         </h3>
                                     </div>
@@ -556,10 +572,7 @@ const HistoricalSetsSection = React.memo(({ isShowingFilledSets, completeSets, s
                                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
                                                         <div className="absolute inset-1.5 border-2 border-dashed border-white/80 rounded-lg pointer-events-none" />
                                                         <p className="text-sm font-bold text-white drop-shadow-md">{val}</p>
-                                                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-white/20 rounded-full mt-0.5">
-                                                            <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
-                                                            <span className="text-[8px] text-white leading-relaxed">{t.filled}</span>
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             ))}
@@ -749,13 +762,13 @@ const KeypadSection = React.memo(({
                     )}
                 </AnimatePresence>
 
-                <div className="grid grid-cols-5 gap-1 mb-4 mt-2">
+                <div className="grid grid-cols-5 gap-0.5 mb-4 mt-2">
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
                         <button
                             key={num}
                             disabled={currentTicket === null || inputValue.length >= 4}
                             onClick={() => handleNumberClick(num.toString())}
-                            className="h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 border-2 border-white text-white text-xl font-bold flex items-center justify-center shadow-lg active:scale-95 active:opacity-90 disabled:opacity-90 will-change-transform transform-gpu translate-z-0"
+                            className="w-13 h-12 rounded-3xl bg-gradient-to-br from-amber-400 via-orange-400 to-orange-500 border-2 border-white text-white text-base font-bold flex items-center justify-center shadow-lg active:scale-95 active:opacity-90 disabled:opacity-90 will-change-transform transform-gpu translate-z-0"
                         >
                             {num}
                         </button>

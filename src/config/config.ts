@@ -39,6 +39,7 @@ const frontendAPI = {
   games: `${API_URL}FreeGamesAPI`,
   playGames: `${API_URL}PlayGame`,
   setProfileImage: `${API_URL}SetProfileImage`,
+  unsubAPI: `${API_URL}UnsubAPI`,
 };
 
 const gamesFrontendAPI = {

@@ -26,3 +26,23 @@ export const getProfileInfoAPI = async (_: any, { getState }) => {
 
   return await res.json();
 };
+
+export const unsubscribeUserAPI = async ({ getState }: { getState: any }): Promise<any> => {
+  const state = getState() as RootState;
+  const token = state.auth.data?.token || sessionStorage.getItem("auth");
+
+  const res = await fetch(frontendAPI.unsubAPI, {
+    method: "POST",
+    headers: {
+      "Authorization": token ? `${token}` : "",
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error?.message ?? "Failed to unsubscribe. Please try again.");
+  }
+
+  return await res.json();
+};

@@ -16,12 +16,13 @@ import { TopBar } from "./TopBar";
 import { BottomNavBar } from "./BottomNavBar";
 import { useLanguage } from "./context/LanguageContext";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { getProfileInfo } from "@/features/bidProfile/profileSlice";
+import { getProfileInfo, unsubscribeUser } from "@/features/bidProfile/profileSlice";
+import { logout } from "@/features/auth/authSlice";
 import dayjs from "dayjs";
 import PopupBannerUnsubscribe from "./PopupBannerUnsubscribe";
 import PopupAvatarSelector from "./PopupAvatarSelector";
 import { useNavigate } from "react-router-dom";
-import { updateProfileImageThunk } from "@/features/profile/updateProfileSlice";
+import { updateProfileImageThunk } from "@/features/bidProfile/updateProfileSlice";
 import WaitLoader from "./Loader";
 
 const formatDateTime = (dateTimeString) => {
@@ -93,17 +94,19 @@ export default function ProfilePage() {
   };
 
   const confirmUnsubscribe = async () => {
-    // const res = await dispatch(unsubscribeUserThunk());
+    try {
+      const res = await dispatch(unsubscribeUser() as any).unwrap();
 
-    // if (res.payload?.status === "success") {
-    //   dispatch(logout());
-
-    //   window.location.href =
-    //     is_freemium === 1 || is_freemium === 2
-    //       ? "https://billing.atomspinzone.com/?AdNetwork=freemium&ClickID=&Publisher="
-    //       : "https://billing.atomspinzone.com/";
-    // }
-    console.log("Hi");
+      if (res?.status === "success" || res?.status === true) {
+        dispatch(logout());
+        // Redirect to billing URL
+        window.location.href = "https://bidclubtesting.vercel.app/";
+      }
+    } catch (error) {
+      console.error("Unsubscription failed:", error);
+    } finally {
+      setShowUnsubscribePopup(false);
+    }
   };
 
   return (
@@ -223,6 +226,29 @@ export default function ProfilePage() {
                 <ChevronRight className="w-5 h-5 text-gray-400" />
               </button>
 
+              {/* Subscribe Now (Only if not subscribed) */}
+              {/* {(user?.user_is_subscribed === "0" || user?.user_is_subscribed === 0) && (
+                <button
+                  onClick={() => window.location.href = ""}
+                  className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-green-50 to-emerald-50 active:from-green-100 active:to-emerald-100 rounded-xl border border-green-300 transition-all duration-150 active:scale-[0.98]"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                      <Gem className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-base font-semibold text-gray-800 ">
+                        {t.subscribeNow}
+                      </h3>
+                      <p className="text-sm text-gray-500 font-semibold ">
+                        {t.getFullAccess}
+                      </p>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                </button>
+              )} */}
+
               {/* Unsubscribe */}
               {user?.user_subscription_status !== "unsub" && (
                 <button
@@ -319,7 +345,7 @@ export default function ProfilePage() {
                 badgeClassName={user?.user_subscription_status === "unsub" ? "bg-white text-red-600" : ""}
               />
               {user?.user_subscription_status !== "unsub" && (
-                <InfoRow label={t.subscription} value="Daily : 200 Ks" />
+                <InfoRow label={t.subscription} value={data?.data?.subscriptionPlan === "weekly" ? t.weeklyPack : t.dailyPack} />
               )}
             </div>
           </div>

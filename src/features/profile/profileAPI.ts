@@ -3,17 +3,17 @@ import { frontendAPI } from "@/config/config";
 import { logout } from "../auth/authSlice";
 
 // src/features/auth/profileAPI.js
-export const getUserDetails = async (_: any,{ getState }) => {
+export const getUserDetails = async (_: any, { getState }) => {
   const state = getState() as RootState;
-  const token = state.auth.data.token||null;
+  const token = state.auth.data.token || null;
   const res = await fetch(frontendAPI.profile, {
     method: 'GET',
-    headers: { 
+    headers: {
       'Content-Type': 'application/json',
       'Authorization': token ? `Bearer ${token}` : '',
-     },
+    },
   });
-  
+
   if (res.status === 401) {
     const error = await res.json(); // optional: detailed error
     throw { code: 401, message: error?.message ?? "Unauthorized" };

@@ -53,28 +53,45 @@ const ActivityItem = React.memo(({ activity, gradientClass, t }: { activity: any
 ));
 
 interface ActivitySliderProps {
-  activities: Activity[];
+  latestJoined?: any[];
+  winners?: any[];
 }
 
 
-export default function ActivitySlider({ updatedData }) {
+export default function ActivitySlider({ latestJoined = [], winners = [] }: ActivitySliderProps) {
   const { t } = useLanguage();
 
   const activityList = useMemo(() => {
-    if (!Array.isArray(updatedData)) return [];
+    const getAvatar = (img: any, idx: number) => {
+      if (!img) return `${(idx % 15) + 1}.png`;
+      const num = parseInt(img);
+      return isNaN(num) || num > 15 ? `${(idx % 15) + 1}.png` : img;
+    };
 
-    return updatedData.map((item: any, index: number) => {
-      const avatarIndex = (Number(item.user_id || index) % 15) + 1;
-      const isPlacedBid = (Number(item.user_id || index) % 2 === 0);
+    const joinedItems = (latestJoined || []).map((item: any, index: number) => ({
+      id: `joined-${index}`,
+      user_phone: maskMSISDN(item.user_phone),
+      newMessage: t.placedBid,
+      avatar: getAvatar(item.user_image, index),
+    }));
 
-      return {
-        id: index + 1,
-        user_phone: maskMSISDN(item.user_phone),
-        newMessage: isPlacedBid ? t.placedBid : t.playerWonBid,
-        avatar: `${avatarIndex}.png`,
-      };
-    });
-  }, [updatedData, t]);
+    const winningItems = (winners || []).map((item: any, index: number) => ({
+      id: `won-${index}`,
+      user_phone: maskMSISDN(item.user_phone),
+      newMessage: t.playerWonBid,
+      avatar: getAvatar(item.user_image, index),
+    }));
+
+    // Interleave or just combine
+    const combined = [];
+    const maxLen = Math.max(joinedItems.length, winningItems.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (i < joinedItems.length) combined.push(joinedItems[i]);
+      if (i < winningItems.length) combined.push(winningItems[i]);
+    }
+
+    return combined;
+  }, [latestJoined, winners, t]);
 
   const gradientStyles = [
     "from-indigo-600 to-purple-600",
@@ -83,11 +100,15 @@ export default function ActivitySlider({ updatedData }) {
     "from-violet-600 to-pink-500",
   ];
 
-  const extendedList = useMemo(() => [...activityList, ...activityList], [activityList]);
+  const extendedList = useMemo(() => {
+    if (activityList.length === 0) return [];
+    // If list is small, repeat it to ensure smooth scrolling
+    return activityList.length < 10 ? [...activityList, ...activityList, ...activityList] : [...activityList, ...activityList];
+  }, [activityList]);
 
   return (
     <div className="relative w-full overflow-hidden py-2 -mt-[4.5rem]">
-      <div className="flex gap-4 animate-[slide-right_30s_linear_infinite] whitespace-nowrap px-4 w-max">
+      <div className="flex gap-4 animate-[slide-right_60s_linear_infinite] whitespace-nowrap px-4 w-max">
         {extendedList.map((activity, index) => (
           <ActivityItem
             key={`${activity.id}-${index}`}

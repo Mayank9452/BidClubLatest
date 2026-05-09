@@ -1,13 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { toast } from "@/hooks/use-toast";
-import { getProfileInfoAPI } from "./profileAPI";
+import { getProfileInfoAPI, unsubscribeUserAPI } from "./profileAPI";
 
 export const getProfileInfo = createAsyncThunk(
   "getProfileInfo",
   async (_: void, { getState, rejectWithValue }) => {
     try {
       return await getProfileInfoAPI(_, { getState });
+    } catch (error: any) {
+      return rejectWithValue({
+        code: error?.code ?? 500,
+        message: error?.message ?? "Something went wrong",
+      });
+    }
+  }
+);
+
+export const unsubscribeUser = createAsyncThunk(
+  "unsubscribeUser",
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      return await unsubscribeUserAPI({ getState });
     } catch (error: any) {
       return rejectWithValue({
         code: error?.code ?? 500,

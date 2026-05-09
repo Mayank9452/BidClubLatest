@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   X,
   Gem,
+  Sparkles,
 } from "lucide-react";
 import { BottomNavBar } from "./BottomNavBar";
 import { TopBar } from "./TopBar";
@@ -20,6 +21,8 @@ import {
   fetchLeaderboard,
   resetLeaderboard,
 } from "@/features/leaderboard/leaderboardSlice";
+import { Button } from "./ui/button";
+import PopupNotJoinedLeaderboard from "./PopupNotJoinedLeaderboard";
 
 const maskPhone = (phone: string) => {
   if (!phone) return "";
@@ -73,6 +76,7 @@ export default function LeaderboardPageNew() {
 
   const [activeTab, setActiveTab] = useState<"weekly" | "monthly">("weekly");
   const [expandedUser, setExpandedUser] = useState<number | null>(null);
+  const [showNotJoinedPopup, setShowNotJoinedPopup] = useState(false);
   const { t } = useLanguage();
 
   // const topThree = MOCK_USERS.slice(0, 3);
@@ -364,7 +368,7 @@ export default function LeaderboardPageNew() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                     <span className="text-base font-bold text-white ">
                       {user.rank}
                     </span>
@@ -394,7 +398,31 @@ export default function LeaderboardPageNew() {
             </motion.div>
           </div>
         )}
+
+        {/* Not Joined Floating Indicator */}
+        {user && user.rank === 0 && (
+          <div className="fixed bottom-20 right-6 z-20 pointer-events-none">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              onClick={() => setShowNotJoinedPopup(true)}
+              className="w-14 h-14 gradient-home-section rounded-full flex items-center justify-center shadow-2xl border-2 border-white/50 pointer-events-auto cursor-pointer animate-pulse will-change-transform"
+            >
+              <Trophy className="w-7 h-7 text-yellow-300" />
+            </motion.div>
+          </div>
+        )}
       </div>
+
+      <AnimatePresence>
+        {showNotJoinedPopup && (
+          <PopupNotJoinedLeaderboard
+            onClose={() => setShowNotJoinedPopup(false)}
+            t={t}
+            activeTab={activeTab}
+          />
+        )}
+      </AnimatePresence>
 
       <BottomNavBar />
       {status === "loading" && filters.pageNo === 1 && <WaitLoader isOverlay />}
