@@ -78,9 +78,11 @@ export function TopBar({
             {/* LEFT: LOGO */}
             <div className="flex items-center gap-2 cursor-pointer">
               <div className="flex items-center h-16">
-                <h1 className="text-2xl font-bold gradient-bid-blue bg-clip-text text-white">
-                  BidBlast
-                </h1>
+                <img
+                  src="/assets/images/logo_1.png"
+                  alt="BidBlast Logo"
+                  className="h-8 w-auto object-cover"
+                />
               </div>
             </div>
 
@@ -111,7 +113,7 @@ export function TopBar({
     px-3"
                   >
                     <Gem className="h-4 w-4 text-blue-400" />
-                    <span className="font-bold text-blue-400 text-[12px]">{userPoints}</span>
+                    <span className="font-bold text-blue-400 text-[11px]">{userPoints}</span>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
@@ -154,7 +156,7 @@ export function TopBar({
     before:pointer-events-none px-3"
                   >
                     <Coins className="h-4 w-4 text-yellow-400" />
-                    <span className="font-bold text-yellow-400 text-[12px]">{user_play_coins}</span>
+                    <span className="font-bold text-yellow-400 text-[11px]">{user_play_coins}</span>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
@@ -180,7 +182,7 @@ export function TopBar({
                 variant="outline"
                 size="sm"
                 onClick={() => navigate("/profile")}
-                className="relative px-2 bg-white dark:bg-card/10 backdrop-blur-sm hover:dark:bg-card/20 transition-all border border-white/40"
+                className="relative p-1 bg-white dark:bg-card/10 backdrop-blur-sm hover:dark:bg-card/20 transition-all border border-white/40 rounded-xl h-7 "
               >
                 <User className="h-4 w-4 text-black" />
               </Button>

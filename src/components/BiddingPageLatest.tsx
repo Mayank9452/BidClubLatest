@@ -160,7 +160,10 @@ export default function BiddingPageLatest() {
     const bidInfo = bidData?.bidInfo;
 
     // values you need
-    const bidName = useMemo(() => bidInfo?.bid_name?.replace(/\+/g, " "), [bidInfo?.bid_name]);
+    const bidName = useMemo(() => {
+        const name = bidInfo?.bid_name || bidData?.bidName;
+        return name?.replace(/\+/g, " ");
+    }, [bidInfo?.bid_name, bidData?.bidName]);
     const bidCycle = bidData?.cycleCount;
     const batchCount = bidData?.batchCount;
     const completeSets = bidData?.completeSets;
@@ -397,7 +400,9 @@ export default function BiddingPageLatest() {
                 isShow={bidData?.redirect === "RESULT"}
                 data={{
                     title: t.resultAwaiting,
-                    description: bidData?.redirect_to === "CYCLE_END" ? t.resultAwaitingCycleEnd : t.resultAwaitingCycleGeneral,
+                    description: (bidData?.textChange || bidData?.redirect_to === "BID_END")
+                        ? t.resultAwaitingCycleGeneral
+                        : t.resultAwaitingCycleEnd,
                 }}
                 onConfirm={() => navigate("/dashboard")}
             />
@@ -483,9 +488,13 @@ const HeaderSection = React.memo(({ navigate, bidName, t }: any) => (
         </div>
         <div className="relative z-10 max-w-md mx-auto text-center flex flex-col items-center gap-1">
             <h1 className="text-xl font-bold text-white drop-shadow-md">
-                {bidName?.includes("Daily")
-                    ? `${t.bidDaily} ${bidName?.split(" ")[2]}`
-                    : `${t.bidWeekly} ${bidName?.split(" ")[2]}`}
+                {bidName ? (
+                    bidName.toLowerCase().includes("daily")
+                        ? `${t.bidDaily} ${bidName.split(" ").pop()}`
+                        : `${t.bidWeekly} ${bidName.split(" ").pop()}`
+                ) : (
+                    t.placeYourBid || "Place Your Bid"
+                )}
             </h1>
         </div>
     </div>

@@ -6,13 +6,18 @@ const CanvasGame = React.memo(() => {
   const gameLoopRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
   
+  // Performance-focused refs
+  const gameWidthRef = useRef(0);
+  const gameHeightRef = useRef(0);
+  const dprRef = useRef(1);
+
   const player = useRef({
     x: 30,
     y: 60,
     width: 20,
     height: 20,
     dy: 0,
-    jumpForce: 10,
+    jumpForce: 8.5,
     grounded: false,
   });
 
@@ -28,8 +33,8 @@ const CanvasGame = React.memo(() => {
   >([]);
 
   const clouds = useRef<{ x: number; y: number; speed: number }[]>([]);
-  const frameCount = useRef(0);
   const framesSinceLastObstacle = useRef(0);
+  const cloudTimer = useRef(0);
   const nextObstacleDelay = useRef(60 + Math.floor(Math.random() * 61));
   const isGamePaused = useRef(false);
   const restartTimeoutRef = useRef<number>();
@@ -41,9 +46,9 @@ const CanvasGame = React.memo(() => {
     player.current.y = 60;
     player.current.dy = 0;
     player.current.grounded = false;
-    frameCount.current = 0;
     framesSinceLastObstacle.current = 0;
-    nextObstacleDelay.current = 60 + Math.floor(Math.random() * 61);
+    cloudTimer.current = 0;
+    nextObstacleDelay.current = 80 + Math.floor(Math.random() * 81);
     scoreRef.current = 0;
     lastTimeRef.current = 0;
   };
@@ -64,14 +69,20 @@ const CanvasGame = React.memo(() => {
     if (!ctx) return;
 
     const scaleCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
+      // CAP DPR at 2.0 for performance on high-end mobile screens
+      const dpr = Math.min(window.devicePixelRatio || 1, 2.0);
       const rect = canvas.getBoundingClientRect();
+      
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
+      
+      dprRef.current = dpr;
+      gameWidthRef.current = rect.width;
+      gameHeightRef.current = rect.height;
+      
       ctx.scale(dpr, dpr);
     };
 
-    // Intersection Observer to pause when off-screen
     const observer = new IntersectionObserver(
       ([entry]) => {
         const wasVisible = isVisible.current;
@@ -98,50 +109,71 @@ const CanvasGame = React.memo(() => {
     const update = (currentTime: number) => {
       if (!isVisible.current) return;
 
-      // Delta time calculation for frame-rate independence
       if (!lastTimeRef.current) lastTimeRef.current = currentTime;
-      const deltaTime = (currentTime - lastTimeRef.current) / 16.67; // normalized to 60fps
+      const deltaTime = (currentTime - lastTimeRef.current) / 16.67; 
       lastTimeRef.current = currentTime;
 
-      const effectiveDelta = isGamePaused.current ? 0 : deltaTime;
+      const width = gameWidthRef.current;
+      const height = gameHeightRef.current;
+      const groundY = height - 10;
 
-      frameCount.current += deltaTime;
-      framesSinceLastObstacle.current += deltaTime;
-      
-      const width = canvas.width / (window.devicePixelRatio || 1);
-      const height = canvas.height / (window.devicePixelRatio || 1);
-
+      // 1. Clear the canvas
       ctx.clearRect(0, 0, width, height);
 
       if (!isGamePaused.current) {
-        player.current.dy += 0.45 * deltaTime;
+        // Player Physics
+        player.current.dy += 0.35 * deltaTime;
         player.current.y += player.current.dy * deltaTime;
-        const groundY = height - 10;
+        
         if (player.current.y + player.current.height > groundY) {
           player.current.y = groundY - player.current.height;
           player.current.dy = 0;
           player.current.grounded = true;
         }
+
+        // Cloud Generation
+        cloudTimer.current += deltaTime;
+        if (cloudTimer.current > 120) {
+          clouds.current.push({
+            x: width,
+            y: 10 + Math.random() * 30,
+            speed: 0.3 + Math.random() * 0.4
+          });
+          cloudTimer.current = 0;
+        }
+
+        // Obstacle Generation
+        framesSinceLastObstacle.current += deltaTime;
+        if (framesSinceLastObstacle.current >= nextObstacleDelay.current) {
+          const h = 14 + Math.random() * 18;
+          obstacles.current.push({
+            x: width,
+            y: groundY - h,
+            width: 14,
+            height: h,
+            passed: false,
+            isBig: h > 24,
+          });
+          framesSinceLastObstacle.current = 0;
+          nextObstacleDelay.current = 80 + Math.floor(Math.random() * 81);
+        }
       }
 
-      // --- Clouds ---
-      if (Math.floor(frameCount.current) % 120 === 0 && !isGamePaused.current) {
-        clouds.current.push({ 
-          x: width, 
-          y: 10 + Math.random() * 30, 
-          speed: 0.3 + Math.random() * 0.4 
-        });
-      }
+      // 2. Batch Draw Clouds
+      ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+      ctx.beginPath();
       for (let i = clouds.current.length - 1; i >= 0; i--) {
         const cloud = clouds.current[i];
         if (!isGamePaused.current) cloud.x -= cloud.speed * deltaTime;
-        ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
-        ctx.fillRect(cloud.x, cloud.y, 20, 6);
-        ctx.fillRect(cloud.x + 5, cloud.y - 3, 10, 3);
+        
+        ctx.rect(cloud.x, cloud.y, 20, 6);
+        ctx.rect(cloud.x + 5, cloud.y - 3, 10, 3);
+        
         if (cloud.x < -30) clouds.current.splice(i, 1);
       }
+      ctx.fill();
 
-      const groundY = height - 10;
+      // 3. Draw Ground
       ctx.strokeStyle = "rgba(255,255,255,0.4)";
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -149,7 +181,7 @@ const CanvasGame = React.memo(() => {
       ctx.lineTo(width, groundY);
       ctx.stroke();
 
-      // Draw Player
+      // 4. Draw Player
       ctx.fillStyle = isGamePaused.current ? "#ff4444" : "#ffffff";
       ctx.beginPath();
       // @ts-ignore
@@ -161,28 +193,32 @@ const CanvasGame = React.memo(() => {
       }
       ctx.fill();
 
-      // Obstacle Generation
-      if (!isGamePaused.current && framesSinceLastObstacle.current >= nextObstacleDelay.current) {
-        const h = 14 + Math.random() * 18;
-        obstacles.current.push({
-          x: width,
-          y: groundY - h,
-          width: 14,
-          height: h,
-          passed: false,
-          isBig: h > 24,
-        });
-        framesSinceLastObstacle.current = 0;
-        nextObstacleDelay.current = 60 + Math.floor(Math.random() * 61);
-      }
-
-      const speed = isGamePaused.current ? 0 : 3.5 + scoreRef.current * 0.08;
-
+      // 5. Batch Draw Obstacles & Logic
+      const speed = isGamePaused.current ? 0 : 2.6 + scoreRef.current * 0.05;
+      const p = player.current;
+      const padding = 2;
+      
+      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.beginPath();
       for (let i = obstacles.current.length - 1; i >= 0; i--) {
         const obs = obstacles.current[i];
-        obs.x -= speed * deltaTime;
-        ctx.fillStyle = "rgba(255,255,255,0.7)";
-        ctx.beginPath();
+        if (!isGamePaused.current) {
+          obs.x -= speed * deltaTime;
+          
+          // Collision Check
+          if (p.x + padding < obs.x + obs.width && p.x + p.width - padding > obs.x &&
+              p.y + padding < obs.y + obs.height && p.y + p.height - padding > obs.y) {
+            handleCollision();
+          }
+
+          // Score check
+          if (!obs.passed && obs.x + obs.width < p.x) {
+            obs.passed = true;
+            scoreRef.current++;
+          }
+        }
+        
+        // Draw path
         // @ts-ignore
         if (ctx.roundRect) {
           // @ts-ignore
@@ -190,47 +226,30 @@ const CanvasGame = React.memo(() => {
         } else {
           ctx.rect(obs.x, obs.y, obs.width, obs.height);
         }
-        ctx.fill();
 
-        // Collision Check
-        const p = player.current;
-        const padding = 2;
-        if (p.x + padding < obs.x + obs.width && p.x + p.width - padding > obs.x &&
-          p.y + padding < obs.y + obs.height && p.y + p.height - padding > obs.y) {
-          handleCollision();
-          break;
-        }
-
-        // Score check
-        if (!obs.passed && obs.x + obs.width < player.current.x) {
-          obs.passed = true;
-          scoreRef.current++;
-        }
         if (obs.x + obs.width < -50) obstacles.current.splice(i, 1);
       }
+      ctx.fill();
 
       // Auto Jump AI
       if (player.current.grounded && !isGamePaused.current) {
         const nextObs = obstacles.current.find(o => o.x > player.current.x && o.x - player.current.x < 55);
-        if (nextObs) {
-          if (Math.random() > 0.25) {
-            player.current.dy = -player.current.jumpForce;
-            player.current.grounded = false;
-          }
+        if (nextObs && Math.random() > 0.25) {
+          player.current.dy = -player.current.jumpForce;
+          player.current.grounded = false;
         }
       }
 
-      // Draw Score
+      // 6. Draw UI (Score & Overlay)
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 12px sans-serif";
       ctx.textAlign = "right";
-      ctx.fillText(`SCORE: ${scoreRef.current}`, width - 10, 20);
+      ctx.textBaseline = "top";
+      ctx.fillText(`SCORE: ${scoreRef.current}`, width - 10, 10);
 
-      // --- Game Over Overlay ---
       if (isGamePaused.current) {
         ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         ctx.fillRect(0, 0, width, height);
-        
         ctx.fillStyle = "#ffffff";
         ctx.font = "bold 14px sans-serif";
         ctx.textAlign = "center";
@@ -252,7 +271,14 @@ const CanvasGame = React.memo(() => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="w-full h-full" style={{ touchAction: 'none' }} />;
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="w-full h-full" 
+      style={{ touchAction: 'none' }} 
+    />
+  );
 });
 
 export default CanvasGame;
+

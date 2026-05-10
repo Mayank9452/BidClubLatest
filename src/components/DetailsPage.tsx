@@ -39,7 +39,7 @@ export default function DetailsPage() {
           </h1>
         </div>
 
-        <div className="max-w-md mx-auto pt-2 pb-2 space-y-4 -mt-14">
+        <div className="max-w-md mx-auto pt-2 pb-2 space-y-4 -mt-12">
 
           {/* Video Card - Premium Style */}
           <div className="relative aspect-video rounded-2xl bg-dark-gray shadow-xl shadow-purple-500/20 overflow-hidden border border-white/20 mx-2">
