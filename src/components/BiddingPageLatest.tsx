@@ -145,6 +145,16 @@ export default function BiddingPageLatest() {
     const [isShowingFilledSets, setIsShowingFilledSets] = useState(false);
     const [selectedCycle, setSelectedCycle] = useState<number>(1);
     const { t } = useLanguage();
+    const cycleTabsRef = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (isShowingFilledSets && cycleTabsRef.current) {
+            const activeTab = cycleTabsRef.current.querySelector('[data-active="true"]');
+            if (activeTab) {
+                activeTab.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            }
+        }
+    }, [isShowingFilledSets, selectedCycle]);
 
     const { data: bidResponse, status: bidStatus } = useAppSelector((state) => state.bid);
     const { status: uniqueStatus } = useAppSelector((state) => state.uniqueNumbers);
@@ -341,7 +351,7 @@ export default function BiddingPageLatest() {
         <>
             <TopBar />
             <div className="bg-white overflow-x-hidden relative">
-                <div className="relative z-10 p-2 transform-gpu translate-z-0">
+                <div className="relative z-10 p-2 transform-gpu translate-z-0 pb-0">
                     <HeaderSection
                         navigate={navigate}
                         bidName={bidName}
@@ -352,7 +362,7 @@ export default function BiddingPageLatest() {
 
                     <div className="max-w-md mx-auto space-y-3 pt-1">
                         {allCompleteSets.length > 0 && (
-                            <div className="relative rounded-xl overflow-hidden shadow-2xl bg-white transform-gpu translate-z-0">
+                            <div className="relative rounded-xl overflow-hidden shadow-xl bg-white transform-gpu translate-z-0">
                                 {/* Premium Gradient Header - Matching NotificationPage Style */}
                                 <motion.div
                                     animate={{ paddingBottom: isShowingFilledSets ? '48px' : '16px' }}
@@ -397,15 +407,19 @@ export default function BiddingPageLatest() {
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -10 }}
                                                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                                                className="relative z-10 flex bg-white/10 backdrop-blur-md p-1 rounded-2xl border border-white/20 shadow-xl gap-1 mt-6"
+                                                className={`relative z-10 flex bg-white/10 backdrop-blur-md p-1 rounded-2xl border border-white/20 shadow-xl gap-1 mt-6 ${Number(bidCycle || 0) > 4 ? 'overflow-x-auto scrollbar-hide snap-x' : ''}`}
+                                                ref={cycleTabsRef}
+                                                style={Number(bidCycle || 0) > 4 ? { msOverflowStyle: 'none', scrollbarWidth: 'none' } : {}}
                                             >
                                                 {Array.from({ length: Number(bidCycle || 0) }, (_, i) => i + 1).map((cycleNum) => {
                                                     const isActive = selectedCycle === cycleNum;
+                                                    const isScrollable = Number(bidCycle || 0) > 4;
                                                     return (
                                                         <button
                                                             key={cycleNum}
                                                             onClick={() => setSelectedCycle(cycleNum)}
-                                                            className={`relative flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-300 ${isActive ? "text-pink-600" : "text-white/80 hover:text-white"}`}
+                                                            className={`relative ${isScrollable ? 'flex-none min-w-[85px] snap-center' : 'flex-1'} px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-300 ${isActive ? "text-pink-600" : "text-white/80 hover:text-white"}`}
+                                                            data-active={isActive}
                                                         >
                                                             {isActive && (
                                                                 <motion.div
@@ -431,7 +445,7 @@ export default function BiddingPageLatest() {
                                             animate={{ opacity: 1, height: "auto" }}
                                             exit={{ opacity: 0, height: 0 }}
                                             transition={{ duration: 0.5, ease: "easeInOut" }}
-                                            className="relative z-10 -mt-6 pb-2 bg-white rounded-3xl bg-white/50 backdrop-blur-md border border-white/20 text-center shadow-xl overflow-hidden"
+                                            className="relative z-10 mx-1.5 -mt-6 pb-2 bg-white rounded-xl bg-white/50 backdrop-blur-md border border-white/20 text-center overflow-hidden"
                                         >
                                             <div className="">
                                                 <HistoricalSetsSection
@@ -610,7 +624,7 @@ const HistoricalSetsSection = React.memo(({ completeSets, selectedCycle, bidCycl
 
     return (
         <div className="space-y-4 transform-gpu translate-z-0">
-            <div className="flex overflow-x-auto gap-2 px-1 scrollbar-hide snap-x pt-8 pb-2" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none', marginTop: '0' }}>
+            <div className="flex overflow-x-auto gap-2 px-1 scrollbar-hide snap-x pt-8" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none', marginTop: '0' }}>
                 {completeSets[selectedCycle.toString()] && completeSets[selectedCycle.toString()].length > 0 ? (
                     completeSets[selectedCycle.toString()].map((setData: any, setIndex: number) => {
                         const setNumbers = [
@@ -623,7 +637,7 @@ const HistoricalSetsSection = React.memo(({ completeSets, selectedCycle, bidCycl
 
                         return (
                             <div key={setIndex} className={`${completeSets[selectedCycle.toString()].length === 1 ? "w-full" : "min-w-[85%]"} flex-shrink-0 snap-center relative rounded-2xl transform-gpu translate-z-0`}>
-                                <div className="border-2 border-dashed border-white/80 rounded-xl relative">
+                                <div className="rounded-xl relative">
                                     <div className={`absolute -top-[2px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center gap-2.5 w-[55%] rounded-xl ${theme.gradient} p-2 shadow-lg`}>
                                         <div className="absolute inset-0 bg-white/10 animate-pulse" />
                                         <div className="relative z-10 w-7 h-7 bg-white rounded-lg flex items-center justify-center shadow-lg transform -rotate-2">
