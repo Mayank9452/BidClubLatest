@@ -49,28 +49,28 @@ export default function WaitLoader({ isOverlay = false }: { isOverlay?: boolean 
           {/* Gavel Hammer */}
           <motion.div
             key={`hammer-${tick}`}
-            initial={{ rotate: -40 }}
+            initial={{ rotate: 25 }}
             animate={{
-              rotate: [-40, 5, -40],
+              rotate: [25, -25, 25],
             }}
             transition={{
               duration: 0.8,
               times: [0, 0.2, 1],
               ease: "easeInOut",
             }}
-            className="relative z-20 origin-right"
-            style={{ transformOrigin: "85% 75%", position: "relative", top: "-20px" }}
+            className="relative z-20 origin-right ml-4"
+            style={{ transformOrigin: "85% 75%", position: "relative" }}
           >
-            <svg viewBox="0 0 100 100" className="w-20 h-20 drop-shadow-2xl">
+            <svg viewBox="0 0 100 100" className="w-22 h-20 drop-shadow-2xl">
               <path
                 d="M85,75 L45,45 C42,42 38,42 35,45 C32,48 32,52 35,55 L75,85"
                 stroke="url(#loaderGold)"
-                strokeWidth="8"
+                // strokeWidth="8"
                 strokeLinecap="round"
                 fill="url(#loaderGold)"
               />
               <circle cx="83" cy="78" r="5" fill="#ca8a04" />
-              <g transform="translate(10, 20) rotate(-40 25 25)">
+              <g transform="translate(10, 20) rotate(-54 25 25)">
                 <rect x="5" y="10" width="30" height="20" fill="url(#loaderGold)" />
                 <path d="M5,8 L5,32 L0,35 L0,5 Z" fill="#ca8a04" stroke="#fef3c7" strokeWidth="0.5" />
                 <path d="M35,8 L35,32 L40,35 L40,5 Z" fill="#ca8a04" stroke="#fef3c7" strokeWidth="0.5" />

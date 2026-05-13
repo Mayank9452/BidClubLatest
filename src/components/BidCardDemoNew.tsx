@@ -21,6 +21,7 @@ import { motion } from "framer-motion";
 import TimeSliceClock from "./TimeSliceClock";
 import WeeklyProgressClock from "./WeeklyRandomClock";
 import WeeklyRandomClock from "./WeeklyRandomClock";
+import PopupNotSubscribed from "./PopupNotSubscribed";
 
 // ── Your original color sets (no new colors added) ───────────────────────────
 const themes = [
@@ -109,7 +110,13 @@ const getTimeLeft = (endTime: string) => {
 };
 
 // ── BidCard ──────────────────────────────────────────────────────────────────
-const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number; activeTab: string }) => {
+const BidCard = React.memo(({ bid, index, activeTab, isSubscribed, onNotSubscribed }: { 
+  bid: any; 
+  index: number; 
+  activeTab: string;
+  isSubscribed: boolean;
+  onNotSubscribed: () => void;
+}) => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const dispatch = useAppDispatch();
@@ -139,6 +146,10 @@ const BidCard = React.memo(({ bid, index, activeTab }: { bid: any; index: number
         will-change-transform
       `}
       onClick={async () => {
+        if (!isSubscribed) {
+          onNotSubscribed();
+          return;
+        }
         const encodedBidId = btoa(String(bid.id));
         sessionStorage.setItem("bidId", encodedBidId);
         // await dispatch(fetchBidInfo(bid.id)).unwrap();
@@ -294,7 +305,11 @@ export default function BidCardDemo() {
   const { t } = useLanguage();
 
   const [activeTab, setActiveTab] = useState<"Daily" | "Weekly">("Daily");
+  const [showNotSubscribed, setShowNotSubscribed] = useState(false);
   const scrollRef = useRef(null);
+
+  const userSub = response?.data?.userInfo?.user_is_subscribed;
+  const isSubscribed = userSub !== 0 && userSub !== "0" && userSub !== undefined && userSub !== null;
 
   const formattedBids = useMemo(() => {
     return liveBids.map((item: any) => {
@@ -392,7 +407,13 @@ export default function BidCardDemo() {
       {/* Single card */}
       {isSingle && (
         <div className="w-[95%] mx-auto">
-          <BidCard bid={displayedBids[0]} index={0} activeTab={activeTab} />
+          <BidCard 
+            bid={displayedBids[0]} 
+            index={0} 
+            activeTab={activeTab} 
+            isSubscribed={isSubscribed}
+            onNotSubscribed={() => setShowNotSubscribed(true)}
+          />
         </div>
       )}
 
@@ -412,12 +433,23 @@ export default function BidCardDemo() {
           >
             {displayedBids.map((bid: any, index: number) => (
               <div key={bid.id} className="w-[225px] sm:w-[280px]">
-                <BidCard bid={bid} index={index} activeTab={activeTab} />
+                <BidCard 
+                  bid={bid} 
+                  index={index} 
+                  activeTab={activeTab} 
+                  isSubscribed={isSubscribed}
+                  onNotSubscribed={() => setShowNotSubscribed(true)}
+                />
               </div>
             ))}
           </motion.div>
         </div>
       )}
+
+      <PopupNotSubscribed
+        isShow={showNotSubscribed}
+        onClose={() => setShowNotSubscribed(false)}
+      />
     </div>
   );
 }

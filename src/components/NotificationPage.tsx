@@ -81,9 +81,18 @@ export default function NotificationPage() {
     const hours = Math.floor(diff / 3600);
     const days = Math.floor(diff / 86400);
 
-    if (mins < 60) return t.minAgo?.replace("{0}", mins.toString()) || `${mins} min ago`;
-    if (hours < 24) return t.hrsAgo?.replace("{0}", hours.toString()) || `${hours} hrs ago`;
-    return t.daysAgo?.replace("{0}", days.toString()) || `${days} days ago`;
+    if (mins < 60) {
+      return t.minAgo?.replace("{0}", mins.toString()) || `${mins} min ago`;
+    }
+    if (hours < 24) {
+      const key = hours === 1 ? "hrAgo" : "hrsAgo";
+      return t[key]?.replace("{0}", hours.toString()) || `${hours} ${hours === 1 ? "hr" : "hrs"} ago`;
+    }
+    const key = days === 1 ? "dayAgo" : "daysAgo";
+    return (
+      t[key]?.replace("{0}", days.toString()) ||
+      `${days} ${days === 1 ? "day" : "days"} ago`
+    );
   };
 
   const formatBidName = useCallback((bidName: string) => {

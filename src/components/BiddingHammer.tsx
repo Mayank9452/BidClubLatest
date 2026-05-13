@@ -19,16 +19,16 @@ export const BiddingHammer = ({ className = "w-12 h-12" }: { className?: string 
       {/* ── HAMMER (GAVEL) ── */}
       <motion.div
         key={`hammer-${tick}`} // Forces re-sync every cycle
-        initial={{ rotate: -35 }}
+        initial={{ rotate: 25 }}
         animate={{
-          rotate: [-35, 5, -35],
+          rotate: [25, -25, 25],
         }}
         transition={{
           duration: 0.8,
           times: [0, 0.2, 1],
           ease: "easeInOut",
         }}
-        className="relative z-20 origin-right mb-1"
+        className="relative z-20 origin-right ml-1"
         style={{ transformOrigin: "85% 75%" }}
       >
         <svg
@@ -40,7 +40,7 @@ export const BiddingHammer = ({ className = "w-12 h-12" }: { className?: string 
           <path
             d="M85,75 L45,45 C42,42 38,42 35,45 C32,48 32,52 35,55 L75,85"
             stroke="url(#hammerGold)"
-            strokeWidth="8"
+            // strokeWidth="8"
             strokeLinecap="round"
             fill="url(#hammerGold)"
           />
@@ -48,7 +48,7 @@ export const BiddingHammer = ({ className = "w-12 h-12" }: { className?: string 
           <circle cx="83" cy="78" r="5" fill="#ca8a04" />
 
           {/* Gavel Head */}
-          <g transform="translate(10, 20) rotate(-40 25 25)">
+          <g transform="translate(10, 20) rotate(-52 25 25)">
             <rect x="5" y="10" width="30" height="20" fill="url(#hammerGold)" />
             {/* Dark Gold Edges */}
             <path d="M5,8 L5,32 L0,35 L0,5 Z" fill="#ca8a04" stroke="#fef3c7" strokeWidth="0.5" />

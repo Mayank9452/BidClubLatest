@@ -87,7 +87,7 @@ export function TopBar({
             </div>
 
             {/* RIGHT: ACTIONS */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               {/* COINS */}
               <Popover open={gemOpen} onOpenChange={setGemOpen}>
                 <PopoverTrigger asChild>
@@ -100,6 +100,7 @@ export function TopBar({
     backdrop-blur-sm
     hover:bg-card/20
     transition-all
+    gap-1
 
     text-white
     border border-blue-400/60
@@ -112,7 +113,11 @@ export function TopBar({
 
     px-3"
                   >
-                    <Gem className="h-4 w-4 text-blue-400" />
+                    <img
+                      src="/assets/images/diamond5.png"
+                      alt="diamond"
+                      className="h-5 object-cover me-1"
+                    />
                     <span className="font-bold text-blue-400 text-[11px]">{userPoints}</span>
                   </Button>
                 </PopoverTrigger>

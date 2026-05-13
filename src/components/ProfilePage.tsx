@@ -227,7 +227,7 @@ export default function ProfilePage() {
               </button>
 
               {/* Subscribe Now (Only if not subscribed) */}
-              {/* {(user?.user_is_subscribed === "0" || user?.user_is_subscribed === 0) && (
+              {(user?.user_is_subscribed === "0" || user?.user_is_subscribed === 0) && (
                 <button
                   onClick={() => window.location.href = ""}
                   className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-green-50 to-emerald-50 active:from-green-100 active:to-emerald-100 rounded-xl border border-green-300 transition-all duration-150 active:scale-[0.98]"
@@ -247,7 +247,7 @@ export default function ProfilePage() {
                   </div>
                   <ChevronRight className="w-5 h-5 text-gray-400" />
                 </button>
-              )} */}
+              )}
 
 
               {/* Unsubscribe */}
@@ -341,9 +341,21 @@ export default function ProfilePage() {
 
               <InfoRow
                 label={t.status}
-                value={user?.user_subscription_status}
+                value={
+                  user?.user_subscription_status === "sub" || user?.user_subscription_status === "renew"
+                    ? t.active
+                    : user?.user_subscription_status === "unsub"
+                    ? t.notSubscribed
+                    : t.inactive
+                }
                 badge
-                badgeClassName={user?.user_subscription_status === "unsub" ? "bg-white text-red-600" : ""}
+                badgeClassName={
+                  user?.user_subscription_status === "sub" || user?.user_subscription_status === "renew"
+                    ? "bg-emerald-100 text-emerald-700"
+                    : user?.user_subscription_status === "unsub"
+                    ? "bg-red-100 text-red-700"
+                    : "bg-amber-100 text-amber-700"
+                }
               />
               {user?.user_subscription_status !== "unsub" && (
                 <InfoRow label={t.subscription} value={data?.data?.subscriptionPlan === "weekly" ? t.weeklyPack : t.dailyPack} />

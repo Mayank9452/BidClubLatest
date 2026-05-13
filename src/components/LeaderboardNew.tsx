@@ -198,9 +198,9 @@ hover:from-violet-200 hover:to-indigo-200 rounded-[1.5rem] transition-all durati
                     <div className="flex items-center justify-end gap-1 text-sm font-bold text-slate-900">
                       <div className="relative ">
                         <img
-                          src="/assets/images/diamond3.png"
+                          src="/assets/images/diamond5.png"
                           alt="diamond"
-                          className="h-6 w-6 object-cover"
+                          className="h-5  object-cover"
                         />
 
                         {/* premium shimmer */}
@@ -379,9 +379,9 @@ const PodiumItem = React.memo(({ user, rank, type, delay }: any) => {
           <div className="flex items-center justify-center gap-1 font-bold text-indigo-600">
             <div className="relative ">
               <img
-                src="/assets/images/diamond3.png"
+                src="/assets/images/diamond5.png"
                 alt="diamond"
-                className="h-6 w-6 object-cover"
+                className="h-5 object-cover"
               />
 
               {/* premium shimmer */}

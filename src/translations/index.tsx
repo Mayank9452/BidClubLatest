@@ -23,6 +23,9 @@ export const translations: any = {
     burmese: "Burmese",
     totalDiamonds: "Total Diamonds ",
     totalCoins: "Total Coins ",
+    active: "Active",
+    inactive: "Inactive",
+    notSubscribed: "Not Subscribed",
 
 
 
@@ -153,6 +156,10 @@ export const translations: any = {
     secondsShort: "Sec",
     cycle: "Cycle",
     noSetsCompleted: "No sets completed in this cycle",
+    noSetsCompletedCurrentCycle: "You haven't completed any bidding sets for this cycle yet, start bidding now",
+    noSetsCompletedOtherCycle: "You haven't completed any bidding sets for this cycle.",
+    previousBidsInfo: "Previous Bids",
+    bidHistory: "Your Bid History",
     note: "Note",
     uniqueNumbersNote: "Enter Unique Numbers in each Active Cycle",
     showAllFilledSets: "Show All Filled Sets",
@@ -196,7 +203,9 @@ export const translations: any = {
     bidNameDaily: "Bid Daily {0}",
     bidNameWeekly: "Bid Weekly {0}",
     minAgo: "{0} min ago",
+    hrAgo: "{0} hr ago",
     hrsAgo: "{0} hrs ago",
+    dayAgo: "{0} day ago",
     daysAgo: "{0} days ago",
     youWonData: "You won {0} Atom Data",
     noDailyBidsActive: "No Daily Bids Active",
@@ -215,6 +224,8 @@ export const translations: any = {
     notJoinedWeeklyDesc: "You have not joined any Daily or Weekly Bid this Week",
     notJoinedMonthlyDesc: "You have not joined any Daily or Weekly Bid this Month",
     joinNow: "Join Now",
+    notSubscribedTitle: "Not Subscribed !",
+    notSubscribedDesc: "You are not subscribe with us, Please subscribe with Daily or Weekly plan.",
   },
 
   my: {
@@ -241,6 +252,9 @@ export const translations: any = {
     burmese: "မြန်မာ",
     totalDiamonds: "စုစုပေါင်း ရရှိထားသော ဒိုင်းမွန်းများ ",
     totalCoins: "စုစုပေါင်း ရရှိထားသော ဒင်္ဂါးပြားများ ",
+    active: "အသုံးပြုနေဆဲ",
+    inactive: "ရပ်ဆိုင်းထားသည်",
+    notSubscribed: "စာရင်းမသွင်းထားပါ",
 
     all: "အားလုံး",
     won: "အနိုင်",
@@ -370,6 +384,10 @@ export const translations: any = {
     secondsShort: "စက္ကန့်",
     cycle: "စက်ဝန်း",
     noSetsCompleted: "ဤစက်ဝန်းတွင် ဖြည့်ထားသောအစုံများ မရှိသေးပါ",
+    noSetsCompletedCurrentCycle: "ဤစက်ဝန်းတွင် ဖြည့်ထားသောအစုံများ မရှိသေးပါ၊ ယခုပင် လေလံဆွဲခြင်း စတင်လိုက်ပါ",
+    noSetsCompletedOtherCycle: "ဤစက်ဝန်းတွင် ဖြည့်ထားသောအစုံများ မရှိသေးပါ",
+    previousBidsInfo: "ယခင် လေလံများ",
+    bidHistory: "သင်၏ လေလံ မှတ်တမ်း",
     howToPlayDescription: "ကျွန်ုပ်တို့၏ လွယ်ကူသော လမ်းညွှန်ချက်ဖြင့် စတင်လိုက်ပါ!",
     liveActivityDescription: "အခြားကစားသမားများ ဘာတွေလုပ်နေလဲဆိုတာကို အချိန်နှင့်တပြေးညီ ကြည့်ရှုပါ!",
     top5Rankings: "ထိပ်တန်း ၅ ဦးနှင့် သူတို့၏ အဆင့်များ",
@@ -414,7 +432,9 @@ export const translations: any = {
     bidNameDaily: "နေ့စဉ် လေလံ {0}",
     bidNameWeekly: "အပတ်စဉ် လေလံ {0}",
     minAgo: "{0} မိနစ် အရင်က",
+    hrAgo: "{0} နာရီ အရင်က",
     hrsAgo: "{0} နာရီ အရင်က",
+    dayAgo: "{0} ရက် အရင်က",
     daysAgo: "{0} ရက် အရင်က",
     youWonData: "{0} Atom ဒေတာ ကို အနိုင်ရရှိခဲ့သည်",
     noDailyBidsActive: "နေ့စဉ်လေလံ မရှိသေးပါ",
@@ -433,5 +453,7 @@ export const translations: any = {
     notJoinedWeeklyDesc: "သင်သည် ဤအပတ်တွင် မည်သည့် နေ့စဉ် သို့မဟုတ် အပတ်စဉ် လေလံပွဲ၌မျှ မပါဝင်ရသေးပါ။",
     notJoinedMonthlyDesc: "သင်သည် ဤလတွင် မည်သည့် နေ့စဉ် သို့မဟုတ် အပတ်စဉ် လေလံပွဲ၌မျှ မပါဝင်ရသေးပါ။",
     joinNow: "ယခုပါဝင်ပါ",
+    notSubscribedTitle: "စာရင်းမသွင်းထားပါ !",
+    notSubscribedDesc: "သင်သည် ကျွန်ုပ်တို့နှင့် စာရင်းမသွင်းရသေးပါ။ ကျေးဇူးပြု၍ နေ့စဉ် သို့မဟုတ် အပတ်စဉ် အစီအစဉ်ဖြင့် စာရင်းသွင်းပါ။",
   },
 };

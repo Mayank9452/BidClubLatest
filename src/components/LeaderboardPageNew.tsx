@@ -219,9 +219,9 @@ export default function LeaderboardPageNew() {
         {/* Rest of Rankings - Mobile optimized */}
         <div className="max-w-md mx-auto px-3">
           <div className="bg-white rounded-2xl shadow-xl p-3 border border-gray-100 ">
-            <h2 className="text-lg font-bold text-gray-700 mb-3 text-center">
+            {/* <h2 className="text-lg font-bold text-gray-700 mb-3 text-center">
               {t.topPlayers}
-            </h2>
+            </h2> */}
 
             <div className="space-y-2">
               <AnimatePresence>
@@ -283,9 +283,9 @@ export default function LeaderboardPageNew() {
                           <div className="flex items-center justify-end gap-1 text-base font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
                             <div className="relative">
                               <img
-                                src="/assets/images/diamond3.png"
+                                src="/assets/images/diamond5.png"
                                 alt="diamond"
-                                className="h-6 w-6 object-cover"
+                                className="h-5 object-cover"
                               />
 
                               {/* premium shimmer */}
@@ -385,9 +385,9 @@ export default function LeaderboardPageNew() {
                 <div className="flex items-center gap-1">
                   <div className="relative mb-1.5">
                     <img
-                      src="/assets/images/diamond3.png"
+                      src="/assets/images/diamond5.png"
                       alt="diamond"
-                      className="h-7 w-7 object-cover"
+                      className="h-7 object-cover"
                     />
                   </div>
                   <p className="text-lg text-white font-semibold">
@@ -538,9 +538,9 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
         <div className="font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent flex items-center justify-center">
           <div className="relative ">
             <img
-              src="/assets/images/diamond3.png"
+              src="/assets/images/diamond5.png"
               alt="diamond"
-              className="h-6 w-6 object-cover"
+              className="h-5 object-cover me-1"
             />
 
             {/* ✨ Optional shimmer */}
