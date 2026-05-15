@@ -28,6 +28,8 @@ const bidSlice = createSlice({
     builder
       .addCase(fetchBidInfo.pending, (state) => {
         state.status = "loading";
+        state.data = null;
+        state.error = null;
       })
       .addCase(fetchBidInfo.fulfilled, (state, action) => {
         state.status = action?.payload?.status;

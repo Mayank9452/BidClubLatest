@@ -62,7 +62,7 @@ export default function TrendingGamesSlider() {
 
   return (
     <div className="bg-gray-50">
-      <div className="max-w-md mx-auto px-2">
+      <div className="px-2">
         {/* 🔹 HEADER + SLIDER (SAME GRADIENT CONTAINER) */}
         <div className="rounded-xl relative bg-gradient-to-r from-[#0a0f7ac4] to-pink-700 pt-4 pb-2 px-3 overflow-hidden">
           {/* Header */}

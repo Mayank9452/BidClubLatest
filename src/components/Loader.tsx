@@ -69,7 +69,7 @@ export default function WaitLoader({ isOverlay = false }: { isOverlay?: boolean 
                 strokeLinecap="round"
                 fill="url(#loaderGold)"
               />
-              <circle cx="83" cy="78" r="5" fill="#ca8a04" />
+              {/* <circle cx="83" cy="78" r="5" fill="#ca8a04" /> */}
               <g transform="translate(10, 20) rotate(-54 25 25)">
                 <rect x="5" y="10" width="30" height="20" fill="url(#loaderGold)" />
                 <path d="M5,8 L5,32 L0,35 L0,5 Z" fill="#ca8a04" stroke="#fef3c7" strokeWidth="0.5" />

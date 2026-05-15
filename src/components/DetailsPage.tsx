@@ -18,7 +18,27 @@ export default function DetailsPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const videoUrl = state?.videoUrl;
+
+  const renderTextWithDiamond = (text: string, isLight: boolean = false) => {
+    if (!text) return null;
+    const parts = text.split("{diamond}");
+    return (
+      <>
+        {parts.map((part, i) => (
+          <React.Fragment key={i}>
+            {part}
+            {i < parts.length - 1 && (
+              <img
+                src="/assets/images/diamond5.png"
+                alt="Diamond"
+                className={`w-4 h-4 inline-block mb-1 ${isLight ? 'brightness-200 contrast-200' : ''}`}
+              />
+            )}
+          </React.Fragment>
+        ))}
+      </>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
@@ -225,19 +245,101 @@ export default function DetailsPage() {
               </div>
             </div>
 
-            {/* Finale */}
-            <div className="rounded-2xl bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 p-6 shadow-lg border border-orange-100">
-              <div className="flex items-center gap-2 mb-3">
-                <Trophy className="w-6 h-6 text-orange-600" />
-                <h3 className="text-lg font-bold text-gray-800">
-                  {t.winBigPrizes} 🎉
-                </h3>
+            {/* Leaderboard & Diamond Info */}
+            <div className="space-y-4">
+              {/* Main Leaderboard Card */}
+              <div className="rounded-3xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-5 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-400/20 rounded-full blur-2xl" />
+
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30">
+                      <Trophy className="w-6 h-6 text-yellow-300" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white tracking-tight">
+                      {t.leaderboardInfoTitle}
+                    </h3>
+                  </div>
+                  <p className="text-sm text-indigo-50 text-sm text-gray-600 leading-relaxed">
+                    {renderTextWithDiamond(t.leaderboardInfoDesc, true)}
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                {t.prizeDescription}
-              </p>
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 border border-orange-200">
-                <p className="text-sm font-semibold text-orange-800 text-center">
+
+              {/* Participation Bonus Card */}
+              <div className="rounded-2xl bg-white p-5 shadow-lg border border-indigo-100 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-indigo-50 rounded-full -mr-8 -mt-8" />
+                <div className="relative flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <Zap className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-bold text-gray-800 mb-1">{t.participationDiamonds}</h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      {renderTextWithDiamond(t.participationDiamondsDesc)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rewards Grid */}
+              <div className="grid grid-cols-1 gap-4">
+                {/* Daily Rewards */}
+                <div className="rounded-2xl bg-gradient-to-br from-pink-50 to-rose-50 p-5 border border-pink-100 shadow-lg">
+                  <h4 className="text-sm font-bold text-rose-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    {t.dailyWinnerPrizes}
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { rank: 1, diam: 100 },
+                      { rank: 2, diam: 50 },
+                      { rank: 3, diam: 30 },
+                      { rank: 4, diam: 20 }
+                    ].map((item) => (
+                      <div key={item.rank} className="bg-white/80 rounded-xl p-3 flex justify-between items-center border border-pink-200">
+                        <span className="text-xs font-bold text-gray-700">{t.rankText.replace("{0}", item.rank)}</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs font-black text-rose-600">{item.diam}</span>
+                          <img src="/assets/images/diamond5.png" alt="Diamond" className="w-4 h-4  object-contain" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Weekly Rewards */}
+                <div className="rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 p-5 border border-amber-100 shadow-lg">
+                  <h4 className="text-sm font-bold text-amber-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" />
+                    {t.weeklyWinnerPrizes}
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { rank: 1, diam: 100 },
+                      { rank: 2, diam: 70 },
+                      { rank: 3, diam: 50 },
+                      { rank: 4, diam: 40 },
+                      { rank: 5, diam: 30 },
+                      { rank: 6, diam: 20 },
+                      { rank: 7, diam: 10 }
+                    ].map((item) => (
+                      <div key={item.rank} className="bg-white/80 rounded-xl p-3 flex justify-between items-center border border-amber-200">
+                        <span className="text-xs font-bold text-gray-700">{t.rankText.replace("{0}", item.rank)}</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs font-black text-amber-600">{item.diam}</span>
+                          <img src="/assets/images/diamond5.png" alt="Diamond" className="w-4 h-4 object-contain" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Final Footer Note */}
+              <div className="bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-gray-200 text-center">
+                <p className="text-xs font-bold text-gray-500 italic">
                   🔥 {t.morePlayMoreChance}
                 </p>
               </div>

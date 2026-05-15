@@ -69,19 +69,20 @@ export function TopBar({
     <>
       <div className="sticky -top-[1px] z-[99] w-full">
         <div
-          className="bg-deep-navy px-4 py-2 rounded-b-2xl"
+          className="bg-deep-navy px-2 rounded-b-2xl h-[70px] flex items-center"
           style={{
             borderBottom: "1px solid hsl(240 6% 20%)",
           }}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between w-full">
             {/* LEFT: LOGO */}
-            <div className="flex items-center gap-2 cursor-pointer">
-              <div className="flex items-center h-16">
+            <div className="flex items-center gap-2 cursor-pointer transform translate-y-0.5">
+              <div className="rounded-lg">
                 <img
-                  src="/assets/images/logo_1.png"
-                  alt="BidBlast Logo"
-                  className="h-8 w-auto object-cover"
+                  src="/assets/images/logo.png"
+                  className="h-10 w-auto object-contain"
+                  alt="Spin Zone"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -187,9 +188,9 @@ export function TopBar({
                 variant="outline"
                 size="sm"
                 onClick={() => navigate("/profile")}
-                className="relative p-1 bg-white dark:bg-card/10 backdrop-blur-sm hover:dark:bg-card/20 transition-all border border-white/40 rounded-xl h-7 "
+                className="relative bg-white dark:bg-card/10 backdrop-blur-sm hover:dark:bg-card/20 transition-all border border-white/40 rounded-xl h-7 w-7 p-0 flex items-center justify-center"
               >
-                <User className="h-4 w-4 text-black" />
+                <User className="h-5 w-5 text-black dark:text-white" />
               </Button>
             </div>
           </div>

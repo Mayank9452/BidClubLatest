@@ -72,7 +72,7 @@ export default function HomePage() {
 
           {/* Glass Container */}
           <div className="-mt-[4.5rem]">
-            <div className="border border-white/20 rounded-2xl shadow-2xl">
+            <div className="border border-white/20 rounded-2xl">
               <BidCardDemoNew />
             </div>
           </div>
@@ -139,7 +139,7 @@ export default function HomePage() {
         <section
           className="
   rounded-3xl
-  p-2 pt-0
+  p-2 py-0
   "
           style={{ opacity: 1, transform: "none" }}
         >

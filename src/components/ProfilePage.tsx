@@ -11,6 +11,8 @@ import {
   Trophy,
   Gem,
   Pencil,
+  Crown,
+  Sparkle,
 } from "lucide-react";
 import { TopBar } from "./TopBar";
 import { BottomNavBar } from "./BottomNavBar";
@@ -112,7 +114,7 @@ export default function ProfilePage() {
   return (
     <>
       <TopBar />
-      <div className="min-h-screen  p-2">
+      <div className=" p-2">
         {/* <div className="h-[100vh] fixed w-full top-0 left-0 z-[-1] overflow-hidden">
           <img
             src="/assets/images/biddingPage.png"
@@ -182,36 +184,36 @@ export default function ProfilePage() {
             </div>
 
             {/* Stats Section */}
-            <div className="grid grid-cols-3 gap-3 p-4">
+            <div className="grid grid-cols-3 gap-2 p-3 px-2">
               <StatCard
                 label={t.bids}
                 value={data?.data?.userBidsCount || "0"}
-                icon={<Gavel className="w-5 h-5 text-blue-600" />}
+                icon={<Gavel className="w-6 h-6 text-blue-600" />}
                 color="blue"
               />
               <StatCard
                 label={t.wins}
                 value={data?.data?.userBidsWinCount || "0"}
-                icon={<Trophy className="w-5 h-5 text-amber-500" />}
+                icon={<Trophy className="w-6 h-6 text-orange-500" />}
                 color="gold"
               />
               <StatCard
                 label={t.points}
                 value={data?.data?.userPoints || "0"}
-                icon={<Gem className="w-5 h-5 text-rose-500" />}
+                icon={<Gem className="w-6 h-6 text-rose-500" />}
                 color="rose"
               />
             </div>
 
             {/* Action Buttons */}
-            <div className="p-4 pt-0 space-y-2">
+            <div className="p-2 pt-0 space-y-2">
               {/* Terms of Use */}
               <button
                 onClick={handleTermsClick}
-                className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-pink-50 to-rose-50 active:from-pink-100 active:to-rose-200 rounded-xl border border-pink-400 transition-all duration-150 active:scale-[0.98]"
+                className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-violet-50 to-indigo-50 active:from-violet-100 active:to-indigo-200 rounded-xl border border-violet-400 transition-all duration-150 active:scale-[0.98]"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-xl flex items-center justify-center">
                     <FileText className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-left">
@@ -226,52 +228,8 @@ export default function ProfilePage() {
                 <ChevronRight className="w-5 h-5 text-gray-400" />
               </button>
 
-              {/* Subscribe Now (Only if not subscribed) */}
-              {(user?.user_is_subscribed === "0" || user?.user_is_subscribed === 0) && (
-                <button
-                  onClick={() => window.location.href = ""}
-                  className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-green-50 to-emerald-50 active:from-green-100 active:to-emerald-100 rounded-xl border border-green-300 transition-all duration-150 active:scale-[0.98]"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                      <Gem className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="text-left">
-                      <h3 className="text-base font-semibold text-gray-800 ">
-                        {t.subscribeNow}
-                      </h3>
-                      <p className="text-sm text-gray-500 font-semibold ">
-                        {t.getFullAccess}
-                      </p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400" />
-                </button>
-              )}
 
 
-              {/* Unsubscribe */}
-              {user?.user_subscription_status !== "unsub" && (
-                <button
-                  onClick={handleUnsubscribe}
-                  className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-gray-50 to-slate-50 active:from-gray-100 active:to-slate-100 rounded-xl border border-gray-400 transition-all duration-150 active:scale-[0.98]"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-gray-500 to-slate-600 rounded-xl flex items-center justify-center">
-                      <LogOut className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="text-left">
-                      <h3 className="text-base font-semibold text-gray-800 ">
-                        {t.unsubscribe}
-                      </h3>
-                      <p className="text-sm text-gray-500 font-semibold ">
-                        {t.leaveService}
-                      </p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400" />
-                </button>
-              )}
 
               {/* Language Selector */}
               <div className="flex items-center justify-between p-3.5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-400">
@@ -311,6 +269,79 @@ export default function ProfilePage() {
                   </button>
                 </div>
               </div>
+
+              {/* Subscribe Now (Only if not subscribed) */}
+              {(user?.user_is_subscribed === "0" || user?.user_is_subscribed === 0) && (
+                <button
+                  onClick={() => (window.location.href = "")}
+                  className="w-full relative overflow-hidden group p-3 bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 rounded-[2rem] shadow-2xl transition-all duration-300 active:scale-[0.98] border border-white/10"
+                >
+                  {/* Decorative Sparkles */}
+                  <div className="absolute top-2 left-12 animate-pulse">
+                    <Sparkle className="w-3 h-3 text-yellow-400" />
+                  </div>
+                  <div className="absolute bottom-4 right-10 animate-bounce delay-700">
+                    <Sparkle className="w3 h-3 text-yellow-500 " />
+                  </div>
+                  <div className="absolute top-4 right-20 animate-pulse delay-300">
+                    <Sparkle className="w-3 h-3 text-yellow-400 " />
+                  </div>
+
+                  <div className="relative flex items-center justify-between gap-4 z-10">
+                    {/* Diamond Icon Container */}
+                    <div className="w-10 h-10 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/20 shadow-inner group-hover:scale-105 transition-transform">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-yellow-400 blur-md opacity-20 animate-pulse" />
+                        <Gem className="w-6 h-6 text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]" />
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex flex-col text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <h3 className="text-base font-semibold text-yellow-300">
+                          {t.subscribeNow}
+                        </h3>
+
+                      </div>
+                      <p className="text-xs text-indigo-100 ">
+                        {t.getFullAccess}
+                      </p>
+                    </div>
+
+                    {/* Action Arrow */}
+                    <div className="w-8 h-8 rounded-full gradient-button-gold flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-colors">
+                      <ChevronRight className="w-6 h-6 text-yellow-900 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
+                </button>
+              )}
+
+
+              {/* Unsubscribe */}
+              {user?.user_subscription_status !== "unsub" && (
+                <button
+                  onClick={handleUnsubscribe}
+                  className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-rose-50 to-red-50 active:from-rose-100 active:to-red-100 rounded-xl border border-rose-500 shadow-sm transition-all duration-150 active:scale-[0.98]"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-red-600 rounded-xl flex items-center justify-center">
+                      <LogOut className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-base font-bold text-gray-800">
+                        {t.unsubscribe}
+                      </h3>
+                      <p className="text-xs font-semibold text-gray-500">
+                        {t.leaveService}
+                      </p>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-rose-600" />
+                </button>
+              )}
+
+
             </div>
 
             {/* Account Info */}
@@ -345,16 +376,16 @@ export default function ProfilePage() {
                   user?.user_subscription_status === "sub" || user?.user_subscription_status === "renew"
                     ? t.active
                     : user?.user_subscription_status === "unsub"
-                    ? t.notSubscribed
-                    : t.inactive
+                      ? t.notSubscribed
+                      : t.inactive
                 }
                 badge
                 badgeClassName={
                   user?.user_subscription_status === "sub" || user?.user_subscription_status === "renew"
                     ? "bg-emerald-100 text-emerald-700"
                     : user?.user_subscription_status === "unsub"
-                    ? "bg-red-100 text-red-700"
-                    : "bg-amber-100 text-amber-700"
+                      ? "bg-red-100 text-red-700"
+                      : "bg-amber-100 text-amber-700"
                 }
               />
               {user?.user_subscription_status !== "unsub" && (
@@ -398,25 +429,27 @@ export default function ProfilePage() {
 
 const StatCard = React.memo(({ label, value, icon, color }: any) => {
   const themes: any = {
-    blue: "from-blue-600 to-indigo-700 border-blue-400 text-white shadow-blue-200",
-    gold: "from-amber-500 to-orange-600 border-amber-300 text-white shadow-amber-200",
-    rose: "from-rose-500 to-pink-600 border-rose-300 text-white shadow-rose-200",
+    blue: "from-blue-500 to-blue-600 shadow-blue-200/50",
+    gold: "from-orange-400 to-orange-500 shadow-orange-200/50",
+    rose: "from-rose-500 to-pink-600 shadow-rose-200/50",
   };
 
   const theme = themes[color] || themes.blue;
 
   return (
     <div
-      className={`relative overflow-hidden bg-gradient-to-br ${theme} border rounded-2xl p-3 flex flex-col items-center justify-center gap-1.5 shadow-md transition-all active:scale-95`}
+      className={`relative overflow-hidden bg-gradient-to-br ${theme} rounded-2xl p-2.5 flex items-center gap-2.5 shadow-lg transition-all active:scale-95`}
     >
-      <div className="p-2 bg-white rounded-xl shadow-sm relative z-10 w-9 h-9 flex items-center justify-center">
+      <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center z-10">
         {icon}
       </div>
-      <div className="text-center relative z-10">
-        <p className="text-base font-bold leading-none mb-0.5">{value}</p>
-        <p className="text-xs font-semibold   text-white">
+      <div className="flex flex-col z-10">
+        <span className="text-base font-black text-white leading-tight">
+          {value}
+        </span>
+        <span className="text-[11px] font-bold text-white leading-none">
           {label}
-        </p>
+        </span>
       </div>
       {/* Subtle Background Glow */}
       <div

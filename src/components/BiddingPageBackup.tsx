@@ -145,6 +145,16 @@ export default function BiddingPageLatest() {
     const [isShowingFilledSets, setIsShowingFilledSets] = useState(false);
     const [selectedCycle, setSelectedCycle] = useState<number>(1);
     const { t } = useLanguage();
+    const cycleTabsRef = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (isShowingFilledSets && cycleTabsRef.current) {
+            const activeTab = cycleTabsRef.current.querySelector('[data-active="true"]');
+            if (activeTab) {
+                activeTab.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            }
+        }
+    }, [isShowingFilledSets, selectedCycle]);
 
     const { data: bidResponse, status: bidStatus } = useAppSelector((state) => state.bid);
     const { status: uniqueStatus } = useAppSelector((state) => state.uniqueNumbers);
@@ -340,8 +350,8 @@ export default function BiddingPageLatest() {
     return (
         <>
             <TopBar />
-            <div className="min-h-screen bg-white overflow-x-hidden relative">
-                <div className="relative z-10 p-2 transform-gpu translate-z-0">
+            <div className="bg-white overflow-x-hidden relative">
+                <div className="relative z-10 p-2 transform-gpu translate-z-0 pb-0">
                     <HeaderSection
                         navigate={navigate}
                         bidName={bidName}
@@ -351,45 +361,133 @@ export default function BiddingPageLatest() {
                     <TimerSection endTime={bidInfo?.bid_end_timestamp} />
 
                     <div className="max-w-md mx-auto space-y-3 pt-1">
-                        <PreviousBidsSection
-                            t={t}
-                            isShowingFilledSets={isShowingFilledSets}
-                            setIsShowingFilledSets={setIsShowingFilledSets}
-                            hasCompleteSets={allCompleteSets.length > 0}
-                        />
+                        {allCompleteSets.length > 0 && (
+                            <div className="relative rounded-xl overflow-hidden shadow-xl bg-white transform-gpu translate-z-0">
+                                {/* Premium Gradient Header - Matching NotificationPage Style */}
+                                <motion.div
+                                    animate={{ paddingBottom: isShowingFilledSets ? '48px' : '16px' }}
+                                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                                    className="gradient-home-section pt-4 px-5 relative"
+                                >
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl animate-pulse" />
+                                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-500/20 rounded-full blur-2xl" />
 
-                        <HistoricalSetsSection
-                            isShowingFilledSets={isShowingFilledSets}
-                            completeSets={completeSets}
-                            selectedCycle={selectedCycle}
-                            setSelectedCycle={setSelectedCycle}
-                            bidCycle={bidCycle}
-                            bidName={bidName}
-                            t={t}
-                        />
+                                    <div className="relative z-10 flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-lg border border-white/30">
+                                                <History className="w-6 h-6 text-white" />
+                                            </div>
+                                            <div>
+                                                <h2 className="text-base font-bold text-white tracking-tight">
+                                                    {t.previousBidsInfo}
+                                                </h2>
+                                                <p className="text-[10px] font-semibold text-white/70 tracking-widest">
+                                                    {t.bidHistory}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                if (isShowingFilledSets) {
+                                                    setSelectedCycle(Number(bidCycle));
+                                                }
+                                                setIsShowingFilledSets(!isShowingFilledSets);
+                                            }}
+                                            className={`w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all duration-300 border border-white/20 ${isShowingFilledSets ? 'rotate-180 bg-white text-pink-500' : ''}`}
+                                        >
+                                            <ChevronDown className="w-5 h-5" />
+                                        </button>
+                                    </div>
 
-                        <TicketGridSection
-                            t={t}
-                            currentTicket={currentTicket}
-                            selectedTickets={selectedTickets}
-                            handleTicketSelect={handleTicketSelect}
-                            bidCycle={bidCycle}
-                            batchCount={batchCount}
-                        />
+                                    {/* Glassy Cycle Tabs - Only shown when toggled */}
+                                    <AnimatePresence>
+                                        {isShowingFilledSets && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: -10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                transition={{ duration: 0.5, ease: "easeInOut" }}
+                                                className={`relative z-10 flex bg-white/10 backdrop-blur-md p-1 rounded-2xl border border-white/20 shadow-xl gap-1 mt-6 ${Number(bidCycle || 0) > 4 ? 'overflow-x-auto scrollbar-hide snap-x' : ''}`}
+                                                ref={cycleTabsRef}
+                                                style={Number(bidCycle || 0) > 4 ? { msOverflowStyle: 'none', scrollbarWidth: 'none' } : {}}
+                                            >
+                                                {Array.from({ length: Number(bidCycle || 0) }, (_, i) => i + 1).map((cycleNum) => {
+                                                    const isActive = selectedCycle === cycleNum;
+                                                    const isScrollable = Number(bidCycle || 0) > 4;
+                                                    return (
+                                                        <button
+                                                            key={cycleNum}
+                                                            onClick={() => setSelectedCycle(cycleNum)}
+                                                            className={`relative ${isScrollable ? 'flex-none min-w-[85px] snap-center' : 'flex-1'} px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-300 ${isActive ? "text-pink-600" : "text-white/80 hover:text-white"}`}
+                                                            data-active={isActive}
+                                                        >
+                                                            {isActive && (
+                                                                <motion.div
+                                                                    layoutId="historyTab"
+                                                                    className="absolute inset-0 bg-white rounded-xl shadow-md"
+                                                                    transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                                                                />
+                                                            )}
+                                                            <span className="relative z-10">{t.cycle} {cycleNum}</span>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </motion.div>
 
-                        <KeypadSection
-                            t={t}
-                            currentTicket={currentTicket}
-                            inputValue={inputValue}
-                            handleCancelInput={handleCancelInput}
-                            handleDelete={handleDelete}
-                            handleConfirm={handleConfirm}
-                            handleNumberClick={handleNumberClick}
-                            handleAutoPick={handleAutoPick}
-                            handleClearAll={handleClearAll}
-                            handleSubmit={handleSubmit}
-                            selectedTicketsCount={Object.keys(selectedTickets).length}
-                        />
+                                {/* Content Area - Historical Sets or Empty State */}
+                                <AnimatePresence>
+                                    {isShowingFilledSets && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: "auto" }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                                            className="relative z-10 mx-1.5 -mt-6 pb-2 bg-white rounded-xl bg-white/50 backdrop-blur-md border border-white/20 text-center overflow-hidden"
+                                        >
+                                            <div className="">
+                                                <HistoricalSetsSection
+                                                    completeSets={completeSets}
+                                                    selectedCycle={selectedCycle}
+                                                    bidCycle={bidCycle}
+                                                    bidName={bidName}
+                                                    t={t}
+                                                />
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        )}
+
+                        {Number(selectedCycle) === Number(bidCycle) && (
+                            <>
+                                <TicketGridSection
+                                    t={t}
+                                    currentTicket={currentTicket}
+                                    selectedTickets={selectedTickets}
+                                    handleTicketSelect={handleTicketSelect}
+                                    bidCycle={bidCycle}
+                                    batchCount={batchCount}
+                                />
+
+                                <KeypadSection
+                                    t={t}
+                                    currentTicket={currentTicket}
+                                    inputValue={inputValue}
+                                    handleCancelInput={handleCancelInput}
+                                    handleDelete={handleDelete}
+                                    handleConfirm={handleConfirm}
+                                    handleNumberClick={handleNumberClick}
+                                    handleAutoPick={handleAutoPick}
+                                    handleClearAll={handleClearAll}
+                                    handleSubmit={handleSubmit}
+                                    selectedTicketsCount={Object.keys(selectedTickets).length}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
@@ -439,9 +537,9 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
     return (
         <div className="relative z-20 -mt-8 mb-2 mx-auto w-[85%] max-w-[280px] transform-gpu translate-z-0">
             {/* Subtle Outer Glow */}
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl blur-[2px] opacity-20" />
+            <div className="absolute -inset-0.5  rounded-2xl blur-[2px] opacity-20" />
 
-            <div className="relative bg-white/95 backdrop-blur-md rounded-2xl p-2 shadow-xl border border-white/50">
+            <div className="relative rounded-2xl p-2 shadow-xl border border-white/50 bg-white/50 backdrop-blur-md border border-white/20 text-center shadow-xl">
 
                 <div className="flex items-center justify-center gap-2">
                     {timeLeft.split(" : ").map((unit, i) => (
@@ -484,7 +582,7 @@ const HeaderSection = React.memo(({ navigate, bidName, t }: any) => (
 
         <div className="absolute right-3 top-3 flex items-center gap-1.5 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-xl border border-white/20">
             <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-            <span className="text-[10px] font-bold text-red-600 uppercase tracking-wider">Live</span>
+            <span className="text-[10px] font-bold text-red-600 uppercase tracking-wider">{t.live}</span>
         </div>
         <div className="relative z-10 max-w-md mx-auto text-center flex flex-col items-center gap-1">
             <h1 className="text-xl font-bold text-white drop-shadow-md">
@@ -500,53 +598,33 @@ const HeaderSection = React.memo(({ navigate, bidName, t }: any) => (
     </div>
 ));
 
-const PreviousBidsSection = React.memo(({ t, isShowingFilledSets, setIsShowingFilledSets, hasCompleteSets }: any) => {
-    if (!hasCompleteSets) return null;
-
+const PreviousBidsSection = React.memo(({ t, isShowingFilledSets, setIsShowingFilledSets }: any) => {
     return (
         <button
             onClick={() => setIsShowingFilledSets(!isShowingFilledSets)}
-            className="w-full h-12 gradient-home-section text-white text-sm font-bold rounded-xl transition-all active:scale-[0.98] flex items-center justify-between px-4 transform-gpu translate-z-0"
+            className="w-full py-3 px-4 flex items-center justify-between transition-all active:scale-[0.98] group"
         >
             <div className="flex items-center gap-3">
-                <History className="w-4 h-4" />
-                <span className="text-sm leading-relaxed">
-                    {t.previousBidsInfo || "Previous Bids"}
+                <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
+                    <History className="w-4 h-4 text-indigo-600" />
+                </div>
+                <span className="text-sm font-bold text-slate-700 tracking-tight">
+                    {t.previousBidsInfo}
                 </span>
             </div>
-            <div className={`transition-transform duration-300 bg-white rounded-full p-1 text-indigo-600 ${isShowingFilledSets ? 'rotate-180' : ''}`}>
+            <div className={`transition-all duration-300 w-8 h-8 rounded-full flex items-center justify-center ${isShowingFilledSets ? 'bg-indigo-600 text-white rotate-180 shadow-md shadow-indigo-200' : 'bg-slate-100 text-slate-400'}`}>
                 <ChevronDown className="w-4 h-4" />
             </div>
         </button>
     );
 });
 
-const HistoricalSetsSection = React.memo(({ isShowingFilledSets, completeSets, selectedCycle, setSelectedCycle, bidCycle, bidName, t }: any) => {
-    if (!isShowingFilledSets || !completeSets || Object.keys(completeSets).length === 0) return null;
+const HistoricalSetsSection = React.memo(({ completeSets, selectedCycle, bidCycle, bidName, t }: any) => {
+    if (!completeSets || Object.keys(completeSets).length === 0) return null;
 
     return (
-        <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="space-y-4 overflow-hidden transform-gpu translate-z-0"
-        >
-            <div className="flex justify-center items-center overflow-x-auto gap-3 scrollbar-hide px-4 snap-x no-scrollbar" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
-                {Array.from({ length: Number(bidCycle || 0) }, (_, i) => i + 1).map((cycleNum) => (
-                    <button
-                        key={cycleNum}
-                        onClick={() => setSelectedCycle(cycleNum)}
-                        className={`px-2 py-3 rounded-xl text-xs font-bold tracking-wider transition-all border-2 whitespace-nowrap min-w-[80px] max-auto snap-center transform-gpu translate-z-0 ${selectedCycle === cycleNum
-                            ? "bg-gradient-to-r from-[#ff009c] to-[#bd10e0] text-white border-white shadow-[0_4px_12px_rgba(255,0,156,0.3)] scale-105"
-                            : "bg-pink-50 text-pink-600 border-pink-300 hover:border-pink-400 shadow-sm"
-                            }`}
-                    >
-                        {t.cycle} {cycleNum}
-                    </button>
-                ))}
-            </div>
-
-            <div className="flex overflow-x-auto gap-4 px-1 scrollbar-hide snap-x pt-8" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none', marginTop: '0' }}>
+        <div className="space-y-4 transform-gpu translate-z-0">
+            <div className="flex overflow-x-auto gap-2 px-1 scrollbar-hide snap-x pt-8" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none', marginTop: '0' }}>
                 {completeSets[selectedCycle.toString()] && completeSets[selectedCycle.toString()].length > 0 ? (
                     completeSets[selectedCycle.toString()].map((setData: any, setIndex: number) => {
                         const setNumbers = [
@@ -558,9 +636,9 @@ const HistoricalSetsSection = React.memo(({ isShowingFilledSets, completeSets, s
                         const theme = themes[setIndex % themes.length];
 
                         return (
-                            <div key={setIndex} className={`${completeSets[selectedCycle.toString()].length === 1 ? "w-full" : "min-w-[85%]"} flex-shrink-0 snap-center relative rounded-2xl p-[4px] ${theme.gradient} shadow-xl transform-gpu translate-z-0`}>
-                                <div className="border-2 border-dashed border-white/80 rounded-xl p-1 relative">
-                                    <div className={`absolute -top-[2px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center gap-2.5 w-[55%] rounded-xl ${theme.gradient} p-2`} style={SET_MASK_STYLE}>
+                            <div key={setIndex} className={`${completeSets[selectedCycle.toString()].length === 1 ? "w-full" : "min-w-[85%]"} flex-shrink-0 snap-center relative rounded-2xl transform-gpu translate-z-0`}>
+                                <div className="rounded-xl relative">
+                                    <div className={`absolute -top-[2px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center gap-2.5 w-[55%] rounded-xl ${theme.gradient} p-2 shadow-lg`}>
                                         <div className="absolute inset-0 bg-white/10 animate-pulse" />
                                         <div className="relative z-10 w-7 h-7 bg-white rounded-lg flex items-center justify-center shadow-lg transform -rotate-2">
                                             <Hammer className={`w-3.5 h-3.5 ${theme.accentText}`} />
@@ -570,7 +648,7 @@ const HistoricalSetsSection = React.memo(({ isShowingFilledSets, completeSets, s
                                         </h3>
                                     </div>
 
-                                    <div className="bg-white/95 rounded-[14px] p-3 pt-8 relative overflow-hidden">
+                                    <div className=" rounded-[14px] p-1 pt-9 relative overflow-hidden">
                                         <div className="grid grid-cols-2 gap-2">
                                             {setNumbers.map((val, idx) => (
                                                 <div key={idx} className="relative rounded-2xl overflow-hidden shadow-md transform-gpu translate-z-0">
@@ -592,21 +670,39 @@ const HistoricalSetsSection = React.memo(({ isShowingFilledSets, completeSets, s
                         );
                     })
                 ) : (
-                    <div className="w-full py-4 bg-gradient-to-br from-slate-50 to-white rounded-2xl border-2 border-dashed border-pink-600 flex items-center justify-center gap-2 relative overflow-hidden -mt-2 transform-gpu translate-z-0">
-                        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-indigo-500/5 pointer-events-none" />
-                        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100 relative z-10">
-                            <Info className="w-5 h-5 text-pink-400" />
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="relative overflow-hidden rounded-xl text-center w-full mb-2"
+                    >
+
+
+                        <div className="relative z-10">
+                            {/* Large soft violet icon container as seen in image */}
+                            <div className="w-16 h-16 bg-violet-50 rounded-[2.5rem] flex items-center justify-center mx-auto mb-4">
+                                <History className="w-12 h-12 text-violet-400" />
+                            </div>
+
+                            <h3 className="text-xl font-bold text-gray-800 mb-3 tracking-tight">
+                                {t.noSetsCompleted}
+                            </h3>
+
+                            <p className="text-sm font-semibold text-gray-500 px-4 leading-relaxed max-w-[300px] mx-auto">
+                                {Number(selectedCycle) === Number(bidCycle)
+                                    ? t.noSetsCompletedCurrentCycle
+                                    : t.noSetsCompletedOtherCycle
+                                }
+                            </p>
                         </div>
-                        <p className="text-sm font-semibold text-slate-600 relative z-10">{t.noSetsCompleted}</p>
-                    </div>
+                    </motion.div>
                 )}
             </div>
-        </motion.div>
+        </div>
     );
 });
 
 const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handleTicketSelect, bidCycle, batchCount }: any) => (
-    <div className="relative transform-gpu translate-z-0">
+    <div className="relative transform-gpu translate-z-0 grid-anchor">
         <div className="absolute -inset-1 rounded-xl blur-2xl opacity-10 bg-indigo-500" />
         <div className="relative rounded-xl p-[4px] gradient-home-section shadow-xl">
             <div className="border-2 border-dashed border-white/80 rounded-xl p-1 relative">
@@ -720,7 +816,7 @@ const KeypadSection = React.memo(({
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex flex-col border-l-4 border-pink-500 pl-3">
                                     <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent tracking-widest">
-                                        Ticket - {currentTicket + 1}
+                                        {t.ticket} - {currentTicket + 1}
                                     </h3>
                                     <span className="text-xs font-bold text-slate-600  mt-1">
                                         {t.enterTicketNumber}

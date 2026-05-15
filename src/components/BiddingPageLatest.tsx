@@ -144,6 +144,7 @@ export default function BiddingPageLatest() {
     const [duplicateSets, setDuplicateSets] = useState<any>(null);
     const [isShowingFilledSets, setIsShowingFilledSets] = useState(false);
     const [selectedCycle, setSelectedCycle] = useState<number>(1);
+    const [hasDismissedResultPopup, setHasDismissedResultPopup] = useState(false);
     const { t } = useLanguage();
     const cycleTabsRef = React.useRef<HTMLDivElement>(null);
 
@@ -174,7 +175,7 @@ export default function BiddingPageLatest() {
         const name = bidInfo?.bid_name || bidData?.bidName;
         return name?.replace(/\+/g, " ");
     }, [bidInfo?.bid_name, bidData?.bidName]);
-    const bidCycle = bidData?.cycleCount;
+    const bidCycle = bidData?.cycleCount || bidData?.bidInfo?.bid_cycles;
     const batchCount = bidData?.batchCount;
     const completeSets = bidData?.completeSets;
 
@@ -361,7 +362,7 @@ export default function BiddingPageLatest() {
                     <TimerSection endTime={bidInfo?.bid_end_timestamp} />
 
                     <div className="max-w-md mx-auto space-y-3 pt-1">
-                        {allCompleteSets.length > 0 && (
+                        {(allCompleteSets.length > 0 || bidData?.redirect === "RESULT") && (
                             <div className="relative rounded-xl overflow-hidden shadow-xl bg-white transform-gpu translate-z-0">
                                 {/* Premium Gradient Header - Matching NotificationPage Style */}
                                 <motion.div
@@ -462,7 +463,7 @@ export default function BiddingPageLatest() {
                             </div>
                         )}
 
-                        {Number(selectedCycle) === Number(bidCycle) && (
+                        {Number(selectedCycle) === Number(bidCycle) && bidData?.redirect !== "RESULT" && (
                             <>
                                 <TicketGridSection
                                     t={t}
@@ -495,14 +496,18 @@ export default function BiddingPageLatest() {
             <BottomNavBar />
 
             <PopupBannerForBidPage
-                isShow={bidData?.redirect === "RESULT"}
+                isShow={!isLoading && bidData?.redirect === "RESULT" && !hasDismissedResultPopup}
                 data={{
                     title: t.resultAwaiting,
                     description: (bidData?.textChange || bidData?.redirect_to === "BID_END")
                         ? t.resultAwaitingCycleGeneral
                         : t.resultAwaitingCycleEnd,
                 }}
-                onConfirm={() => navigate("/dashboard")}
+                confirmText={t.checkBidHistory}
+                onConfirm={() => {
+                    setHasDismissedResultPopup(true);
+                    setIsShowingFilledSets(true);
+                }}
             />
 
             <SuccessBidPopup
@@ -620,13 +625,14 @@ const PreviousBidsSection = React.memo(({ t, isShowingFilledSets, setIsShowingFi
 });
 
 const HistoricalSetsSection = React.memo(({ completeSets, selectedCycle, bidCycle, bidName, t }: any) => {
-    if (!completeSets || Object.keys(completeSets).length === 0) return null;
+    // Show empty state if no sets or no completeSets object
+    const currentCycleSets = completeSets?.[selectedCycle.toString()] || [];
 
     return (
         <div className="space-y-4 transform-gpu translate-z-0">
             <div className="flex overflow-x-auto gap-2 px-1 scrollbar-hide snap-x pt-8" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none', marginTop: '0' }}>
-                {completeSets[selectedCycle.toString()] && completeSets[selectedCycle.toString()].length > 0 ? (
-                    completeSets[selectedCycle.toString()].map((setData: any, setIndex: number) => {
+                {currentCycleSets.length > 0 ? (
+                    currentCycleSets.map((setData: any, setIndex: number) => {
                         const setNumbers = [
                             setData.batch_set_1, setData.batch_set_2, setData.batch_set_3,
                             setData.batch_set_4, setData.batch_set_5, setData.batch_set_6

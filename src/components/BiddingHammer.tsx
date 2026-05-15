@@ -45,7 +45,7 @@ export const BiddingHammer = ({ className = "w-12 h-12" }: { className?: string 
             fill="url(#hammerGold)"
           />
           {/* Handle Cap */}
-          <circle cx="83" cy="78" r="5" fill="#ca8a04" />
+          {/* <circle cx="83" cy="78" r="5" fill="#ca8a04" /> */}
 
           {/* Gavel Head */}
           <g transform="translate(10, 20) rotate(-52 25 25)">

@@ -86,7 +86,7 @@ const App: React.FC = () => {
           <Toaster />
           <Sonner />
 
-          <div className="mobile-container sm:border-r sm:border-l overflow-hidden">
+          <div className="mobile-container overflow-hidden">
             <BrowserRouter>
               <ScrollToTop />
 
