@@ -321,6 +321,8 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
                 src={`/assets/users/${winner.avatar}`}
                 alt="Winner"
                 className="w-full h-full"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

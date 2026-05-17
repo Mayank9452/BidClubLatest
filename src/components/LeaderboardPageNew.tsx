@@ -259,6 +259,8 @@ export default function LeaderboardPageNew() {
                                 src={`/assets/users/${user.avatar}`}
                                 alt={user.name}
                                 className="w-full h-full"
+                                loading="lazy"
+                                decoding="async"
                               />
                             </div>
                           </div>
@@ -286,6 +288,8 @@ export default function LeaderboardPageNew() {
                                 src="/assets/images/diamond5.png"
                                 alt="diamond"
                                 className="h-5 object-cover"
+                                loading="lazy"
+                                decoding="async"
                               />
 
                               {/* premium shimmer */}
@@ -388,6 +392,8 @@ export default function LeaderboardPageNew() {
                       src="/assets/images/diamond5.png"
                       alt="diamond"
                       className="h-7 object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <p className="text-lg text-white font-semibold">
@@ -516,6 +522,8 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
               src={`/assets/users/${user.avatar}`}
               alt={user.name}
               className="w-full h-full"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -541,6 +549,8 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
               src="/assets/images/diamond5.png"
               alt="diamond"
               className="h-5 object-cover me-1"
+              loading="lazy"
+              decoding="async"
             />
 
             {/* ✨ Optional shimmer */}

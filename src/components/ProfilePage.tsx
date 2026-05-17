@@ -105,7 +105,7 @@ export default function ProfilePage() {
       if (res?.status === "success" || res?.status === true) {
         dispatch(logout());
         // Redirect to billing URL
-        window.location.href = "https://bidclubtesting.vercel.app/";
+        window.location.href = "/";
       }
     } catch (error) {
       console.error("Unsubscription failed:", error);
@@ -203,7 +203,7 @@ export default function ProfilePage() {
               <StatCard
                 label={t.points}
                 value={data?.data?.userPoints || "0"}
-                icon={<Gem className="w-6 h-6 text-rose-500" />}
+                icon={<img src="/assets/images/diamond5.png" alt="Points" className="w-6 h-6 object-contain" />}
                 color="rose"
               />
             </div>
@@ -276,7 +276,7 @@ export default function ProfilePage() {
               {/* Subscribe Now (Only if no access) */}
               {!hasAccess && (
                 <button
-                  onClick={() => (window.location.href = "https://bidclubtesting.vercel.app/")}
+                  onClick={() => (window.location.href = "/")}
                   className="w-full relative overflow-hidden group p-3 bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 rounded-[2rem] shadow-2xl transition-all duration-300 active:scale-[0.98] border border-white/10"
                 >
                   {/* Decorative Sparkles */}
@@ -302,9 +302,29 @@ export default function ProfilePage() {
                     {/* Content */}
                     <div className="flex flex-col text-center">
                       <div className="flex items-center justify-center gap-2">
-                        <h3 className="text-base font-semibold text-yellow-300">
-                          {t.subscribeNow}
-                        </h3>
+                        <div className="relative inline-block">
+                          {/* Background Glow (Hardware Accelerated Opacity) */}
+                          <motion.h3 
+                            animate={{ 
+                              opacity: [0, 0.8, 0],
+                              scale: [1, 1.05, 1]
+                            }}
+                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                            className="absolute inset-0 text-base font-bold text-yellow-300 blur-sm will-change-transform"
+                            aria-hidden="true"
+                          >
+                            {t.subscribeNow}
+                          </motion.h3>
+                          
+                          {/* Foreground Text (Hardware Accelerated Scale) */}
+                          <motion.h3 
+                            animate={{ scale: [1, 1.05, 1] }}
+                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                            className="relative z-10 text-base font-bold text-yellow-300 will-change-transform"
+                          >
+                            {t.subscribeNow}
+                          </motion.h3>
+                        </div>
 
                       </div>
                       <p className="text-xs text-indigo-100 ">

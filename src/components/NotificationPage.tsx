@@ -172,7 +172,7 @@ export default function NotificationPage() {
   return (
     <>
       <TopBar />
-      <div className="min-h-screen  p-2">
+      <div className="p-2">
 
         {/* Header Section */}
         {/* <div className="rounded-xl relative bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 pt-6 pb-16 px-3 overflow-hidden"> */}

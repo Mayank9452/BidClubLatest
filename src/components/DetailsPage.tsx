@@ -13,6 +13,7 @@ import {
   Gamepad,
 } from "lucide-react";
 import { useLanguage } from "./context/LanguageContext";
+import { OTHER_API_URL } from "@/config/config";
 
 export default function DetailsPage() {
   const { state } = useLocation();
@@ -72,7 +73,7 @@ export default function DetailsPage() {
 
             <div className="aspect-video flex items-center justify-center">
               <video
-                src="https://bidblast.club/assets/frontend/img/introduction.mp4"
+                src={`${OTHER_API_URL}assets/frontend/img/introduction.mp4`}
                 controls
                 playsInline
                 preload="metadata"

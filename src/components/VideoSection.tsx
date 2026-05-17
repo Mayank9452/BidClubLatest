@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card";
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useLanguage } from "./context/LanguageContext";
 
+import { OTHER_API_URL } from "@/config/config";
+
 export default function VideoSection() {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
@@ -11,7 +13,7 @@ export default function VideoSection() {
       <div className="w-full" style={{ width: '90%' }}>
         <video
           className="w-full h-full object-cover rounded-lg"
-          src="https://bidblast.club/assets/frontend/img/introduction.mp4"
+          src={`${OTHER_API_URL}assets/frontend/img/introduction.mp4`}
           autoPlay
           muted
           loop

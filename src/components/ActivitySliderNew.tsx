@@ -142,6 +142,7 @@ import { Zap, Timer } from "lucide-react";
 import type { Activity } from "@/types";
 import { useLanguage } from "./context/LanguageContext";
 import { placeBid } from "@/features/placebid/placeBidSlice";
+import { OTHER_API_URL } from "@/config/config";
 
 interface ActivitySliderProps {
   activities: Activity[];
@@ -209,7 +210,7 @@ export default function ActivitySliderNew({ updatedData }) {
           We use a standard CSS animation defined in your global CSS 
           or via Tailwind's arbitrary class: animate-[slide-right_30s_linear_infinite]
       */}
-      <div className="flex gap-4 animate-[slide-right_30s_linear_infinite] whitespace-nowrap px-4 w-max">
+      <div className="flex gap-4 animate-[slide-right_30s_linear_infinite] whitespace-nowrap px-4 w-max will-change-transform">
         {[...activityList, ...activityList].map((activity, index) => {
           const gradientClass = gradientStyles[index % gradientStyles.length];
           const avatarSeed = getAvatarSeed(activity.id);
@@ -232,9 +233,11 @@ export default function ActivitySliderNew({ updatedData }) {
                     <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm p-0.5 border-2 border-white/30 shadow-lg">
                       <div className="w-full h-full rounded-lg overflow-hidden bg-white">
                         <img
-                          src={`https://bidblast.club/assets/frontend/users/${activity.avatar}`}
+                          src={`${OTHER_API_URL}assets/frontend/users/${activity.avatar}`}
                           alt="User avatar"
                           className="w-full h-full"
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     </div>

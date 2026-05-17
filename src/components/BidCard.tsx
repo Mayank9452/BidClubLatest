@@ -5,7 +5,9 @@ import type { Bid } from "@/types";
 import { Clock, Users } from "lucide-react"
 import { useLanguage } from "./context/LanguageContext";
 
-export default function BidCard({ bid, background }: { bid: Bid; background: string }) {
+import React from "react";
+
+export default React.memo(function BidCard({ bid, background }: { bid: Bid; background: string }) {
   // console.log("BidCard background:", background);
   const { t } = useLanguage();
   return (

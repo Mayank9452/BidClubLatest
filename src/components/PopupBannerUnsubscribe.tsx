@@ -159,7 +159,7 @@ const PopupBannerUnsubscribe = ({
                     onClose?.();
                   }}
                 >
-                  {confirmText || t.confirm}
+                  {confirmText || t.subscribeNow}
                 </Button>
               </div>
             </motion.div>

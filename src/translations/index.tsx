@@ -92,7 +92,7 @@ export const translations: any = {
     liveActivity: "Live Activity",
     lowBalance: "Low Balance",
     lowBalanceMessage:
-      "Your credits are running low. Please top up to continue.",
+      "You have low balance, please top up to continue.",
     okayGotIt: "Okay, Got it",
     welcomeToBidBlast: "Welcome to BidBlast",
     bidblastDescription:
@@ -329,7 +329,7 @@ export const translations: any = {
     liveActivity: "တိုက်ရိုက် လှုပ်ရှားမှု",
     lowBalance: "လက်ကျန်ငွေ နည်းနေပါသည်",
     lowBalanceMessage:
-      "သင့်၏ ခရက်ဒစ်များ နည်းနေပါသည်။ ဆက်လက်ကစားရန် ငွေထည့်ပါ။",
+      "သင့်၏ လက်ကျန်ငွေ နည်းနေပါသည်။ ဆက်လက်ကစားရန် ငွေထည့်ပါ။",
     okayGotIt: "နားလည်ပါပြီ",
     welcomeToBidBlast: "BidBlast သို့ ကြိုဆိုပါသည်",
     bidblastDescription:

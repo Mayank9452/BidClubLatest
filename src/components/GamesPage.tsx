@@ -142,7 +142,7 @@ export default function GamesPage() {
         isShow={showNotSubscribed}
         onClose={() => setShowNotSubscribed(false)}
         onConfirm={() => setShowNotSubscribed(false)}
-        confirmText={t.confirm}
+        confirmText={t.subscribeNow}
         data={{
           title: t.notSubscribedTitle || "Not Subscribed !",
           description: t.notSubscribedDesc || "You are not subscribe with us, Please subscribe with Daily or Weekly plan.",
