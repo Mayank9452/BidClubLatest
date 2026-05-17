@@ -16,12 +16,14 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "./context/LanguageContext";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { fetchBidInfo } from "@/features/bid/bidSlice";
+import LowBalancePopup from "./LowBalancePopup";
+import { getSubscriptionUIState } from "@/utils/subscriptionUtils";
 import MyanmarClock from "./MynammarClock";
 import { motion } from "framer-motion";
 import TimeSliceClock from "./TimeSliceClock";
 import WeeklyProgressClock from "./WeeklyRandomClock";
 import WeeklyRandomClock from "./WeeklyRandomClock";
-import PopupNotSubscribed from "./PopupNotSubscribed";
+import PopupBannerUnsubscribe from "./PopupBannerUnsubscribe";
 
 // ── Your original color sets (no new colors added) ───────────────────────────
 const themes = [
@@ -306,10 +308,12 @@ export default function BidCardDemo() {
 
   const [activeTab, setActiveTab] = useState<"Daily" | "Weekly">("Daily");
   const [showNotSubscribed, setShowNotSubscribed] = useState(false);
+  const [showLowBalance, setShowLowBalance] = useState(false);
   const scrollRef = useRef(null);
 
-  const userSub = response?.data?.userInfo?.user_is_subscribed;
-  const isSubscribed = userSub !== 0 && userSub !== "0" && userSub !== undefined && userSub !== null;
+  const userInfo = response?.data?.userInfo;
+  const dValidTill = response?.data?.dValidTill;
+  const subUIState = useMemo(() => getSubscriptionUIState(userInfo, dValidTill), [userInfo, dValidTill]);
 
   const formattedBids = useMemo(() => {
     return liveBids.map((item: any) => {
@@ -411,8 +415,14 @@ export default function BidCardDemo() {
             bid={displayedBids[0]} 
             index={0} 
             activeTab={activeTab} 
-            isSubscribed={isSubscribed}
-            onNotSubscribed={() => setShowNotSubscribed(true)}
+            isSubscribed={subUIState.hasAccess}
+            onNotSubscribed={() => {
+              if (subUIState.popupToShow === "lowBalance") {
+                setShowLowBalance(true);
+              } else if (subUIState.popupToShow === "unsubscribe") {
+                setShowNotSubscribed(true);
+              }
+            }}
           />
         </div>
       )}
@@ -437,8 +447,14 @@ export default function BidCardDemo() {
                   bid={bid} 
                   index={index} 
                   activeTab={activeTab} 
-                  isSubscribed={isSubscribed}
-                  onNotSubscribed={() => setShowNotSubscribed(true)}
+                  isSubscribed={subUIState.hasAccess}
+                  onNotSubscribed={() => {
+                    if (subUIState.popupToShow === "lowBalance") {
+                      setShowLowBalance(true);
+                    } else if (subUIState.popupToShow === "unsubscribe") {
+                      setShowNotSubscribed(true);
+                    }
+                  }}
                 />
               </div>
             ))}
@@ -446,9 +462,23 @@ export default function BidCardDemo() {
         </div>
       )}
 
-      <PopupNotSubscribed
+      <PopupBannerUnsubscribe
         isShow={showNotSubscribed}
         onClose={() => setShowNotSubscribed(false)}
+        onConfirm={() => setShowNotSubscribed(false)}
+        confirmText={t.confirm}
+        data={{
+          title: t.notSubscribedTitle || "Not Subscribed !",
+          description: t.notSubscribedDesc || "You are not subscribe with us, Please subscribe with Daily or Weekly plan.",
+          image: true,
+          autoCloseTimer: 0,
+        }}
+      />
+
+      <LowBalancePopup
+        visible={showLowBalance}
+        onClose={() => setShowLowBalance(false)}
+        avatarUrl={userInfo?.user_image}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User,
@@ -23,6 +23,7 @@ import { logout } from "@/features/auth/authSlice";
 import dayjs from "dayjs";
 import PopupBannerUnsubscribe from "./PopupBannerUnsubscribe";
 import PopupAvatarSelector from "./PopupAvatarSelector";
+import { hasSubscriptionAccess } from "@/utils/subscriptionUtils";
 import { useNavigate } from "react-router-dom";
 import { updateProfileImageThunk } from "@/features/bidProfile/updateProfileSlice";
 import WaitLoader from "./Loader";
@@ -60,6 +61,8 @@ export default function ProfilePage() {
   const [selectedAvatar, setSelectedAvatar] = useState<string>("1.png");
   const [showUnsubscribePopup, setShowUnsubscribePopup] = useState(false);
   const navigate = useNavigate();
+  const dValidTill = data?.data?.dValidTill;
+  const hasAccess = useMemo(() => hasSubscriptionAccess(user, dValidTill), [user, dValidTill]);
 
   useEffect(() => {
     if (!data) {
@@ -270,10 +273,10 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Subscribe Now (Only if not subscribed) */}
-              {(user?.user_is_subscribed === "0" || user?.user_is_subscribed === 0) && (
+              {/* Subscribe Now (Only if no access) */}
+              {!hasAccess && (
                 <button
-                  onClick={() => (window.location.href = "")}
+                  onClick={() => (window.location.href = "https://bidclubtesting.vercel.app/")}
                   className="w-full relative overflow-hidden group p-3 bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 rounded-[2rem] shadow-2xl transition-all duration-300 active:scale-[0.98] border border-white/10"
                 >
                   {/* Decorative Sparkles */}
@@ -318,8 +321,8 @@ export default function ProfilePage() {
               )}
 
 
-              {/* Unsubscribe */}
-              {user?.user_subscription_status !== "unsub" && (
+              {/* Unsubscribe (Only if has access) */}
+              {hasAccess && (
                 <button
                   onClick={handleUnsubscribe}
                   className="w-full flex items-center justify-between p-3.5 bg-gradient-to-r from-rose-50 to-red-50 active:from-rose-100 active:to-red-100 rounded-xl border border-rose-500 shadow-sm transition-all duration-150 active:scale-[0.98]"
@@ -373,7 +376,7 @@ export default function ProfilePage() {
               <InfoRow
                 label={t.status}
                 value={
-                  user?.user_subscription_status === "sub" || user?.user_subscription_status === "renew"
+                  hasAccess
                     ? t.active
                     : user?.user_subscription_status === "unsub"
                       ? t.notSubscribed
@@ -381,14 +384,14 @@ export default function ProfilePage() {
                 }
                 badge
                 badgeClassName={
-                  user?.user_subscription_status === "sub" || user?.user_subscription_status === "renew"
+                  hasAccess
                     ? "bg-emerald-100 text-emerald-700"
                     : user?.user_subscription_status === "unsub"
                       ? "bg-red-100 text-red-700"
                       : "bg-amber-100 text-amber-700"
                 }
               />
-              {user?.user_subscription_status !== "unsub" && (
+              {hasAccess && data?.data?.subscriptionPlan && (
                 <InfoRow label={t.subscription} value={data?.data?.subscriptionPlan === "weekly" ? t.weeklyPack : t.dailyPack} />
               )}
             </div>

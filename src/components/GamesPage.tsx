@@ -12,6 +12,11 @@ import { useNavigate } from "react-router-dom";
 import CanvasGame from "./CanvasGame";
 import GameCard from "./GameCard";
 import WaitLoader from "./Loader";
+import { useAppSelector } from "@/app/hooks";
+import { getSubscriptionUIState } from "@/utils/subscriptionUtils";
+import PopupBannerUnsubscribe from "./PopupBannerUnsubscribe";
+import LowBalancePopup from "./LowBalancePopup";
+import { useState } from "react";
 
 const gradients = [
   "gradient-casino",
@@ -83,6 +88,13 @@ export default function GamesPage() {
   const { data, status } = useSelector((state: RootState) => state.games);
   const navigate = useNavigate();
   const { t, language } = useLanguage();
+  const { data: homeData } = useAppSelector((state) => state.home);
+  const [showNotSubscribed, setShowNotSubscribed] = useState(false);
+  const [showLowBalance, setShowLowBalance] = useState(false);
+
+  const userInfo = homeData?.data?.userInfo;
+  const dValidTill = homeData?.data?.dValidTill;
+  const subUIState = useMemo(() => getSubscriptionUIState(userInfo, dValidTill), [userInfo, dValidTill]);
 
   const games = useMemo(() => data?.data?.freeGames || [], [data]);
 
@@ -93,8 +105,16 @@ export default function GamesPage() {
   }, [dispatch, data]);
 
   const handleGamePlay = useCallback((url: string) => {
+    if (!subUIState.hasAccess) {
+      if (subUIState.popupToShow === "lowBalance") {
+        setShowLowBalance(true);
+      } else if (subUIState.popupToShow === "unsubscribe") {
+        setShowNotSubscribed(true);
+      }
+      return;
+    }
     navigate(url);
-  }, [navigate]);
+  }, [navigate, subUIState]);
 
   return (
     <>
@@ -117,6 +137,25 @@ export default function GamesPage() {
 
       <BottomNavBar />
       {status === "loading" && <WaitLoader isOverlay />}
+
+      <PopupBannerUnsubscribe
+        isShow={showNotSubscribed}
+        onClose={() => setShowNotSubscribed(false)}
+        onConfirm={() => setShowNotSubscribed(false)}
+        confirmText={t.confirm}
+        data={{
+          title: t.notSubscribedTitle || "Not Subscribed !",
+          description: t.notSubscribedDesc || "You are not subscribe with us, Please subscribe with Daily or Weekly plan.",
+          image: true,
+          autoCloseTimer: 0,
+        }}
+      />
+
+      <LowBalancePopup
+        visible={showLowBalance}
+        onClose={() => setShowLowBalance(false)}
+        avatarUrl={userInfo?.user_image}
+      />
     </>
   );
 }

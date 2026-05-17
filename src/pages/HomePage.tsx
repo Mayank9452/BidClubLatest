@@ -17,21 +17,12 @@ export default function HomePage() {
   const { t } = useLanguage();
   const dispatch = useAppDispatch();
   const { data: response } = useAppSelector((state) => state.home);
-  const [showLowBalance, setShowLowBalance] = useState(false);
+
 
   const userPlayCoins = response?.data?.userInfo?.user_play_coins;
   const avatarUrl = response?.data?.userInfo?.user_avatar;
 
-  useEffect(() => {
-    // Only show if balance is 0 or less
-    if (response?.status === "success" && userPlayCoins !== undefined && userPlayCoins < 1) {
-      const alreadyShown = sessionStorage.getItem("lowBalanceShown");
-      if (!alreadyShown) {
-        setShowLowBalance(true);
-        sessionStorage.setItem("lowBalanceShown", "true");
-      }
-    }
-  }, [response?.status, userPlayCoins]);
+
   return (
     <>
       <TopBar />
@@ -169,11 +160,7 @@ export default function HomePage() {
 
       <BottomNavBar />
 
-      <LowBalancePopup
-        visible={showLowBalance}
-        onClose={() => setShowLowBalance(false)}
-        avatarUrl={avatarUrl}
-      />
+
     </>
   );
 }

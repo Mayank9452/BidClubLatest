@@ -79,7 +79,7 @@ export default function LowBalancePopup({ visible, onClose, avatarUrl }: LowBala
                     <div className="absolute inset-0 overflow-hidden">
                       <div className="w-full h-full flex items-center justify-center relative">
                         <img
-                          src={avatarUrl || "/assets/robotavatar/2.png"}
+                          src='/assets/robotavatar/2.png'
                           className="w-full h-full object-cover relative z-10"
                           alt="Low Balance Robot"
                           loading="lazy"
