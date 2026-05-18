@@ -77,11 +77,12 @@ export function TopBar({
           <div className="flex items-center justify-between w-full">
             {/* LEFT: LOGO */}
             <div className="flex items-center gap-2 cursor-pointer transform translate-y-0.5">
-              <div className="rounded-lg">
+              <div className="rounded-lg flex items-center">
                 <img
                   src="/assets/images/logo.png"
-                  className="h-10 w-auto object-contain"
-                  alt="Spin Zone"
+                  className="w-[130px] sm:w-[140px] h-auto object-cover"
+                  style={{ aspectRatio: '500/111' }}
+                  alt="Logo"
                   loading="lazy"
                 />
               </div>
