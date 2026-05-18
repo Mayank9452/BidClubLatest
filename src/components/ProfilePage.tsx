@@ -273,8 +273,8 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Subscribe Now (Only if no access) */}
-              {!hasAccess && (
+              {/* Subscribe Now (Only if no access and not suspended) */}
+              {!hasAccess && user?.user_subscription_status?.toLowerCase() !== "suspend" && (
                 <button
                   onClick={() => (window.location.href = "/")}
                   className="w-full relative overflow-hidden group p-3 bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 rounded-[2rem] shadow-2xl transition-all duration-300 active:scale-[0.98] border border-white/10"
