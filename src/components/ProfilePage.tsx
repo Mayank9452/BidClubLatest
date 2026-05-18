@@ -272,7 +272,6 @@ export default function ProfilePage() {
                   </button>
                 </div>
               </div>
-
               {/* Subscribe Now (Only if no access and not suspended) */}
               {!hasAccess && user?.user_subscription_status?.toLowerCase() !== "suspend" && (
                 <button
@@ -304,8 +303,8 @@ export default function ProfilePage() {
                       <div className="flex items-center justify-center gap-2">
                         <div className="relative inline-block">
                           {/* Background Glow (Hardware Accelerated Opacity) */}
-                          <motion.h3 
-                            animate={{ 
+                          <motion.h3
+                            animate={{
                               opacity: [0, 0.8, 0],
                               scale: [1, 1.05, 1]
                             }}
@@ -315,9 +314,9 @@ export default function ProfilePage() {
                           >
                             {t.subscribeNow}
                           </motion.h3>
-                          
+
                           {/* Foreground Text (Hardware Accelerated Scale) */}
-                          <motion.h3 
+                          <motion.h3
                             animate={{ scale: [1, 1.05, 1] }}
                             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                             className="relative z-10 text-base font-bold text-yellow-300 will-change-transform"
