@@ -1,6 +1,13 @@
 import React, { useEffect, useRef } from "react";
+import { useLanguage } from "./context/LanguageContext";
 
 const CanvasGame = React.memo(() => {
+  const { t } = useLanguage();
+  const tRef = useRef(t);
+  useEffect(() => {
+    tRef.current = t;
+  }, [t]);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scoreRef = useRef(0);
   const gameLoopRef = useRef<number>();
@@ -242,21 +249,21 @@ const CanvasGame = React.memo(() => {
 
       // 6. Draw UI (Score & Overlay)
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 12px sans-serif";
+      ctx.font = "bold 12px 'Atom Sans', sans-serif";
       ctx.textAlign = "right";
       ctx.textBaseline = "top";
-      ctx.fillText(`SCORE: ${scoreRef.current}`, width - 10, 10);
+      ctx.fillText(`${tRef.current.score || "SCORE"}: ${scoreRef.current}`, width - 10, 10);
 
       if (isGamePaused.current) {
         ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         ctx.fillRect(0, 0, width, height);
         ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 14px sans-serif";
+        ctx.font = "bold 14px 'Atom Sans', sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText("GAME OVER", width / 2, height / 2 - 10);
-        ctx.font = "10px sans-serif";
-        ctx.fillText("RESTARTING...", width / 2, height / 2 + 10);
+        ctx.fillText(tRef.current.gameOver || "GAME OVER", width / 2, height / 2 - 10);
+        ctx.font = "10px 'Atom Sans', sans-serif";
+        ctx.fillText(tRef.current.restarting || "RESTARTING...", width / 2, height / 2 + 10);
       }
 
       gameLoopRef.current = requestAnimationFrame(update);

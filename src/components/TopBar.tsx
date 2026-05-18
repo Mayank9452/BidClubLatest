@@ -7,6 +7,14 @@ import { Coins, Gem, User } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useLanguage } from "./context/LanguageContext"
+const formatCompactNumber = (number?: number) => {
+  if (!number) return 0;
+  if (number >= 100000) {
+    const kValue = Math.floor(number / 100) / 10;
+    return `${kValue}k`;
+  }
+  return number.toLocaleString();
+};
 
 export function TopBar({
   comingFrom = "spin-the-wheel",
@@ -120,7 +128,7 @@ export function TopBar({
                       alt="diamond"
                       className="h-5 object-cover me-1"
                     />
-                    <span className="font-bold text-blue-400 text-[11px]">{userPoints}</span>
+                    <span className="font-bold text-blue-400 text-[11px]">{formatCompactNumber(userPoints)}</span>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
@@ -163,7 +171,7 @@ export function TopBar({
     before:pointer-events-none px-3"
                   >
                     <Coins className="h-4 w-4 text-yellow-400" />
-                    <span className="font-bold text-yellow-400 text-[11px]">{user_play_coins}</span>
+                    <span className="font-bold text-yellow-400 text-[11px]">{formatCompactNumber(user_play_coins)}</span>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent

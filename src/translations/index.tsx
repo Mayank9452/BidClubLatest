@@ -42,6 +42,10 @@ export const translations: any = {
     bids: "Bids",
     rank: "Rank",
     points: "Points",
+    diamond: "Diamond",
+    score: "SCORE",
+    gameOver: "GAME OVER",
+    restarting: "RESTARTING...",
 
     wonBadge: "🎉 WON",
     lostBadge: "❌ LOST",
@@ -92,7 +96,7 @@ export const translations: any = {
     liveActivity: "Live Activity",
     lowBalance: "Low Balance",
     lowBalanceMessage:
-      "You have low balance, please top up to continue.",
+      "Hey... due to your low balance, service is unavailable. Please recharge your account to continue playing",
     okayGotIt: "Okay, Got it",
     welcomeToBidBlast: "Welcome to BidBlast",
     bidblastDescription:
@@ -199,7 +203,7 @@ export const translations: any = {
     preparingLiveBidding: "Preparing Live Bidding...",
     syncingBiddingData: "Syncing Bidding Data...",
     gatheringBiddingWinners: "Gathering Bidding Winners...",
-    diamondEarned: "Diamond earned: {0}",
+    diamondEarned: "Diamond earned {0}",
     bidNameDaily: "Bid Daily {0}",
     bidNameWeekly: "Bid Weekly {0}",
     minAgo: "{0} min ago",
@@ -279,6 +283,10 @@ export const translations: any = {
     bids: "များ",
     rank: "အဆင့်",
     points: "အမှတ်",
+    diamond: "ဒိုင်းမွန်း",
+    score: "ရမှတ်",
+    gameOver: "ဂိမ်းပြီးဆုံးပါပြီ",
+    restarting: "ပြန်လည်စတင်နေသည်...",
 
     wonBadge: "🎉 အနိုင်",
     lostBadge: "❌ ရှုံး",

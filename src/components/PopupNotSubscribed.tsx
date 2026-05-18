@@ -85,7 +85,7 @@ const PopupNotSubscribed = ({ isShow, onClose }: { isShow: boolean; onClose: () 
           <h2 className="text-xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3 font-bold">
             {t.notSubscribedTitle || "Not Subscribed !"}
           </h2>
-          <p className="text-sm text-blue-100 leading-relaxed font-semibold">
+          <p className="text-sm text-blue-100 leading-relaxed">
             {t.notSubscribedDesc || "You are not subscribe with us, Please subscribe with Daily or Weekly plan."}
           </p>
 

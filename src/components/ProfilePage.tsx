@@ -191,19 +191,19 @@ export default function ProfilePage() {
               <StatCard
                 label={t.bids}
                 value={data?.data?.userBidsCount || "0"}
-                icon={<Gavel className="w-6 h-6 text-blue-600" />}
+                icon={<Gavel className="w-5 h-5 text-blue-600" />}
                 color="blue"
               />
               <StatCard
                 label={t.wins}
                 value={data?.data?.userBidsWinCount || "0"}
-                icon={<Trophy className="w-6 h-6 text-orange-500" />}
+                icon={<Trophy className="w-5 h-5 text-orange-500" />}
                 color="gold"
               />
               <StatCard
-                label={t.points}
+                label={t.diamond || "Diamond"}
                 value={data?.data?.userPoints || "0"}
-                icon={<img src="/assets/images/diamond5.png" alt="Points" className="w-6 h-6 object-contain" />}
+                icon={<img src="/assets/images/diamond5.png" alt="Points" className="w-5 h-5 object-contain" />}
                 color="rose"
               />
             </div>
@@ -354,7 +354,7 @@ export default function ProfilePage() {
                       <h3 className="text-base font-bold text-gray-800">
                         {t.unsubscribe}
                       </h3>
-                      <p className="text-xs font-semibold text-gray-500">
+                      <p className="text-sm font-semibold text-gray-500">
                         {t.leaveService}
                       </p>
                     </div>
@@ -460,16 +460,16 @@ const StatCard = React.memo(({ label, value, icon, color }: any) => {
 
   return (
     <div
-      className={`relative overflow-hidden bg-gradient-to-br ${theme} rounded-2xl p-2.5 flex items-center gap-2.5 shadow-lg transition-all active:scale-95`}
+      className={`relative overflow-hidden bg-gradient-to-br ${theme} rounded-2xl p-2 flex items-center justify-center gap-1.5 shadow-lg transition-all active:scale-95`}
     >
-      <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center z-10">
+      <div className="w-8 h-8 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center z-10">
         {icon}
       </div>
-      <div className="flex flex-col z-10">
-        <span className="text-base font-black text-white leading-tight">
+      <div className="flex flex-col z-10 min-w-0 flex-1">
+        <span className="text-sm font-black text-white leading-tight truncate">
           {value}
         </span>
-        <span className="text-[11px] font-bold text-white leading-none">
+        <span className="text-[10px] font-semibold text-white leading-relaxed mt-0.5">
           {label}
         </span>
       </div>

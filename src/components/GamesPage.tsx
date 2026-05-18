@@ -120,7 +120,7 @@ export default function GamesPage() {
     <>
       <TopBar />
 
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 pt-2 px-2">
+      <div className="pt-2 px-2">
         <div className="max-w-md mx-auto">
           <GamesHeader t={t} />
 

@@ -144,7 +144,7 @@ export default function LeaderboardPageNew() {
   return (
     <>
       <TopBar />
-      <div className="p-2 min-h-screen bg-premium-soft pb-16">
+      <div className="p-2 pb-16">
 
         {/* Header Section - Compact for mobile */}
         <div className="relative rounded-xl gradient-home-section active:from-purple-700 active:to-rose-700 text-white pt-4 pb-24 px-3 overflow-hidden">
@@ -343,7 +343,7 @@ export default function LeaderboardPageNew() {
               {/* ✅ ADD HERE */}
               {status === "loading" && (
                 <p className="text-center text-sm text-gray-500 py-3">
-                  Loading more...
+                  {t.loadingMore}
                 </p>
               )}
 

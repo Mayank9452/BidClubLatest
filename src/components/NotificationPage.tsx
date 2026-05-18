@@ -138,7 +138,7 @@ export default function NotificationPage() {
       endTime: end.time,
       won: item.reward_prize_text !== "No prize won",
       diamondAmount: diamondAmount,
-      diamondCredit: t.diamondEarned?.replace("{0}", diamondAmount.toString()) || `Diamond earned : ${diamondAmount}`,
+      diamondCredit: t.diamondEarned?.replace("{0}", diamondAmount.toString()) || `Diamond earned ${diamondAmount}`,
       prize: formatPrize(item.reward_prize_text),
       timestamp: formatTimeAgo(item.batch_datetime),
       rank: Number(item.cycle_reward_rank),
