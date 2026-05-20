@@ -317,7 +317,7 @@ export default function ProfilePage() {
 
                           {/* Foreground Text (Hardware Accelerated Scale) */}
                           <motion.h3
-                            animate={{ scale: [1, 1.05, 1] }}
+                            animate={{ scale: [1, 1.2, 1] }}
                             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                             className="relative z-10 text-base font-bold text-yellow-300 will-change-transform"
                           >

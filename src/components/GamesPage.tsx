@@ -105,7 +105,8 @@ export default function GamesPage() {
   }, [dispatch, data]);
 
   const handleGamePlay = useCallback((url: string) => {
-    if (!subUIState.hasAccess) {
+    const isSuspend = userInfo?.user_subscription_status?.toLowerCase() === "suspend";
+    if (!subUIState.hasAccess && !isSuspend) {
       if (subUIState.popupToShow === "lowBalance") {
         setShowLowBalance(true);
       } else if (subUIState.popupToShow === "unsubscribe") {
@@ -114,7 +115,7 @@ export default function GamesPage() {
       return;
     }
     navigate(url);
-  }, [navigate, subUIState]);
+  }, [navigate, subUIState, userInfo]);
 
   return (
     <>

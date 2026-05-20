@@ -108,7 +108,7 @@ export default function ActivitySlider({ latestJoined = [], winners = [] }: Acti
 
   return (
     <div className="relative w-full overflow-hidden py-2 -mt-[4.5rem]">
-      <div className="flex gap-4 animate-[slide-right_60s_linear_infinite] whitespace-nowrap px-4 w-max">
+      <div className="flex gap-4 animate-[slide-right_60s_linear_infinite] whitespace-nowrap px-4 w-max will-change-transform">
         {extendedList.map((activity, index) => (
           <ActivityItem
             key={`${activity.id}-${index}`}

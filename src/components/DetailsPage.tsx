@@ -42,10 +42,10 @@ export default function DetailsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen">
       <TopBar />
 
-      <div className="min-h-screen bg-premium-soft mx-2">
+      <div className="min-h-screen mx-2">
         {/* Top Bar Placeholder */}
         <div className="relative gradient-home-section backdrop-blur-2xl border-b border-gray-200 p-4 sticky top-0 shadow-sm mt-2 rounded-xl pb-14">
           <button

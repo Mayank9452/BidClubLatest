@@ -101,7 +101,7 @@ export const translations: any = {
     welcomeToBidBlast: "Welcome to BidBlast",
     bidblastDescription:
       "Experience the thrill of daily bidding where every cycle brings new opportunities to win amazing prizes.",
-    chooseGameMode: "Choose Your Game Mode",
+    chooseGameMode: "Pick your Bid Options",
 
     dailyBid: "Bid Daily",
     weeklyBid: "Bid Weekly",
@@ -137,6 +137,7 @@ export const translations: any = {
     ticket: "Ticket",
     tapToEnter: "Tap to Enter",
     filled: "Filled",
+    duplicate: "Duplicate",
     goodLuck: "Good Luck",
     enterTicketNumber: "Enter Ticket Number",
     delete: "Delete",
@@ -343,7 +344,7 @@ export const translations: any = {
     bidblastDescription:
       "နေ့စဉ် လေလံကစားခြင်း၏ စိတ်လှုပ်ရှားမှုကို ခံစားပါ။ စက်ဝန်းတိုင်းတွင် အံ့အားသင့်ဖွယ် ဆုများကို ရရှိနိုင်ရန် အခွင့်အရေးအသစ်များ ရှိပါသည်။",
 
-    chooseGameMode: "သင့်ဂိမ်းမုဒ်ကို ရွေးချယ်ပါ",
+    chooseGameMode: "သင့်လေလံဆွဲရန် ရွေးချယ်မှုများကို ရွေးပါ",
 
     dailyBid: "နေ့စဉ် လေလံ",
     weeklyBid: "အပတ်စဉ် လေလံ",
@@ -379,6 +380,7 @@ export const translations: any = {
     ticket: "လက်မှတ်",
     tapToEnter: "နှိပ်ပြီး ထည့်ပါ",
     filled: "ဖြည့်ပြီး",
+    duplicate: "ထပ်နေသည်",
     goodLuck: "ကံကောင်းပါစေ",
     enterTicketNumber: "လက်မှတ် နံပါတ် ထည့်ပါ",
     delete: "ဖျက်ရန်",

@@ -111,13 +111,25 @@ const getTimeLeft = (endTime: string) => {
   return `${String(d).padStart(2, "0")} : ${String(h).padStart(2, "0")} : ${String(m).padStart(2, "0")} : ${String(s).padStart(2, "0")}`;
 };
 
+// ── Helpers ──────────────────────────────────────────────────────────────────
+const getGlowColor = (gradient: string) => {
+  if (gradient.includes("violet")) return "rgba(139, 92, 246, 0.4)";
+  if (gradient.includes("fuchsia")) return "rgba(217, 70, 239, 0.4)";
+  if (gradient.includes("cyan")) return "rgba(6, 182, 212, 0.4)";
+  if (gradient.includes("emerald")) return "rgba(16, 185, 129, 0.4)";
+  if (gradient.includes("orange")) return "rgba(249, 115, 22, 0.4)";
+  if (gradient.includes("rose")) return "rgba(244, 63, 94, 0.4)";
+  return "rgba(244, 63, 94, 0.4)";
+};
+
 // ── BidCard ──────────────────────────────────────────────────────────────────
-const BidCard = React.memo(({ bid, index, activeTab, isSubscribed, onNotSubscribed }: { 
+const BidCard = React.memo(({ bid, index, activeTab, isSubscribed, onNotSubscribed, tick }: { 
   bid: any; 
   index: number; 
   activeTab: string;
   isSubscribed: boolean;
   onNotSubscribed: () => void;
+  tick: number;
 }) => {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -125,21 +137,14 @@ const BidCard = React.memo(({ bid, index, activeTab, isSubscribed, onNotSubscrib
 
   const theme = activeTab === "Weekly" ? weeklyThemes[index % weeklyThemes.length] : themes[index % themes.length];
   const BidIcon = bidIcons[index % bidIcons.length];
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft(bid.endTime));
+  const timeLeft = useMemo(() => getTimeLeft(bid.endTime), [bid.endTime, tick]);
 
-  useEffect(() => {
-    const id = setInterval(() => setTimeLeft(getTimeLeft(bid.endTime)), 1000);
-    return () => clearInterval(id);
-  }, [bid.endTime]);
+  const glowColor = getGlowColor(theme.gradient);
+  const shadowStart = "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)";
+  const shadowGlow = `0 10px 25px -5px ${glowColor}, 0 8px 10px -6px ${glowColor}`;
 
   return (
     <div
-      // className={`
-      //   relative w-full rounded-[20px] overflow-hidden bg-white
-      //   border-2 ${theme.border} shadow-lg ${theme.shadow}
-      //   cursor-pointer transition-all duration-200
-      //   hover:-translate-y-1 hover:shadow-xl active:scale-[0.97]
-      // `}
       className={`
         relative w-full rounded-[20px] overflow-hidden bg-white
         border-2 ${theme.border} 
@@ -158,10 +163,41 @@ const BidCard = React.memo(({ bid, index, activeTab, isSubscribed, onNotSubscrib
         navigate(`/biddingPage`);
       }}
     >
+      {/* Shimmer sweep effect */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[20px] z-20">
+        <motion.div
+          initial={{ x: "-100%" }}
+          animate={{ x: "250%" }}
+          transition={{
+            repeat: Infinity,
+            repeatType: "loop",
+            duration: 2.2,
+            ease: "easeInOut",
+            repeatDelay: 1.5
+          }}
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)",
+            width: "50%",
+            height: "100%",
+            transform: "skewX(-20deg)"
+          }}
+          className="absolute top-0 bottom-0"
+        />
+      </div>
+
       {/* ── Banner ── */}
       <div
         className={`relative h-24 ${theme.gradient} flex flex-col items-center justify-center gap-1.5 overflow-hidden`}
       >
+        {/* Live indicator badge */}
+        <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-rose-600 border border-white/30 rounded-full px-2 py-0.5 shadow-[0_0_10px_rgba(225,29,72,0.5)]">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+          </span>
+          <span className="text-[9px] font-black text-white uppercase tracking-wider">LIVE</span>
+        </div>
+
         {/* diagonal stripe texture */}
         <div
           className="absolute inset-0 opacity-[0.06]"
@@ -281,20 +317,20 @@ const BidCard = React.memo(({ bid, index, activeTab, isSubscribed, onNotSubscrib
         </div>
 
         {/* CTA button */}
-        <button
-          // className={`
-          //   w-full py-2 rounded-xl
-          //   bg-gradient-to-r ${theme.btnFrom} ${theme.btnTo}
-          //   text-white text-[11px] font-bold uppercase
-          //   flex items-center justify-center gap-1.5
-          //   transition-all duration-150 hover:opacity-90 active:scale-[0.97]
-
-          // `}
-          className="bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2 rounded-xl text-sm  transition-colors duration-150 shadow-md active:shadow-lg flex items-center justify-center gap-2"
+        <motion.button
+          animate={{
+            scale: [1, 1.04, 1]
+          }}
+          transition={{
+            duration: 1.8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2 rounded-xl text-sm transition-colors duration-150 flex items-center justify-center gap-2 w-full shadow-lg will-change-transform"
         >
           <Target className="w-3.5 h-3.5" />
           {bid.joinedStatus ? t.reBid : t.enterBid}
-        </button>
+        </motion.button>
       </div>
     </div>
   );
@@ -310,6 +346,14 @@ export default function BidCardDemo() {
   const [showNotSubscribed, setShowNotSubscribed] = useState(false);
   const [showLowBalance, setShowLowBalance] = useState(false);
   const scrollRef = useRef(null);
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTick((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   const userInfo = response?.data?.userInfo;
   const dValidTill = response?.data?.dValidTill;
@@ -423,6 +467,7 @@ export default function BidCardDemo() {
                 setShowNotSubscribed(true);
               }
             }}
+            tick={tick}
           />
         </div>
       )}
@@ -431,34 +476,25 @@ export default function BidCardDemo() {
           FIX 1: (isOdd || isEven) instead of isOdd || (isEven && ...)
           FIX 2: key={activeTab} resets drag position on every tab switch       */}
       {(isOdd || isEven) && (
-        <div ref={scrollRef} className="overflow-hidden">
-          <motion.div
-            key={activeTab}
-            className="flex gap-2 cursor-grab active:cursor-grabbing w-max will-change-transform"
-            drag="x"
-            dragConstraints={scrollRef}
-            dragElastic={0.02}
-            whileTap={{ cursor: "grabbing" }}
-            whileDrag={{ scale: 0.98 }}
-          >
-            {displayedBids.map((bid: any, index: number) => (
-              <div key={bid.id} className="w-[225px] sm:w-[280px]">
-                <BidCard 
-                  bid={bid} 
-                  index={index} 
-                  activeTab={activeTab} 
-                  isSubscribed={subUIState.hasAccess}
-                  onNotSubscribed={() => {
-                    if (subUIState.popupToShow === "lowBalance") {
-                      setShowLowBalance(true);
-                    } else if (subUIState.popupToShow === "unsubscribe") {
-                      setShowNotSubscribed(true);
-                    }
-                  }}
-                />
-              </div>
-            ))}
-          </motion.div>
+        <div className="overflow-x-auto no-scrollbar scrollbar-hide flex gap-2 w-full px-5 py-1">
+          {displayedBids.map((bid: any, index: number) => (
+            <div key={bid.id} className="w-[225px] sm:w-[280px] flex-shrink-0">
+              <BidCard 
+                bid={bid} 
+                index={index} 
+                activeTab={activeTab} 
+                isSubscribed={subUIState.hasAccess}
+                onNotSubscribed={() => {
+                  if (subUIState.popupToShow === "lowBalance") {
+                    setShowLowBalance(true);
+                  } else if (subUIState.popupToShow === "unsubscribe") {
+                    setShowNotSubscribed(true);
+                  }
+                }}
+                tick={tick}
+              />
+            </div>
+          ))}
         </div>
       )}
 

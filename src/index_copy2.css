@@ -873,6 +873,10 @@ html {
         }
     }
 
+    .animate-shimmer {
+        animation: shimmer 2s infinite linear;
+    }
+
     .animate-lights-blink {
         animation: lights-blink 7s infinite;
     }

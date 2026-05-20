@@ -145,6 +145,7 @@ export default function BiddingPageLatest() {
     const [isShowingFilledSets, setIsShowingFilledSets] = useState(false);
     const [selectedCycle, setSelectedCycle] = useState<number>(1);
     const [hasDismissedResultPopup, setHasDismissedResultPopup] = useState(false);
+    const [duplicateTicketNumbers, setDuplicateTicketNumbers] = useState<string[]>([]);
     const { t } = useLanguage();
     const cycleTabsRef = React.useRef<HTMLDivElement>(null);
 
@@ -275,12 +276,14 @@ export default function BiddingPageLatest() {
         });
 
         setSelectedTickets(newTickets);
+        setDuplicateTicketNumbers([]);
         setCurrentTicket(null);
         setInputValue("");
     }, [existingNumbers]);
 
     const handleClearAll = useCallback(() => {
         setSelectedTickets({});
+        setDuplicateTicketNumbers([]);
         setCurrentTicket(null);
         setInputValue("");
     }, []);
@@ -298,6 +301,7 @@ export default function BiddingPageLatest() {
         };
 
         try {
+            setDuplicateTicketNumbers([]);
             const checkRes = await dispatch(
                 checkUniqueNumbers(checkPayload),
             ).unwrap();
@@ -345,6 +349,7 @@ export default function BiddingPageLatest() {
             dispatch(fetchBidInfo(encodedBidId));
         }
         setSelectedTickets({});
+        setDuplicateTicketNumbers([]);
         setShowSuccessPopup(false);
     }, [dispatch, bidData?.joinedStatus, bidData?.userId]);
 
@@ -365,10 +370,9 @@ export default function BiddingPageLatest() {
                         {(allCompleteSets.length > 0 || bidData?.redirect === "RESULT") && (
                             <div className="relative rounded-xl overflow-hidden shadow-xl bg-white transform-gpu translate-z-0">
                                 {/* Premium Gradient Header - Matching NotificationPage Style */}
-                                <motion.div
-                                    animate={{ paddingBottom: isShowingFilledSets ? '48px' : '16px' }}
-                                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                                    className="gradient-home-section pt-4 px-5 relative"
+                                <div
+                                    style={{ transition: 'padding-bottom 0.3s ease-in-out' }}
+                                    className={`gradient-home-section pt-4 px-5 relative ${isShowingFilledSets ? 'pb-12' : 'pb-4'}`}
                                 >
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl animate-pulse" />
                                     <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-500/20 rounded-full blur-2xl" />
@@ -427,7 +431,7 @@ export default function BiddingPageLatest() {
                                                                     layoutId="historyTab"
                                                                     className="absolute inset-0 bg-white rounded-xl shadow-md"
                                                                     transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-                                                                />
+                                                                 />
                                                             )}
                                                             <span className="relative z-10">{t.cycle} {cycleNum}</span>
                                                         </button>
@@ -436,7 +440,7 @@ export default function BiddingPageLatest() {
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
-                                </motion.div>
+                                </div>
 
                                 {/* Content Area - Historical Sets or Empty State */}
                                 <AnimatePresence>
@@ -472,6 +476,7 @@ export default function BiddingPageLatest() {
                                     handleTicketSelect={handleTicketSelect}
                                     bidCycle={bidCycle}
                                     batchCount={batchCount}
+                                    duplicateTicketNumbers={duplicateTicketNumbers}
                                 />
 
                                 <KeypadSection
@@ -519,7 +524,24 @@ export default function BiddingPageLatest() {
             <PopupBannerForDuplicateSet
                 isShow={showDuplicatePopup}
                 duplicateSets={duplicateSets}
-                onConfirm={() => setShowDuplicatePopup(false)}
+                onConfirm={() => {
+                    setShowDuplicatePopup(false);
+                    const dupNums: string[] = [];
+                    if (duplicateSets) {
+                        Object.values(duplicateSets).forEach((cycleData: any) => {
+                            Object.values(cycleData).forEach((details: any) => {
+                                if (Array.isArray(details)) {
+                                    details.forEach((item: any) => {
+                                        if (item?.number) {
+                                            dupNums.push(item.number.toString());
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    }
+                    setDuplicateTicketNumbers(dupNums);
+                }}
             />
 
             {isLoading && <WaitLoader isOverlay />}
@@ -707,7 +729,7 @@ const HistoricalSetsSection = React.memo(({ completeSets, selectedCycle, bidCycl
     );
 });
 
-const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handleTicketSelect, bidCycle, batchCount }: any) => (
+const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handleTicketSelect, bidCycle, batchCount, duplicateTicketNumbers = [] }: any) => (
     <div className="relative transform-gpu translate-z-0 grid-anchor">
         <div className="absolute -inset-1 rounded-xl blur-2xl opacity-10 bg-indigo-500" />
         <div className="relative rounded-xl p-[4px] gradient-home-section shadow-xl">
@@ -754,7 +776,15 @@ const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handl
                         {Array(6).fill(null).map((_, index) => {
                             const isSelected = currentTicket === index;
                             const hasValue = selectedTickets[index];
-                            const ticketColor = hasValue ? "gradient-diamond" : "gradient-button-gold";
+                            const isDuplicate = hasValue && duplicateTicketNumbers.includes(hasValue);
+                            
+                            const ticketColor = isDuplicate
+                                ? "bg-gradient-to-br from-rose-500 via-red-500 to-rose-600 shadow-[0_0_15px_rgba(239,68,68,0.5)] animate-pulse"
+                                : (hasValue ? "gradient-diamond" : "gradient-button-gold");
+
+                            const dashedBorderColor = isSelected
+                                ? "border-[3px] border-white scale-[1.02] z-20 animate-[pulse_4s_ease-in-out_infinite]"
+                                : (isDuplicate ? "border-white/80" : (hasValue ? "border-white" : "border-black"));
 
                             return (
                                 <motion.button
@@ -767,16 +797,23 @@ const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handl
                                             className={`relative ${ticketColor} p-4 h-20 flex flex-col items-center justify-center`}
                                             style={TICKET_MASK_STYLE}
                                         >
-                                            {hasValue && <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />}
-                                            <div className={`absolute inset-2 border-2 border-dashed rounded-xl pointer-events-none transition-all duration-300 ${isSelected ? "border-[3px] border-white scale-[1.02] z-20 animate-[pulse_4s_ease-in-out_infinite]" : (hasValue ? "border-white" : "border-black")}`} />
+                                            {hasValue && !isDuplicate && <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />}
+                                            <div className={`absolute inset-2 border-2 border-dashed rounded-xl pointer-events-none transition-all duration-300 ${dashedBorderColor}`} />
 
                                             {hasValue ? (
                                                 <div className="relative z-10 flex flex-col items-center">
                                                     <p className="text-xl font-bold text-white drop-shadow-md">{hasValue}</p>
-                                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-white/20 rounded-full">
-                                                        <Check className="w-3 h-3 text-white" />
-                                                        <span className="text-[9px] font-semibold text-white ">{t.filled}</span>
-                                                    </div>
+                                                    {isDuplicate ? (
+                                                        <div className="flex items-center gap-1 px-2 py-0.5 bg-black/30 rounded-full border border-white/20">
+                                                            <X className="w-3 h-3 text-white" strokeWidth={3} />
+                                                            <span className="text-[9px] font-bold text-white ">{t.duplicate}</span>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex items-center gap-1 px-2 py-0.5 bg-white/20 rounded-full">
+                                                            <Check className="w-3 h-3 text-white" />
+                                                            <span className="text-[9px] font-semibold text-white ">{t.filled}</span>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             ) : (
                                                 <div className="relative z-10 text-center">
