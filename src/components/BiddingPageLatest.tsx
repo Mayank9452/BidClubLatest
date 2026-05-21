@@ -684,7 +684,6 @@ const HistoricalSetsSection = React.memo(({ completeSets, selectedCycle, bidCycl
                                                         className={`relative ${theme.gradient} p-2 h-14 flex flex-col items-center justify-center`}
                                                         style={SET_ITEM_MASK_STYLE}
                                                     >
-                                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
                                                         <div className="absolute inset-1.5 border-2 border-dashed border-white/80 rounded-lg pointer-events-none" />
                                                         <p className="text-sm font-bold text-white drop-shadow-md">{val}</p>
 
@@ -797,7 +796,6 @@ const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handl
                                             className={`relative ${ticketColor} p-4 h-20 flex flex-col items-center justify-center`}
                                             style={TICKET_MASK_STYLE}
                                         >
-                                            {hasValue && !isDuplicate && <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />}
                                             <div className={`absolute inset-2 border-2 border-dashed rounded-xl pointer-events-none transition-all duration-300 ${dashedBorderColor}`} />
 
                                             {hasValue ? (

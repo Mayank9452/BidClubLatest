@@ -83,7 +83,7 @@ export default function DetailsPage() {
           </div>
 
           {/* Hero Welcome Card */}
-          <div className="relative overflow-hidden rounded-xl gradient-hero-vibrant p-5 shadow-2xl">
+          <div className="relative overflow-hidden rounded-xl gradient-hero-vibrant p-5 shadow-2xl mx-2">
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
 
@@ -99,7 +99,7 @@ export default function DetailsPage() {
           </div>
 
           {/* Bid Types - Ultra Modern Cards */}
-          <div className="space-y-4">
+          <div className="space-y-4 mx-2">
             <div className="text-center mb-2">
               <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-lg border border-gray-200">
                 <Gamepad className="w-5 h-5 text-indigo-600" />
@@ -108,7 +108,7 @@ export default function DetailsPage() {
             </div>
 
             {/* Daily Bid */}
-            <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 p-[2px] shadow-2xl shadow-indigo-500/40 active:scale-[0.97] transition-all cursor-pointer">
+            <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 p-[2px] active:scale-[0.97] transition-all cursor-pointer">
               <div className="relative bg-white rounded-[22px] p-4 h-full">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-2xl" />
                 <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-400/20 to-pink-400/20 rounded-full blur-2xl" />
@@ -154,7 +154,7 @@ export default function DetailsPage() {
             </div>
 
             {/* Weekly Bid */}
-            <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 p-[2px] shadow-2xl shadow-purple-500/40 active:scale-[0.97] transition-all cursor-pointer">
+            <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 p-[2px] active:scale-[0.97] transition-all cursor-pointer">
               <div className="relative bg-white rounded-[22px] p-5 h-full">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-2xl" />
                 <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-pink-400/20 to-rose-400/20 rounded-full blur-2xl" />
@@ -203,7 +203,7 @@ export default function DetailsPage() {
           </div>
 
           {/* Info Cards */}
-          <div className="space-y-4 mt-6">
+          <div className="space-y-4 mt-6 mx-2">
             {/* What are Cycles */}
             <div className="rounded-2xl bg-white p-5 shadow-lg border border-gray-100">
               <div className="flex items-start gap-3">

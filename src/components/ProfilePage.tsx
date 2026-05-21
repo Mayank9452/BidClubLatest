@@ -156,7 +156,10 @@ export default function ProfilePage() {
                 {/* Avatar with Edit Button */}
                 <div className="relative ">
                   <motion.div className="relative">
-                    <div className="w-24 h-24 bg-gradient-to-br from-pink-500 to-rose-600 rounded-full p-1 shadow-xl">
+                    <div
+                      onClick={() => setIsEditingImage(true)}
+                      className="w-24 h-24 bg-gradient-to-br from-pink-500 to-rose-600 rounded-full p-1 shadow-xl cursor-pointer"
+                    >
                       <div className="w-full h-full bg-white rounded-full overflow-hidden flex items-center justify-center">
                         <img
                           src={`/assets/users/${selectedAvatar}`}

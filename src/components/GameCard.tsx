@@ -21,7 +21,7 @@ const GameCard = React.memo(({ game, index, bgClass, onPlay }: GameCardProps) =>
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.4 }}
       viewport={{ once: true, amount: 0.15 }}
-      className={`rounded-2xl shadow-lg ${bgClass} overflow-hidden text-white cursor-pointer transition-transform hover:scale-[1.02]`}
+      className={`rounded-2xl shadow-lg ${bgClass} overflow-hidden text-white`}
       onClick={() => onPlay(`/games/${btoa(String(game.game_id))}`)}
     >
       <div className="relative w-full aspect-[4/3]">
