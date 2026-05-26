@@ -188,11 +188,12 @@ const SuccessBidPopup = ({
               <>
                 {t.successRemainingMessagePart1}
                 <span className="text-yellow-400 font-bold">{batchCount}</span>
-                {t.successRemainingMessagePart2}
+                {/* {t.successRemainingMessagePart2} */}
+
+                {t.successRemainingMessagePart3}
                 <span className="text-yellow-400 font-bold">
                   {5 - Number(batchCount)}
                 </span>
-                {t.successRemainingMessagePart3}
               </>
             )}
           </p>

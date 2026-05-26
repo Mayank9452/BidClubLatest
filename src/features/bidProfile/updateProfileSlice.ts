@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { toast } from "@/hooks/use-toast";
+import { translations } from "@/translations/index";
 import { updateProfileImageAPI } from "./updateProfileAPI";
 
 interface ProfileState {
@@ -43,8 +44,11 @@ const updateProfileSlice = createSlice({
       .addCase(updateProfileImageThunk.fulfilled, (state) => {
         state.status = "success";
 
+        const language = (typeof window !== "undefined" ? sessionStorage.getItem("language") : "en") || "en";
+        const t = translations[language] || translations["en"];
+
         toast({
-          title: "Profile image updated successfully",
+          title: t.profileImageUpdatedSuccessfully || "Profile image updated successfully",
           duration: 1000,
         });
       })
@@ -61,8 +65,13 @@ const updateProfileSlice = createSlice({
 
         state.error = message;
 
+        const language = (typeof window !== "undefined" ? sessionStorage.getItem("language") : "en") || "en";
+        const t = translations[language] || translations["en"];
+
         toast({
-          title: message,
+          title: message === "Failed to update profile image"
+            ? (t.failedToUpdateProfileImage || "Failed to update profile image")
+            : message,
           variant: "destructive",
           duration: 50000,
         });
