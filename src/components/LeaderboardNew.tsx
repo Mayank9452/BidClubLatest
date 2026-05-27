@@ -96,7 +96,7 @@ export default function LeaderboardNew({
         {/* Header Section */}
         <div className="relative z-10 flex flex-col gap-6 mb-8">
           <div className="flex justify-between items-center px-3">
-            <div className="space-y-1">
+            <div className="space-y-1 w-1/2">
               <div className="flex items-center gap-2">
                 {/* <Zap className="w-5 h-5 text-indigo-600 fill-indigo-600" /> */}
                 <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent ">
