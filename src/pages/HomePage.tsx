@@ -13,6 +13,7 @@ import BidCardDemoNew from "@/components/BidCardDemoNew";
 import BiddingHammer from "@/components/BiddingHammer";
 import LowBalancePopup from "@/components/LowBalancePopup";
 import { useState, useEffect } from "react";
+import WinnerListUpdated from "@/components/WinnerListUpdated";
 export default function HomePage() {
   const { t } = useLanguage();
   const dispatch = useAppDispatch();
@@ -29,7 +30,7 @@ export default function HomePage() {
       <div className="mobile-container py-1  space-y-2">
 
         <section>
-          <WinnerList lastWeeklyWinners={response?.data?.lastWeeklyWinners} />
+          <WinnerListUpdated lastWeeklyWinners={response?.data?.lastWeeklyWinners} />
         </section>
 
         {/* LIVE AUCTIONS */}
@@ -57,7 +58,7 @@ export default function HomePage() {
               <span className="text-xl font-bold ">{t.liveBidding || "Live Bidding"}</span>
             </h2>
             <p className="text-center text-white/90 text-sm font-semibold ">
-              {t.liveBidDescription || "Play now and win Atom Rewards"}
+              {t.liveBidDescription || "Play now and win ATOM Rewards"}
             </p>
           </div>
 

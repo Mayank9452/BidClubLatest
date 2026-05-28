@@ -11,6 +11,7 @@ const PlayGamesUpdatedNew = lazy(() => import("@/components/PlayGamesUpdatedNew"
 const ProfilePage = lazy(() => import("@/components/ProfilePage"));
 const TermsOfUsePage = lazy(() => import("@/components/TermsOfUsePage"));
 const HomePage = lazy(() => import("@/pages/HomePage"));
+const MonthlyWinnersPage = lazy(() => import("@/pages/MonthlyWinnersPage"));
 
 const SPECIFIC_USER_PHONE = "959729081679";
 
@@ -68,6 +69,10 @@ const routes = [
   {
     path: "/terms",
     element: <TermsOfUsePage />,
+  },
+  {
+    path: "/monthlyWinners",
+    element: <MonthlyWinnersPage />,
   },
 ];
 

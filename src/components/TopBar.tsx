@@ -3,10 +3,11 @@
 import { useAppSelector } from "@/app/hooks"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Coins, Gem, User } from "lucide-react"
+import { Coins, Gem, User, Trophy } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useLanguage } from "./context/LanguageContext"
+import PopupMonthlyWinner from "./PopupMonthlyWinner"
 const formatCompactNumber = (number?: number) => {
   if (!number) return 0;
   if (number >= 100000) {
@@ -34,6 +35,7 @@ export function TopBar({
 
   const [gemOpen, setGemOpen] = useState(false)
   const [coinOpen, setCoinOpen] = useState(false)
+  const [isMonthlyWinnerPopupOpen, setIsMonthlyWinnerPopupOpen] = useState(false)
 
   const gemTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const coinTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -82,7 +84,7 @@ export function TopBar({
             borderBottom: "1px solid hsl(240 6% 20%)",
           }}
         >
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full max-w-md mx-auto px-6">
             {/* LEFT: LOGO */}
             <div className="flex items-center gap-2 cursor-pointer transform translate-y-0.5">
               <div className="rounded-lg flex items-center">
@@ -97,7 +99,7 @@ export function TopBar({
             </div>
 
             {/* RIGHT: ACTIONS */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {/* COINS */}
               <Popover open={gemOpen} onOpenChange={setGemOpen}>
                 <PopoverTrigger asChild>
@@ -150,7 +152,7 @@ export function TopBar({
               </Popover>
 
               {/* REWARD COINS */}
-              <Popover open={coinOpen} onOpenChange={setCoinOpen}>
+              {/* <Popover open={coinOpen} onOpenChange={setCoinOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
@@ -190,7 +192,17 @@ export function TopBar({
                     </p>
                   </div>
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
+
+              {/* TROPHY ICON */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsMonthlyWinnerPopupOpen(true)}
+                className="relative bg-gradient-to-br from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 transition-all border border-yellow-300/50 rounded-xl h-7 w-7 p-0 flex items-center justify-center shadow-[0_0_8px_rgba(250,204,21,0.5)] animate-pulse"
+              >
+                <Trophy className="h-4 w-4 text-slate-950" fill="currentColor" />
+              </Button>
 
               {/* PROFILE ICON */}
               <Button
@@ -205,6 +217,10 @@ export function TopBar({
           </div>
         </div>
       </div>
+      <PopupMonthlyWinner
+        isOpen={isMonthlyWinnerPopupOpen}
+        onClose={() => setIsMonthlyWinnerPopupOpen(false)}
+      />
     </>
   );
 }
