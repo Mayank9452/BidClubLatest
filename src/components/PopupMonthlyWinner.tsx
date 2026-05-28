@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { X, Sparkles, Trophy } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "./context/LanguageContext";
 import { useAppSelector } from "@/app/hooks";
 
@@ -31,6 +31,7 @@ const normalizePhone = (phone: string) => {
 
 export default function PopupMonthlyWinner({ isOpen, onClose }: PopupMonthlyWinnerProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useLanguage();
   const { data: homeData } = useAppSelector((state) => state.home);
   const userPhone = homeData?.data?.userInfo?.user_phone;
@@ -186,10 +187,14 @@ export default function PopupMonthlyWinner({ isOpen, onClose }: PopupMonthlyWinn
                   className="h-12 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-white/20 transition-all active:scale-95 text-base"
                   onClick={() => {
                     onClose();
-                    navigate("/monthlyWinners");
+                    if (location.pathname !== "/monthlyWinners") {
+                      navigate("/monthlyWinners");
+                    }
                   }}
                 >
-                  {t.checkMonthlyWinners || "Check Monthly Winners"}
+                  {location.pathname === "/monthlyWinners"
+                    ? (t.okayGotIt || "Okay")
+                    : (t.checkMonthlyWinners || "Check Monthly Winners")}
                 </Button>
               </div>
             </motion.div>
