@@ -261,7 +261,7 @@ export default function MonthlyWinnersPage() {
                     </button>
 
                     {/* Expanded Details */}
-                    <AnimatePresence>
+                    {/* <AnimatePresence>
                       {expandedUser === user.rank && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
@@ -296,7 +296,7 @@ export default function MonthlyWinnersPage() {
                           </div>
                         </motion.div>
                       )}
-                    </AnimatePresence>
+                    </AnimatePresence> */}
                   </motion.div>
                 ))}
               </AnimatePresence>

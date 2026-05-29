@@ -60,7 +60,7 @@ export default function DetailsPage() {
           </h1>
         </div>
 
-        <div className="max-w-md mx-auto pt-2 pb-2 space-y-4 -mt-12">
+        <div className="max-w-md mx-auto pt-2 space-y-4 -mt-12">
 
           {/* Video Card - Premium Style */}
           <div className="relative aspect-video rounded-2xl bg-dark-gray shadow-xl shadow-purple-500/20 overflow-hidden border border-white/20 mx-2">
@@ -83,7 +83,7 @@ export default function DetailsPage() {
           </div>
 
           {/* Hero Welcome Card */}
-          <div className="relative overflow-hidden rounded-xl gradient-hero-vibrant p-5 shadow-2xl mx-2">
+          <div className="relative overflow-hidden rounded-xl gradient-hero-vibrant p-5 mx-2">
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
 
@@ -101,7 +101,7 @@ export default function DetailsPage() {
           {/* Bid Types - Ultra Modern Cards */}
           <div className="space-y-4 mx-2">
             <div className="text-center mb-2">
-              <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-lg border border-gray-200">
+              <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-gray-300">
                 <Gamepad className="w-5 h-5 text-indigo-600" />
                 <h3 className="text-lg font-bold text-gray-800">{t.chooseGameMode}</h3>
               </div>
