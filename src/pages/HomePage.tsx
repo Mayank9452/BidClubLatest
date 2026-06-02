@@ -30,7 +30,10 @@ export default function HomePage() {
       <div className="mobile-container py-1  space-y-2">
 
         <section>
-          <WinnerListUpdated lastWeeklyWinners={response?.data?.lastWeeklyWinners} />
+          <WinnerListUpdated 
+            lastWeeklyWinners={response?.data?.lastWeeklyWinners} 
+            lastMonthLeaderBoardWinners={response?.data?.lastMonthLeaderBoardWinners}
+          />
         </section>
 
         {/* LIVE AUCTIONS */}

@@ -18,6 +18,17 @@ const maskMSISDN = (phone: string) => {
     return `${start}xxxx${end}`;
 };
 
+const getAvatarFilename = (userImage: any, userId: any, index: number) => {
+    if (userImage) {
+        const parsed = parseInt(String(userImage).replace(".png", ""), 10);
+        if (!isNaN(parsed) && parsed <= 15 && parsed >= 1) {
+            return `${parsed}.png`;
+        }
+    }
+    const avatarIndex = (Number(userId || index) % 15) + 1;
+    return `${avatarIndex}.png`;
+};
+
 // Mock winner data
 const WEEKLY_WINNERS = [
     {
@@ -117,7 +128,7 @@ const generateSparkles = (count: number) => {
 
 // const sparkles = generateSparkles(15);
 
-export default function WinnerListUpdated({ lastWeeklyWinners }) {
+export default function WinnerListUpdated({ lastWeeklyWinners, lastMonthLeaderBoardWinners }) {
     const { t } = useLanguage();
 
     const cardSparkles = useMemo(() => generateSparkles(5), []);
@@ -126,42 +137,57 @@ export default function WinnerListUpdated({ lastWeeklyWinners }) {
         if (!Array.isArray(lastWeeklyWinners)) return [];
 
         return lastWeeklyWinners.map((item: any, index: number) => {
-            // Deterministic avatar index based on user_id or index
-            let avatarIndex = (Number(item.user_id || index) % 15) + 1;
-
             return {
                 id: item.cycle_id,
                 rank: Number(item.cycle_reward_rank),
                 phone: maskMSISDN(item.user_phone),
-                avatar: `${avatarIndex}.png`,
+                avatar: getAvatarFilename(item.user_image || item.user_avatar, item.user_id, index),
                 uniqueNumber: item.cycle_id,
                 time: t.justNow,
             };
         });
     }, [lastWeeklyWinners, t.justNow]);
 
+    const monthlyWinners = useMemo(() => {
+        const top10 = lastMonthLeaderBoardWinners?.top10;
+        if (!Array.isArray(top10)) return [];
+
+        return top10.map((item: any, index: number) => {
+            return {
+                id: `monthly-${item.id || index}`,
+                rank: Number(item.user_rank || index + 1),
+                phone: maskMSISDN(item.user_phone),
+                avatar: getAvatarFilename(item.user_image || item.user_avatar, item.user_id, index),
+                uniqueNumber: item.id,
+                time: t.justNow,
+                reward: item.user_reward,
+            };
+        });
+    }, [lastMonthLeaderBoardWinners, t.justNow]);
+
     const combinedWinners = useMemo(() => {
-        if (weeklyWinners.length === 0) return [];
-
         const list: any[] = [];
-        let monthlyIndex = 0;
 
-        for (let i = 0; i < weeklyWinners.length; i++) {
-            list.push({ ...weeklyWinners[i], isMonthly: false });
-
-            // Insert a monthly winner card after every 2 weekly winner list items
-            if ((i + 1) % 2 === 0) {
-                const monthlyWinner = DUMMY_MONTHLY_WINNERS[monthlyIndex % DUMMY_MONTHLY_WINNERS.length];
-                list.push({
-                    ...monthlyWinner,
-                    id: `monthly-${monthlyWinner.id}-${monthlyIndex}-${i}`,
-                    isMonthly: true,
-                });
-                monthlyIndex++;
-            }
+        // Add weekly winners
+        if (Array.isArray(weeklyWinners)) {
+            weeklyWinners.forEach((item) => {
+                list.push({ ...item, isMonthly: false });
+            });
         }
+
+        // Add monthly winners
+        if (Array.isArray(monthlyWinners) && monthlyWinners.length > 0) {
+            monthlyWinners.forEach((item) => {
+                list.push({ ...item, isMonthly: true });
+            });
+        } else {
+            DUMMY_MONTHLY_WINNERS.forEach((item) => {
+                list.push({ ...item, isMonthly: true });
+            });
+        }
+
         return list;
-    }, [weeklyWinners]);
+    }, [weeklyWinners, monthlyWinners]);
 
     // console.log("lastWeeklyWinners", lastWeeklyWinners);
     return (
@@ -249,7 +275,7 @@ export default function WinnerListUpdated({ lastWeeklyWinners }) {
                             className={`
     flex gap-4 px-4 will-change-transform
     ${combinedWinners.length > 1
-                                    ? "animate-[slide-right_25s_linear_infinite] hover:[animation-play-state:paused] w-max"
+                                    ? "animate-[slide-right_60s_linear_infinite] hover:[animation-play-state:paused] w-max"
                                     : "justify-center"
                                 }
   `}
@@ -352,8 +378,15 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
         ? "cursor-pointer hover:scale-105 active:scale-95 transition-all duration-300"
         : "active:scale-95 transition-transform duration-200";
 
-    const getMonthlyPrize = (rank: number) => {
-        if (rank === 1 || rank === 2) return "5 GB ATOM Data";
+    const getMonthlyPrize = (w: any) => {
+        if (w.reward) {
+            const reward = Number(w.reward);
+            if (reward >= 1024) {
+                return `${Math.round(reward / 1024)} GB ATOM Data`;
+            }
+            return `${reward} MB ATOM Data`;
+        }
+        if (w.rank === 1 || w.rank === 2) return "5 GB ATOM Data";
         return "2 GB ATOM Data";
     };
 
@@ -422,14 +455,14 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
                     <>
                         {/* Info Section for Monthly Winner */}
                         <div className="flex-1 flex flex-col justify-center min-w-0">
-                            <div className="text-[10px] font-bold text-white/70 uppercase tracking-wider leading-none mb-1">
-                                {t.monthlyWinners || "Monthly Winners"}
+                            <div className="text-[9px] font-bold text-white/70 uppercase tracking-wider leading-none mb-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                                {t.monthlyLeaderboardWinner || "Monthly Leaderboard Winner"}
                             </div>
                             <div className="text-[11px] font-bold text-white truncate leading-tight">
                                 {winner.phone}
                             </div>
                             <div className="text-xs font-bold text-white leading-tight mt-1 flex items-center gap-1">
-                                🎁 {getMonthlyPrize(winner.rank)}
+                                🎁 {getMonthlyPrize(winner)}
                             </div>
                         </div>
 
@@ -458,10 +491,15 @@ const WinnerBanner = React.memo(({ winner, bgGradient }: any) => {
                 ) : (
                     <>
                         {/* Info Section for Weekly Winner */}
-                        <div className="flex-1 flex flex-col justify-center min-w-0 gap-1">
-                            <div className="text-sm font-bold text-white truncate">{winner.phone}</div>
-                            <div className="flex flex-col justify-center gap-0.5">
-                                <div className="text-[11px] font-semibold text-white italic leading-none">
+                        <div className="flex-1 flex flex-col justify-center min-w-0">
+                            <div className="text-[9px] font-bold text-white/70 uppercase tracking-wider leading-none mb-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                                {t.weeklyBidWinner || "Weekly Bid Winner"}
+                            </div>
+                            <div className="text-[11px] font-bold text-white truncate leading-tight">
+                                {winner.phone}
+                            </div>
+                            <div className="flex flex-col justify-center gap-0.5 mt-1">
+                                <div className="text-[10px] font-semibold text-white/70 italic leading-none">
                                     {t.uniqueBidNumber}
                                 </div>
                                 <div className="text-[11px] font-semibold text-white leading-none">

@@ -13,15 +13,38 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/components/context/LanguageContext";
 import { TopBar } from "@/components/TopBar";
 import { BottomNavBar } from "@/components/BottomNavBar";
+import { useAppSelector } from "@/app/hooks";
 
 // Masking helper
-const maskPhone = (phone: string) => {
-  if (!phone) return "";
-  const trimmed = phone.replace("+", "").trim();
-  if (trimmed.length < 10) return phone;
+const maskMSISDN = (phone: string) => {
+  if (!phone || phone.length < 12) return phone;
+  const trimmed = phone.slice(2);
+  if (trimmed.length !== 10) return phone;
   const start = trimmed.slice(0, 3);
   const end = trimmed.slice(-3);
-  return `+${start}xxxx${end}`;
+  return `${start}xxxx${end}`;
+};
+
+const getAvatarFilename = (userImage: any, userId: any, index: number) => {
+  if (userImage) {
+    const parsed = parseInt(String(userImage).replace(".png", ""), 10);
+    if (!isNaN(parsed) && parsed <= 15 && parsed >= 1) {
+      return `${parsed}.png`;
+    }
+  }
+  const avatarIndex = (Number(userId || index) % 15) + 1;
+  return `${avatarIndex}.png`;
+};
+
+const getMonthlyPrize = (reward: any, rank: number) => {
+  if (reward) {
+    const parsed = Number(reward);
+    if (parsed >= 1024) {
+      return `Won ${Math.round(parsed / 1024)} GB`;
+    }
+    return `Won ${parsed} MB`;
+  }
+  return "";
 };
 
 // Premium monthly winner mock data (top 10 with ATOM Data prizes)
@@ -123,8 +146,73 @@ export default function MonthlyWinnersPage() {
   const { t } = useLanguage();
   const [expandedUser, setExpandedUser] = useState<number | null>(null);
 
-  const topThree = useMemo(() => MONTHLY_WINNERS.slice(0, 3), []);
-  const theRest = useMemo(() => MONTHLY_WINNERS.slice(3), []);
+  const { data: homeResponse } = useAppSelector((state) => state.home);
+  const lastMonthData = homeResponse?.data?.lastMonthLeaderBoardWinners;
+  const currentUserRankVal = lastMonthData?.currentUserRank?.rank ?? homeResponse?.data?.userInfo?.previous_month_rank;
+
+  const winners = useMemo(() => {
+    const top10 = lastMonthData?.top10;
+    if (!Array.isArray(top10) || top10.length === 0) {
+      return MONTHLY_WINNERS;
+    }
+    return top10.map((item: any, index: number) => ({
+      rank: Number(item.user_rank || index + 1),
+      phone: item.user_phone,
+      avatar: getAvatarFilename(item.user_image, item.user_id, index),
+      totalBids: Number(item.user_total_bids || 0),
+      totalPrizeWon: getMonthlyPrize(item.user_reward, Number(item.user_rank || index + 1)),
+      diamondsEarned: Number(item.user_total_points || 0),
+      winningBidName: "Leaderboard Challenge"
+    }));
+  }, [lastMonthData]);
+
+  const topThree = useMemo(() => winners.slice(0, 3), [winners]);
+  const theRest = useMemo(() => winners.slice(3), [winners]);
+
+  const displayedSurrounding = useMemo(() => {
+    if (!lastMonthData || !currentUserRankVal || currentUserRankVal <= 10) return [];
+
+    const prev = lastMonthData.previousUserRank;
+    const curr = lastMonthData.currentUserRank;
+    const aft = lastMonthData.afterUserRank;
+
+    const list: any[] = [];
+    if (prev && Number(prev.rank) > 10) {
+      list.push({
+        rank: Number(prev.rank),
+        phone: prev.user_phone,
+        avatar: getAvatarFilename(prev.user_image, prev.user_id, 0),
+        totalBids: Number(prev.bidsCount || 0),
+        totalPrizeWon: getMonthlyPrize(prev.reward, Number(prev.rank)),
+        diamondsEarned: Number(prev.points || 0),
+        winningBidName: "Leaderboard Challenge"
+      });
+    }
+    if (curr && Number(curr.rank) > 10) {
+      list.push({
+        rank: Number(curr.rank),
+        phone: curr.user_phone,
+        avatar: getAvatarFilename(curr.user_image, curr.user_id, 1),
+        totalBids: Number(curr.bidsCount || 0),
+        totalPrizeWon: getMonthlyPrize(curr.reward, Number(curr.rank)),
+        diamondsEarned: Number(curr.points || 0),
+        winningBidName: "Leaderboard Challenge"
+      });
+    }
+    if (aft && Number(aft.rank) > 10) {
+      list.push({
+        rank: Number(aft.rank),
+        phone: aft.user_phone,
+        avatar: getAvatarFilename(aft.user_image, aft.user_id, 2),
+        totalBids: Number(aft.bidsCount || 0),
+        totalPrizeWon: getMonthlyPrize(aft.reward, Number(aft.rank)),
+        diamondsEarned: Number(aft.points || 0),
+        winningBidName: "Leaderboard Challenge"
+      });
+    }
+
+    return list.sort((a, b) => a.rank - b.rank);
+  }, [lastMonthData, currentUserRankVal]);
 
   return (
     <>
@@ -188,118 +276,196 @@ export default function MonthlyWinnersPage() {
           <div className="bg-white rounded-2xl shadow-xl p-3 border border-gray-100">
             <div className="space-y-2">
               <AnimatePresence>
-                {theRest.map((user, index) => (
-                  <motion.div
-                    key={user.rank}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: Math.min(index * 0.03, 0.3) }}
-                    className="will-change-[transform,opacity]"
-                  >
-                    <button
-                      onClick={() =>
-                        setExpandedUser(
-                          expandedUser === user.rank ? null : user.rank
-                        )
-                      }
-                      className="w-full text-left"
+                {theRest.map((player, index) => {
+                  const isCurrentUser = currentUserRankVal && player.rank === Number(currentUserRankVal);
+                  return (
+                    <motion.div
+                      key={player.rank}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: Math.min(index * 0.03, 0.3) }}
+                      className="will-change-[transform,opacity]"
                     >
-                      <div className="flex items-center gap-2.5 p-2.5 bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-gray-100 transition-all active:scale-[0.98]">
-                        {/* Rank */}
-                        <div className="w-7 h-7 bg-gradient-to-br from-gray-100 to-gray-300 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <span className="text-xs font-bold text-gray-700">
-                            {user.rank}
-                          </span>
-                        </div>
-
-                        {/* Avatar with orange gradient ring to match monthly look */}
-                        <div className="relative flex-shrink-0">
-                          <div className="w-11 h-11 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg p-0.5">
-                            <div className="w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
-                              <img
-                                src={`/assets/users/${user.avatar}`}
-                                alt={user.phone}
-                                className="w-full h-full"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Info */}
-                        <div className="flex-1 text-left min-w-0">
-                          <h3 className="text-sm font-bold text-gray-800 leading-tight truncate">
-                            {maskPhone(user.phone)}
-                          </h3>
-                          <p className="text-xs text-gray-600 font-semibold mt-0.5">
-                            {user.totalBids} {t.bids || "Bids"}🔥
-                          </p>
-                          <div className="">
-                            <span className="inline-block text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-200/50">
-                              🎁 {user.totalPrizeWon}
+                      <button
+                        onClick={() =>
+                          setExpandedUser(
+                            expandedUser === player.rank ? null : player.rank
+                          )
+                        }
+                        className="w-full text-left"
+                      >
+                        <div className={`flex items-center gap-2.5 p-2.5 rounded-xl border transition-all active:scale-[0.98] ${isCurrentUser
+                          ? "bg-gradient-to-r from-violet-600 to-purple-600 border-violet-500 text-white shadow-md"
+                          : "bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 border-gray-100"
+                          }`}>
+                          {/* Rank */}
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isCurrentUser
+                            ? "bg-white text-violet-700 font-extrabold"
+                            : "bg-gradient-to-br from-gray-100 to-gray-300 text-gray-700 font-bold"
+                            }`}>
+                            <span className="text-xs">
+                              {player.rank}
                             </span>
                           </div>
-                        </div>
 
-                        {/* Score (Diamonds) */}
-                        <div className="text-right me-0.5">
-                          <div className="flex items-center justify-end gap-1 text-base font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-                            <div className="relative">
-                              <img
-                                src="/assets/images/diamond5.png"
-                                alt="diamond"
-                                className="h-5 object-cover"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            </div>
-                            <span className="text-xs">{user.diamondsEarned.toLocaleString()}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-
-                    {/* Expanded Details */}
-                    {/* <AnimatePresence>
-                      {expandedUser === user.rank && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.15 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-3 py-2.5 bg-gradient-to-r from-violet-50 to-purple-50 rounded-b-xl border-x border-b border-gray-100 -mt-2 pt-3">
-                            <div className="grid grid-cols-2 gap-2 mx-auto">
-                              <StatCard
-                                icon={<Zap className="w-3.5 h-3.5 text-violet-600" />}
-                                label={t.totalBid || "Total Bid"}
-                                value={`${user.totalBids} Bids`}
-                              />
-                              <StatCard
-                                icon={<Trophy className="w-3.5 h-3.5 text-amber-600" />}
-                                label={t.totalPrizeWon || "Total Prize Won"}
-                                value={user.totalPrizeWon}
-                              />
-                              <StatCard
-                                icon={<Gem className="w-3.5 h-3.5 text-emerald-600" />}
-                                label={t.diamondEarnedText || "Diamond Earned"}
-                                value={user.diamondsEarned.toLocaleString()}
-                              />
-                              <StatCard
-                                icon={<Award className="w-3.5 h-3.5 text-indigo-600" />}
-                                label={t.winningBid || "Winning Bid"}
-                                value={user.winningBidName}
-                              />
+                          {/* Avatar with orange gradient ring to match monthly look */}
+                          <div className="relative flex-shrink-0">
+                            <div className="w-11 h-11 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg p-0.5">
+                              <div className="w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                                <img
+                                  src={`/assets/users/${player.avatar}`}
+                                  alt={player.phone}
+                                  className="w-full h-full"
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </div>
                             </div>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence> */}
-                  </motion.div>
-                ))}
+
+                          {/* Info */}
+                          <div className="flex-1 text-left min-w-0">
+                            <h3 className={`text-sm font-bold leading-tight truncate ${isCurrentUser ? "text-white" : "text-gray-800"}`}>
+                              {maskMSISDN(player.phone)} {isCurrentUser && `(${t.yourRank || "Your Rank"})`}
+                            </h3>
+                            <p className={`text-xs font-semibold mt-0.5 ${isCurrentUser ? "text-white/90" : "text-gray-600"}`}>
+                              {player.totalBids} {t.bids || "Bids"}🔥
+                            </p>
+                            {player.totalPrizeWon && (
+                              <div className="mt-1">
+                                <span className={`inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-md border ${isCurrentUser
+                                  ? "text-white bg-white/20 border-white/30"
+                                  : "text-amber-600 bg-amber-50 border-amber-200/50"
+                                  }`}>
+                                  🎁 {player.totalPrizeWon}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Score (Diamonds) */}
+                          <div className="text-right me-0.5">
+                            <div className={`flex items-center justify-end gap-1 text-base font-bold ${isCurrentUser
+                              ? "text-white"
+                              : "bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent"
+                              }`}>
+                              <div className="relative">
+                                <img
+                                  src="/assets/images/diamond5.png"
+                                  alt="diamond"
+                                  className="h-5 object-cover"
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </div>
+                              <span className="text-xs">{player.diamondsEarned.toLocaleString()}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    </motion.div>
+                  );
+                })}
               </AnimatePresence>
+
+              {/* Separator and Surrounding Ranks for Rank > 10 */}
+              {currentUserRankVal && Number(currentUserRankVal) > 10 && (
+                <>
+                  <div className="flex items-center justify-center my-3 py-1">
+                    <span className="text-gray-400 font-extrabold text-lg tracking-widest">. . .</span>
+                  </div>
+                  {displayedSurrounding.map((player, index) => {
+                    const isCurrentUser = currentUserRankVal && player.rank === Number(currentUserRankVal);
+                    return (
+                      <motion.div
+                        key={player.rank}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: Math.min(index * 0.03, 0.3) }}
+                        className="will-change-[transform,opacity]"
+                      >
+                        <button
+                          onClick={() =>
+                            setExpandedUser(
+                              expandedUser === player.rank ? null : player.rank
+                            )
+                          }
+                          className="w-full text-left"
+                        >
+                          <div className={`flex items-center gap-2.5 p-2.5 rounded-xl border transition-all active:scale-[0.98] ${isCurrentUser
+                            ? "bg-gradient-to-r from-violet-600 to-purple-600 border-violet-500 text-white shadow-md"
+                            : "bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 border-gray-100"
+                            }`}>
+                            {/* Rank */}
+                            <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${isCurrentUser
+                              ? "bg-white text-violet-700 font-extrabold"
+                              : "bg-gradient-to-br from-gray-100 to-gray-300 text-gray-700 font-bold"
+                              }`}>
+                              <span className="text-xs">
+                                {player.rank}
+                              </span>
+                            </div>
+
+                            {/* Avatar with orange gradient ring to match monthly look */}
+                            <div className="relative flex-shrink-0">
+                              <div className="w-11 h-11 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg p-0.5">
+                                <div className="w-full h-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                                  <img
+                                    src={`/assets/users/${player.avatar}`}
+                                    alt={player.phone}
+                                    className="w-full h-full"
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Info */}
+                            <div className="flex-1 text-left min-w-0">
+                              <h3 className={`text-sm font-bold leading-tight truncate ${isCurrentUser ? "text-white" : "text-gray-800"}`}>
+                                {maskMSISDN(player.phone)} {isCurrentUser && `(${t.yourRank || "Your Rank"})`}
+                              </h3>
+                              <p className={`text-xs font-semibold mt-0.5 ${isCurrentUser ? "text-white/90" : "text-gray-600"}`}>
+                                {player.totalBids} {t.bids || "Bids"}🔥
+                              </p>
+                              {player.totalPrizeWon && (
+                                <div className="mt-1">
+                                  <span className={`inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-md border ${isCurrentUser
+                                    ? "text-white bg-white/20 border-white/30"
+                                    : "text-amber-600 bg-amber-50 border-amber-200/50"
+                                    }`}>
+                                    🎁 {player.totalPrizeWon}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Score (Diamonds) */}
+                            <div className="text-right me-0.5">
+                              <div className={`flex items-center justify-end gap-1 text-base font-bold ${isCurrentUser
+                                ? "text-white"
+                                : "bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent"
+                                }`}>
+                                <div className="relative">
+                                  <img
+                                    src="/assets/images/diamond5.png"
+                                    alt="diamond"
+                                    className="h-5 object-cover"
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                </div>
+                                <span className="text-xs">{player.diamondsEarned.toLocaleString()}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      </motion.div>
+                    );
+                  })}
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -411,7 +577,7 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
       {/* 🧾 Info */}
       <div className="text-center px-1 flex flex-col items-center mb-0.5 text-xs">
         <p className="font-bold text-gray-800 truncate max-w-[80px]">
-          {maskPhone(user.phone).split(" ")[0]}
+          {maskMSISDN(user.phone).split(" ")[0]}
         </p>
 
         {/* 💎 Score */}
@@ -429,9 +595,11 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
         </div>
 
         {/* Prize Tag */}
-        <p className={`font-bold text-[10px] leading-tight px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200/50 ${current.text} mt-0.5 mb-0.5`}>
-          {user.totalPrizeWon}
-        </p>
+        {user.totalPrizeWon && (
+          <p className={`font-bold text-[10px] leading-tight px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200/50 ${current.text} mt-0.5 mb-0.5`}>
+            🎁 {user.totalPrizeWon}
+          </p>
+        )}
 
         <p className={`font-bold ${current.text}`}>
           {user.totalBids.toLocaleString()} {t.bids || "Bids"}

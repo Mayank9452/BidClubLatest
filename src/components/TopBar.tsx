@@ -36,6 +36,7 @@ export function TopBar({
   const [gemOpen, setGemOpen] = useState(false)
   const [coinOpen, setCoinOpen] = useState(false)
   const [isMonthlyWinnerPopupOpen, setIsMonthlyWinnerPopupOpen] = useState(false)
+  const previousMonthRank = response?.data?.lastMonthLeaderBoardWinners?.currentUserRank?.rank ?? response?.data?.userInfo?.previous_month_rank;
 
   const gemTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const coinTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -198,10 +199,28 @@ export function TopBar({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsMonthlyWinnerPopupOpen(true)}
-                className="relative bg-gradient-to-br from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 transition-all border border-yellow-300/50 rounded-xl h-7 w-7 p-0 flex items-center justify-center shadow-[0_0_8px_rgba(250,204,21,0.5)] animate-pulse"
+                onClick={() => {
+                  if (previousMonthRank !== undefined && previousMonthRank !== null && previousMonthRank >= 1 && previousMonthRank <= 10) {
+                    setIsMonthlyWinnerPopupOpen(true);
+                  } else {
+                    navigate("/monthlyWinners");
+                  }
+                }}
+                className="bg-card/50 dark:bg-card/10
+    backdrop-blur-sm
+    hover:dark:bg-card/20
+    transition-all px-1
+
+    text-yellow-400
+    border border-border/50 
+
+    before:absolute before:inset-0 before:rounded-md
+    before:shadow-[0_0_8px_rgba(250,204,21,0.9)]
+    before:opacity-100
+    
+    before:pointer-events-none px-3 "
               >
-                <Trophy className="h-4 w-4 text-slate-950" fill="currentColor" />
+                <Trophy className="h-4 w-4 text-white animate-pulse" />
               </Button>
 
               {/* PROFILE ICON */}
@@ -220,6 +239,7 @@ export function TopBar({
       <PopupMonthlyWinner
         isOpen={isMonthlyWinnerPopupOpen}
         onClose={() => setIsMonthlyWinnerPopupOpen(false)}
+        rank={previousMonthRank}
       />
     </>
   );

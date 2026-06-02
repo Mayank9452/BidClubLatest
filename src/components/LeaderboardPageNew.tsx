@@ -132,6 +132,8 @@ export default function LeaderboardPageNew() {
         avatar: `${avatarIndex}.png`,
         tier: "bronze",
         streak: (Number(user.user_id) % 10) + 1, // stable streak
+        rank: user.rank,
+        position: user.position,
       };
     });
   }, []);
@@ -245,7 +247,7 @@ export default function LeaderboardPageNew() {
                         {/* Rank */}
                         <div className="w-7 h-7 bg-gradient-to-br from-gray-100 to-gray-300 rounded-lg flex items-center justify-center flex-shrink-0">
                           <span className="text-xs font-bold text-gray-700">
-                            {index + 4}
+                            {user.position}
                           </span>
                         </div>
 
@@ -357,7 +359,7 @@ export default function LeaderboardPageNew() {
         </div>
 
         {/* Your Rank Card - Optimized Sticky Bottom */}
-        {user && user.rank !== 0 && (
+        {user && user.position !== 0 && (
           <div className="fixed bottom-20 left-0 right-0 px-3 z-10 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -374,7 +376,7 @@ export default function LeaderboardPageNew() {
                 <div className="flex items-center gap-2.5">
                   <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                     <span className="text-base font-bold text-white ">
-                      {user.rank}
+                      {user.position}
                     </span>
                   </div>
                   <div>
@@ -406,7 +408,7 @@ export default function LeaderboardPageNew() {
         )}
 
         {/* Not Joined Floating Indicator */}
-        {user && user.rank === 0 && (
+        {user && user.position === 0 && (
           <div className="fixed bottom-20 right-6 z-20 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}

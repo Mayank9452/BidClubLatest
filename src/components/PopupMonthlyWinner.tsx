@@ -9,6 +9,7 @@ import { useAppSelector } from "@/app/hooks";
 interface PopupMonthlyWinnerProps {
   isOpen: boolean;
   onClose: () => void;
+  rank?: number;
 }
 
 const MONTHLY_WINNERS = [
@@ -29,21 +30,47 @@ const normalizePhone = (phone: string) => {
   return phone.replace(/[+\s]/g, "");
 };
 
-export default function PopupMonthlyWinner({ isOpen, onClose }: PopupMonthlyWinnerProps) {
+export default function PopupMonthlyWinner({ isOpen, onClose, rank }: PopupMonthlyWinnerProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { data: homeData } = useAppSelector((state) => state.home);
   const userPhone = homeData?.data?.userInfo?.user_phone;
 
   const matchedWinner = useMemo(() => {
+    if (rank !== undefined && rank !== null) {
+      if (rank <= 10) {
+        return { rank, phone: userPhone || "" };
+      }
+      return null;
+    }
     if (!userPhone) return null;
     const normalizedUser = normalizePhone(userPhone);
     if (normalizedUser === "959729081679") {
       return { rank: 2, phone: "+95 9729081679" };
     }
     return null;
-  }, [userPhone]);
+  }, [userPhone, rank]);
+
+  const getMonthlyPrize = (rankNumber: number) => {
+    const isBurmese = language === "my";
+    if (rankNumber === 1 || rankNumber === 2) {
+      return isBurmese ? "၅ GB ATOM Data" : "5 GB ATOM Data";
+    }
+    return isBurmese ? "၂ GB ATOM Data" : "2 GB ATOM Data";
+  };
+
+  const formatRank = (rankNumber: number) => {
+    if (language === "my") {
+      const myanmarNumbers = ["၀", "၁", "၂", "၃", "၄", "၅", "၆", "၇", "၈", "၉"];
+      return rankNumber
+        .toString()
+        .split("")
+        .map((digit) => myanmarNumbers[parseInt(digit, 10)] || digit)
+        .join("");
+    }
+    return rankNumber.toString();
+  };
 
   const titleText = matchedWinner
     ? (t.congratulations || "Congratulations")
@@ -51,19 +78,24 @@ export default function PopupMonthlyWinner({ isOpen, onClose }: PopupMonthlyWinn
 
   const descriptionText = useMemo(() => {
     if (matchedWinner) {
+      const prizeStr = getMonthlyPrize(matchedWinner.rank);
+      const rankStr = formatRank(matchedWinner.rank);
+
       if (matchedWinner.rank === 2) {
-        return t.rank2PreviousMonthChallenge || "You secured Rank 2 in previous Month Bidding Challenge.";
+        return t.rank2PreviousMonthChallenge || `Your Previous Month Leaderboard Rank is 2. You Won ${prizeStr}.`;
       }
       if (t.rank2PreviousMonthChallenge) {
         return t.rank2PreviousMonthChallenge
-          .replace("2", matchedWinner.rank.toString())
-          .replace("၂", matchedWinner.rank.toString());
+          .replace("2", rankStr)
+          .replace("၂", rankStr)
+          .replace("5 GB ATOM Data", prizeStr)
+          .replace("၅ GB ATOM Data", prizeStr);
       }
-      return `You secured Rank ${matchedWinner.rank} in previous Month Bidding Challenge.`;
+      return `Your Previous Month Leaderboard Rank is ${rankStr}. You Won ${prizeStr}.`;
     } else {
       return t.notInTopRankDescription || "You have not secured top Rank in Previous Month, but you check the other players Rank";
     }
-  }, [matchedWinner, t]);
+  }, [matchedWinner, t, language]);
   return (
     <AnimatePresence>
       {isOpen && (

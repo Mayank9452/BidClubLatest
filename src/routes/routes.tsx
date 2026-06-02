@@ -1,6 +1,7 @@
 import BiddingPageLatest from "@/components/BiddingPageLatest";
 import { lazy } from "react";
 import { useAppSelector } from "@/app/hooks";
+import LeaderboardPageNewUpdated from "@/components/LeaderboardPageNewUpdated";
 
 const BiddingPage = lazy(() => import("@/components/BiddingPage"));
 const DetailsPage = lazy(() => import("@/components/DetailsPage"));
@@ -44,7 +45,7 @@ const routes = [
   },
   {
     path: "/leaderboard",
-    element: <LeaderboardPageNew />,
+    element: <LeaderboardPageNewUpdated />,
   },
   {
     path: "/notification",
