@@ -218,13 +218,13 @@ export default function LeaderboardPageNewUpdated() {
             <div className="p-2 pb-16">
 
                 {/* Header Section - Compact for mobile */}
-                <div className="relative rounded-xl gradient-home-section active:from-purple-700 active:to-rose-700 text-white pt-8 pb-24 px-3 overflow-hidden">
+                <div className="relative rounded-xl gradient-home-section active:from-purple-700 active:to-rose-700 text-white pt-2 pb-24 px-3 overflow-hidden">
                     {/* White Ribbon from Top (Centered) */}
-                    <div className="absolute left-1/2 -translate-x-1/2 top-0 z-20 flex flex-row items-start mt-1">
-                        {/* Left fold triangle */}
-                        <div className="w-1.5 h-1.5 bg-slate-400 [clip-path:polygon(0_0,_100%_0,_100%_100%)]" />
+                    {/* <div className="absolute left-1/2 -translate-x-1/2 top-0 z-20 flex flex-row items-start mt-1"> */}
+                    {/* Left fold triangle */}
+                    {/* <div className="w-1.5 h-1.5 bg-slate-400 [clip-path:polygon(0_0,_100%_0,_100%_100%)]" /> */}
 
-                        {/* <button
+                    {/* <button
                             onClick={() => setShowRewardModal(true)}
                             className="bg-white hover:bg-slate-50 text-violet-700 font-extrabold px-4 py-1.5 rounded-b-md text-[9px] tracking-wider shadow-md active:scale-95 transition-all duration-150 flex items-center gap-1.5 border-x border-b border-slate-100 whitespace-nowrap"
                         >
@@ -245,13 +245,13 @@ export default function LeaderboardPageNewUpdated() {
                             <span className="text-sm">Check Monthly Winners Prizes</span>
                         </button> */}
 
-                        {/* Right fold triangle */}
-                        <div className="w-1.5 h-1.5 bg-slate-400 [clip-path:polygon(100%_0,_0_0,_0_100%)]" />
-                    </div>
+                    {/* Right fold triangle */}
+                    {/* <div className="w-1.5 h-1.5 bg-slate-400 [clip-path:polygon(100%_0,_0_0,_0_100%)]" /> */}
+                    {/* </div> */}
 
                     {/* Animated Background Elements - Reduced blur for performance */}
-                    <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-xl animate-pulse will-change-[opacity]" />
-                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 rounded-full blur-lg will-change-[opacity]" />
+                    {/* <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-xl animate-pulse will-change-[opacity]" />
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 rounded-full blur-lg will-change-[opacity]" /> */}
 
                     <div className="relative z-10 max-w-md mx-auto">
                         <div className="flex items-center justify-center gap-2 mb-2 mt-4">
