@@ -14,7 +14,7 @@ export default function TermsOfUsePage() {
     <>
       <TopBar />
 
-      <div className="mobile-container py-4  pt-3 px-3">
+      <div className="mobile-container py-4  pt-3 px-2">
         {/* Header */}
         <div className="relative flex items-center justify-center gap-3 bg-gradient-to-r from-[#0a0f7ac4] to-pink-700 text-white rounded-xl px-3 pb-12 pt-3 shadow-md">
           <button
@@ -30,7 +30,7 @@ export default function TermsOfUsePage() {
         </div>
 
         {/* Content Card */}
-        <div className="min-h-screen relative z-10 bg-white rounded-2xl shadow-xl py-6 pb-0 px-4 text-[14px] text-gray-900 -mt-10 mx-3 border border-gray-100">
+        <div className="min-h-screen relative z-10 bg-white rounded-2xl shadow-xl py-6 pb-0 px-4 text-[14px] text-gray-900 -mt-6 mx-3 border border-gray-100">
 
           <p>
             {t.termsIntroPart1}{t.termsIntroBold && <b>{t.termsIntroBold}</b>}{t.termsIntroPart2}

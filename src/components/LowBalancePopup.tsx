@@ -82,7 +82,8 @@ export default function LowBalancePopup({ visible, onClose, avatarUrl }: LowBala
                           src='/assets/robotavatar/2.png'
                           className="w-full h-full object-cover relative z-10"
                           alt="Low Balance Robot"
-                          loading="lazy"
+                          loading="eager"
+                          fetchPriority="high"
                         />
 
                         {/* Sparkles */}

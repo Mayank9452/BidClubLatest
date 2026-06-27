@@ -70,14 +70,14 @@ export default function ActivitySlider({ latestJoined = [], winners = [] }: Acti
 
     const joinedItems = (latestJoined || []).map((item: any, index: number) => ({
       id: `joined-${index}`,
-      user_phone: maskMSISDN(item.user_phone),
+      user_phone: item.user_phone,
       newMessage: t.placedBid,
       avatar: getAvatar(item.user_image, index),
     }));
 
     const winningItems = (winners || []).map((item: any, index: number) => ({
       id: `won-${index}`,
-      user_phone: maskMSISDN(item.user_phone),
+      user_phone: item.user_phone,
       newMessage: t.playerWonBid,
       avatar: getAvatar(item.user_image, index),
     }));

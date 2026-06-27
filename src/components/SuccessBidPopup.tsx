@@ -16,7 +16,7 @@ const SuccessBidPopup = ({
   batchCount,
   onConfirm,
 }: SuccessBidPopupProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   if (!isShow) return null;
 
@@ -38,25 +38,29 @@ const SuccessBidPopup = ({
         <img
           src="/assets/images/firework.gif"
           className="absolute top-0 right-5 max-w-[480px]"
-          loading="lazy"
+          loading="eager"
+          fetchPriority="high"
           alt=""
         />
         <img
           src="/assets/images/firework.gif"
           className="absolute top-12 left-5 max-w-[480px]"
-          loading="lazy"
+          loading="eager"
+          fetchPriority="high"
           alt=""
         />
         <img
           src="/assets/images/firework.gif"
           className="absolute bottom-10 left-5 max-w-[480px]"
-          loading="lazy"
+          loading="eager"
+          fetchPriority="high"
           alt=""
         />
         <img
           src="/assets/images/firework.gif"
           className="absolute bottom-0 right-5 max-w-[480px]"
-          loading="lazy"
+          loading="eager"
+          fetchPriority="high"
           alt=""
         />
       </div>
@@ -151,7 +155,8 @@ const SuccessBidPopup = ({
                       src="/assets/robotavatar/4.png"
                       className="w-full h-full object-cover relative z-10"
                       alt="Success Robot"
-                      loading="lazy"
+                      loading="eager"
+                      fetchPriority="high"
                     />
 
                     {/* Floating Sparkle Particles */}
@@ -175,7 +180,7 @@ const SuccessBidPopup = ({
             </motion.div>
           </div>
 
-          <h2 className="text-xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3">
+          <h2 className={`${language === "my" ? "text-base" : "text-xl"} font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3`}>
             {t.successfullyBidPlaced}
           </h2>
 

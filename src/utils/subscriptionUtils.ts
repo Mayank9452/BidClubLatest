@@ -55,11 +55,35 @@ export const hasSubscriptionAccess = (userInfo: any, dValidTill: string | null |
  * 
  * @param userInfo The userInfo object from the API response
  * @param dValidTill The dValidTill string from the API response
+ * @param portalAccessAllowed Optional flag indicating if portal access is allowed
  * @returns SubscriptionUIState
  */
-export const getSubscriptionUIState = (userInfo: any, dValidTill: string | null | undefined): SubscriptionUIState => {
+export const getSubscriptionUIState = (
+  userInfo: any,
+  dValidTill: string | null | undefined,
+  portalAccessAllowed?: number | string | null
+): SubscriptionUIState => {
   const hasAccess = hasSubscriptionAccess(userInfo, dValidTill);
   const status = userInfo?.user_subscription_status?.toLowerCase();
+
+  // Resolve portalAccessAllowed: parameter -> sessionStorage -> userInfo
+  const sessionPortalAccess = typeof window !== "undefined" ? sessionStorage.getItem("portal_access_allowed") : null;
+  const resolvedPortalAccess = portalAccessAllowed !== undefined && portalAccessAllowed !== null
+    ? portalAccessAllowed
+    : (sessionPortalAccess !== null ? sessionPortalAccess : userInfo?.portal_access_allowed);
+
+  const portalAccess = resolvedPortalAccess !== undefined && resolvedPortalAccess !== null
+    ? Number(resolvedPortalAccess)
+    : null;
+
+  // Rule: If portal_access_allowed = 1, they don't get blocked and don't see any popups
+  if (portalAccess === 1) {
+    return {
+      hasAccess: true,
+      showButton: status === "unsub" ? "subscribe" : "unsubscribe",
+      popupToShow: "none"
+    };
+  }
 
   if (hasAccess) {
     return {
@@ -78,7 +102,16 @@ export const getSubscriptionUIState = (userInfo: any, dValidTill: string | null 
     };
   }
 
-  // For "unsub" and all other cases
+  // Only show unsubscribe popup if portal_access_allowed is 0 and status is unsub
+  if (portalAccess === 0 && status === "unsub") {
+    return {
+      hasAccess: false,
+      showButton: "subscribe",
+      popupToShow: "unsubscribe"
+    };
+  }
+
+  // Default fallback for other unsubbed / no access cases
   return {
     hasAccess: false,
     showButton: "subscribe",

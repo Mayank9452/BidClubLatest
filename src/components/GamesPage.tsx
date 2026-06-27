@@ -94,7 +94,8 @@ export default function GamesPage() {
 
   const userInfo = homeData?.data?.userInfo;
   const dValidTill = homeData?.data?.dValidTill;
-  const subUIState = useMemo(() => getSubscriptionUIState(userInfo, dValidTill), [userInfo, dValidTill]);
+  const portalAccessAllowed = homeData?.data?.portal_access_allowed;
+  const subUIState = useMemo(() => getSubscriptionUIState(userInfo, dValidTill, portalAccessAllowed), [userInfo, dValidTill, portalAccessAllowed]);
 
   const games = useMemo(() => data?.data?.freeGames || [], [data]);
 
@@ -142,7 +143,9 @@ export default function GamesPage() {
       <PopupBannerUnsubscribe
         isShow={showNotSubscribed}
         onClose={() => setShowNotSubscribed(false)}
-        onConfirm={() => setShowNotSubscribed(false)}
+        onConfirm={() => {
+          window.location.href = "https://bidblast.club/subscribe";
+        }}
         confirmText={t.subscribeNow}
         data={{
           title: t.notSubscribedTitle || "Not Subscribed !",

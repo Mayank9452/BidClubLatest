@@ -123,9 +123,9 @@ const getGlowColor = (gradient: string) => {
 };
 
 // ── BidCard ──────────────────────────────────────────────────────────────────
-const BidCard = React.memo(({ bid, index, activeTab, isSubscribed, onNotSubscribed, tick }: { 
-  bid: any; 
-  index: number; 
+const BidCard = React.memo(({ bid, index, activeTab, isSubscribed, onNotSubscribed, tick }: {
+  bid: any;
+  index: number;
   activeTab: string;
   isSubscribed: boolean;
   onNotSubscribed: () => void;
@@ -357,7 +357,8 @@ export default function BidCardDemo() {
 
   const userInfo = response?.data?.userInfo;
   const dValidTill = response?.data?.dValidTill;
-  const subUIState = useMemo(() => getSubscriptionUIState(userInfo, dValidTill), [userInfo, dValidTill]);
+  const portalAccessAllowed = response?.data?.portal_access_allowed;
+  const subUIState = useMemo(() => getSubscriptionUIState(userInfo, dValidTill, portalAccessAllowed), [userInfo, dValidTill, portalAccessAllowed]);
 
   const formattedBids = useMemo(() => {
     return liveBids.map((item: any) => {
@@ -455,10 +456,10 @@ export default function BidCardDemo() {
       {/* Single card */}
       {isSingle && (
         <div className="w-[95%] mx-auto">
-          <BidCard 
-            bid={displayedBids[0]} 
-            index={0} 
-            activeTab={activeTab} 
+          <BidCard
+            bid={displayedBids[0]}
+            index={0}
+            activeTab={activeTab}
             isSubscribed={subUIState.hasAccess}
             onNotSubscribed={() => {
               if (subUIState.popupToShow === "lowBalance") {
@@ -479,10 +480,10 @@ export default function BidCardDemo() {
         <div className="overflow-x-auto no-scrollbar scrollbar-hide flex gap-2 w-full px-5 py-1">
           {displayedBids.map((bid: any, index: number) => (
             <div key={bid.id} className="w-[225px] sm:w-[280px] flex-shrink-0">
-              <BidCard 
-                bid={bid} 
-                index={index} 
-                activeTab={activeTab} 
+              <BidCard
+                bid={bid}
+                index={index}
+                activeTab={activeTab}
                 isSubscribed={subUIState.hasAccess}
                 onNotSubscribed={() => {
                   if (subUIState.popupToShow === "lowBalance") {
@@ -501,7 +502,9 @@ export default function BidCardDemo() {
       <PopupBannerUnsubscribe
         isShow={showNotSubscribed}
         onClose={() => setShowNotSubscribed(false)}
-        onConfirm={() => setShowNotSubscribed(false)}
+        onConfirm={() => {
+          window.location.href = "https://bidblast.club/subscribe";
+        }}
         confirmText={t.subscribeNow}
         data={{
           title: t.notSubscribedTitle || "Not Subscribed !",

@@ -6,17 +6,15 @@ export const claimSummerRewardAPI = async (
   { getState }
 ) => {
   const state = getState() as RootState;
-  const token = state.auth.data.token || null;
+  const phone = state.auth.data?.phone || sessionStorage.getItem("user_phone") || "";
 
-  const res = await fetch(frontendAPI?.claimSummerReward, {
+  const res = await fetch(frontendAPI.claimSummerReward(phone), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "",
+      "Cookie": "bb_session=dqhr7eaat5s24fd5l6akaoljif9efm1a"
     },
-    body: JSON.stringify({
-      participant_id: participantId,
-    }),
+    body: "",
   });
 
   const data = await res.json();

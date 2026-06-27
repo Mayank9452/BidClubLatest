@@ -91,7 +91,8 @@ const PopupBannerForDuplicateSet = ({
                       src="/assets/robotavatar/2.png"
                       className="w-full h-full object-cover relative z-10"
                       alt="Duplicate Warning"
-                      loading="lazy"
+                      loading="eager"
+                      fetchPriority="high"
                     />
 
                     {/* Floating Sparkle Particles */}
@@ -115,7 +116,7 @@ const PopupBannerForDuplicateSet = ({
             </motion.div>
           </div>
 
-          <h2 className="text-xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3">
+          <h2 className={`${language === "my" ? "text-base" : "text-xl"} font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3`}>
             {t.duplicateSetNumbers}
           </h2>
 
@@ -128,10 +129,10 @@ const PopupBannerForDuplicateSet = ({
                     className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3 group hover:bg-white/20 transition-all"
                   >
                     <div className="flex flex-col items-start gap-0.5">
-                      <span className="text-sm text-white font-semibold ">
+                      <span className={`${language === "my" ? "text-xs" : "text-sm"} text-white font-semibold `}>
                         {t.cycle} {cycleNum}
                       </span>
-                      <p className="text-sm text-white/90 text-left leading-relaxed">
+                      <p className={`${language === "my" ? "text-xs" : "text-sm"} text-white/90 text-left leading-relaxed`}>
                         {language === "en" ? (
                           <>
                             {t.number} <span className="text-yellow-400 font-bold">{item.number}</span> {t.isPresentInSet} {t.set} {batchNum}

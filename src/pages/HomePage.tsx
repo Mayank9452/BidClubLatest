@@ -14,10 +14,24 @@ import BiddingHammer from "@/components/BiddingHammer";
 import LowBalancePopup from "@/components/LowBalancePopup";
 import { useState, useEffect } from "react";
 import WinnerListUpdated from "@/components/WinnerListUpdated";
+import WinnerListNew from "@/components/WinnerListNew";
+import PopupSummerRewardUpdated from "@/components/PopupSummerRewardUpdated";
+import VideoSectionLatest from "@/components/VideoSectionLatest";
 export default function HomePage() {
   const { t } = useLanguage();
   const dispatch = useAppDispatch();
   const { data: response } = useAppSelector((state) => state.home);
+  const [showSummerPopup, setShowSummerPopup] = useState(false);
+  const summerParticipantData = response?.data?.summerParticipantData;
+
+  useEffect(() => {
+    const isClosed = sessionStorage.getItem("summer_banner_closed") === "true";
+    const claimAllowed = Number(summerParticipantData?.summer_participant_reward_claim_allowed) === 1;
+    const isClaimed = Number(summerParticipantData?.summer_participant_reward_claimed) !== 1;
+    if (claimAllowed && isClaimed && !isClosed) {
+      setShowSummerPopup(true);
+    }
+  }, [summerParticipantData]);
 
 
   const userPlayCoins = response?.data?.userInfo?.user_play_coins;
@@ -30,8 +44,8 @@ export default function HomePage() {
       <div className="mobile-container py-1  space-y-2">
 
         <section>
-          <WinnerListUpdated 
-            lastWeeklyWinners={response?.data?.lastWeeklyWinners} 
+          <WinnerListNew
+            lastWeeklyWinners={response?.data?.lastWeeklyWinners}
             lastMonthLeaderBoardWinners={response?.data?.lastMonthLeaderBoardWinners}
           />
         </section>
@@ -48,13 +62,13 @@ export default function HomePage() {
             🔥 Live Auctions
           </h2> */}
 
-          <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-4 ">
+          <div className="rounded-xl relative gradient-home-section pt-4 pb-16 px-3 overflow-hidden mb-2 ">
             {/* <h2 className="flex items-center justify-center gap-2 text-xl font-bold text-white">
               <Flame className="h-5 w-5 text-white" />
               
               Live Bidding
             </h2> */}
-            <h2 className="flex items-center justify-center gap-4 text-xl font-bold text-white mb-2">
+            <h2 className="flex items-center justify-center gap-4 text-xl font-bold text-white">
               <div className="flex-shrink-0 -mt-2">
                 <BiddingHammer className="w-12 h-12" />
               </div>
@@ -95,7 +109,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <VideoSection />
+          <VideoSectionLatest />
         </section>
 
         {/* ACTIVITY */}
@@ -161,6 +175,15 @@ export default function HomePage() {
           <TrendingGamesSlider />
         </section>
       </div>
+
+      <PopupSummerRewardUpdated
+        isShow={showSummerPopup}
+        participantId={summerParticipantData?.summer_participant_id}
+        onClose={() => {
+          setShowSummerPopup(false);
+          sessionStorage.setItem("summer_banner_closed", "true");
+        }}
+      />
 
       <BottomNavBar />
 

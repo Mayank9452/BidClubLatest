@@ -6,6 +6,7 @@ import "./index_copy2.css";
 import { Provider } from "react-redux";
 import { LanguageProvider } from "./components/context/LanguageContext";
 import { store } from "./app/store";
+import AppUpdated from "./AppUpdated";
 
 const root = document.getElementById("root");
 
@@ -15,7 +16,7 @@ ReactDOM.createRoot(root).render(
   // <React.StrictMode>
   <Provider store={store}>
     <LanguageProvider>
-      <App />
+      <AppUpdated />
     </LanguageProvider>
   </Provider>
   // </React.StrictMode>

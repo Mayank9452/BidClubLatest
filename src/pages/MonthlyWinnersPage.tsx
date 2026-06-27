@@ -36,13 +36,14 @@ const getAvatarFilename = (userImage: any, userId: any, index: number) => {
   return `${avatarIndex}.png`;
 };
 
-const getMonthlyPrize = (reward: any, rank: number) => {
+const getMonthlyPrize = (reward: any, rank: number, wonText: string = "Won", lang: string = "en") => {
   if (reward) {
     const parsed = Number(reward);
-    if (parsed >= 1024) {
-      return `Won ${Math.round(parsed / 1024)} GB`;
+    const amount = parsed >= 1024 ? `${Math.round(parsed / 1024)} GB` : `${parsed} MB`;
+    if (lang === "my") {
+      return `${amount} ${wonText}`;
     }
-    return `Won ${parsed} MB`;
+    return `${wonText} ${amount}`;
   }
   return "";
 };
@@ -143,7 +144,7 @@ const MONTHLY_WINNERS = [
 
 export default function MonthlyWinnersPage() {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [expandedUser, setExpandedUser] = useState<number | null>(null);
 
   const { data: homeResponse } = useAppSelector((state) => state.home);
@@ -160,11 +161,11 @@ export default function MonthlyWinnersPage() {
       phone: item.user_phone,
       avatar: getAvatarFilename(item.user_image, item.user_id, index),
       totalBids: Number(item.user_total_bids || 0),
-      totalPrizeWon: getMonthlyPrize(item.user_reward, Number(item.user_rank || index + 1)),
+      totalPrizeWon: getMonthlyPrize(item.user_reward, Number(item.user_rank || index + 1), t.won || "Won", language),
       diamondsEarned: Number(item.user_total_points || 0),
       winningBidName: "Leaderboard Challenge"
     }));
-  }, [lastMonthData]);
+  }, [lastMonthData, t.won, language]);
 
   const topThree = useMemo(() => winners.slice(0, 3), [winners]);
   const theRest = useMemo(() => winners.slice(3), [winners]);
@@ -183,7 +184,7 @@ export default function MonthlyWinnersPage() {
         phone: prev.user_phone,
         avatar: getAvatarFilename(prev.user_image, prev.user_id, 0),
         totalBids: Number(prev.bidsCount || 0),
-        totalPrizeWon: getMonthlyPrize(prev.reward, Number(prev.rank)),
+        totalPrizeWon: getMonthlyPrize(prev.reward, Number(prev.rank), t.won || "Won", language),
         diamondsEarned: Number(prev.points || 0),
         winningBidName: "Leaderboard Challenge"
       });
@@ -194,7 +195,7 @@ export default function MonthlyWinnersPage() {
         phone: curr.user_phone,
         avatar: getAvatarFilename(curr.user_image, curr.user_id, 1),
         totalBids: Number(curr.bidsCount || 0),
-        totalPrizeWon: getMonthlyPrize(curr.reward, Number(curr.rank)),
+        totalPrizeWon: getMonthlyPrize(curr.reward, Number(curr.rank), t.won || "Won", language),
         diamondsEarned: Number(curr.points || 0),
         winningBidName: "Leaderboard Challenge"
       });
@@ -205,14 +206,14 @@ export default function MonthlyWinnersPage() {
         phone: aft.user_phone,
         avatar: getAvatarFilename(aft.user_image, aft.user_id, 2),
         totalBids: Number(aft.bidsCount || 0),
-        totalPrizeWon: getMonthlyPrize(aft.reward, Number(aft.rank)),
+        totalPrizeWon: getMonthlyPrize(aft.reward, Number(aft.rank), t.won || "Won", language),
         diamondsEarned: Number(aft.points || 0),
         winningBidName: "Leaderboard Challenge"
       });
     }
 
     return list.sort((a, b) => a.rank - b.rank);
-  }, [lastMonthData, currentUserRankVal]);
+  }, [lastMonthData, currentUserRankVal, t.won, language]);
 
   return (
     <>
@@ -328,9 +329,9 @@ export default function MonthlyWinnersPage() {
                             <h3 className={`text-sm font-bold leading-tight truncate ${isCurrentUser ? "text-white" : "text-gray-800"}`}>
                               {maskMSISDN(player.phone)} {isCurrentUser && `(${t.yourRank || "Your Rank"})`}
                             </h3>
-                            <p className={`text-xs font-semibold mt-0.5 ${isCurrentUser ? "text-white/90" : "text-gray-600"}`}>
+                            {/* <p className={`text-xs font-semibold mt-0.5 ${isCurrentUser ? "text-white/90" : "text-gray-600"}`}>
                               {player.totalBids} {t.bids || "Bids"}🔥
-                            </p>
+                            </p> */}
                             {player.totalPrizeWon && (
                               <div className="mt-1">
                                 <span className={`inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-md border ${isCurrentUser
@@ -424,11 +425,11 @@ export default function MonthlyWinnersPage() {
                             {/* Info */}
                             <div className="flex-1 text-left min-w-0">
                               <h3 className={`text-sm font-bold leading-tight truncate ${isCurrentUser ? "text-white" : "text-gray-800"}`}>
-                                {maskMSISDN(player.phone)} {isCurrentUser && `(${t.yourRank || "Your Rank"})`}
+                                {maskMSISDN(player.phone)}
                               </h3>
-                              <p className={`text-xs font-semibold mt-0.5 ${isCurrentUser ? "text-white/90" : "text-gray-600"}`}>
+                              {/* <p className={`text-xs font-semibold mt-0.5 ${isCurrentUser ? "text-white/90" : "text-gray-600"}`}>
                                 {player.totalBids} {t.bids || "Bids"}🔥
-                              </p>
+                              </p> */}
                               {player.totalPrizeWon && (
                                 <div className="mt-1">
                                   <span className={`inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-md border ${isCurrentUser
@@ -601,9 +602,9 @@ const PodiumCard = React.memo(({ user, rank, isFirst = false }: any) => {
           </p>
         )}
 
-        <p className={`font-bold ${current.text}`}>
+        {/* <p className={`font-bold ${current.text}`}>
           {user.totalBids.toLocaleString()} {t.bids || "Bids"}
-        </p>
+        </p> */}
       </div>
 
       {/* 🏆 Podium - Hardware accelerated height animation */}

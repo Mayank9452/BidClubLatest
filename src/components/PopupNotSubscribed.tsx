@@ -70,6 +70,8 @@ const PopupNotSubscribed = ({ isShow, onClose }: { isShow: boolean; onClose: () 
                   src="/assets/robotavatar/2.png"
                   className="w-full h-full object-cover relative z-10"
                   alt="Not Subscribed"
+                  loading="eager"
+                  fetchPriority="high"
                 />
                 <motion.div
                   animate={{ scale: [0, 1.2, 0], opacity: [0, 1, 0] }}
@@ -92,7 +94,10 @@ const PopupNotSubscribed = ({ isShow, onClose }: { isShow: boolean; onClose: () 
           <div className="mt-8">
             <Button
               className="text-base h-12 w-full bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-pink-900/20 border-t border-white/20 transition-all active:scale-95"
-              onClick={onClose}
+              onClick={() => {
+                window.location.href = "https://bidblast.club/subscribe";
+                onClose();
+              }}
             >
               {t.subscribeNow || "Subscribe"}
             </Button>

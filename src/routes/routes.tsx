@@ -2,6 +2,9 @@ import BiddingPageLatest from "@/components/BiddingPageLatest";
 import { lazy } from "react";
 import { useAppSelector } from "@/app/hooks";
 import LeaderboardPageNewUpdated from "@/components/LeaderboardPageNewUpdated";
+import DetailsPageNew from "@/components/DetailsPageNew";
+import DetailsPageLatest from "@/components/DetailsPageLatest";
+import LeaderboardPageNewUpdated1 from "@/components/LeaderboardPageNewUpdated1";
 
 const BiddingPage = lazy(() => import("@/components/BiddingPage"));
 const DetailsPage = lazy(() => import("@/components/DetailsPage"));
@@ -10,6 +13,7 @@ const LeaderboardPageNew = lazy(() => import("@/components/LeaderboardPageNew"))
 const NotificationPage = lazy(() => import("@/components/NotificationPage"));
 const PlayGamesUpdatedNew = lazy(() => import("@/components/PlayGamesUpdatedNew"));
 const ProfilePage = lazy(() => import("@/components/ProfilePage"));
+const TermsOfUseParent = lazy(() => import("@/components/TermsOfUseParent"));
 const TermsOfUsePage = lazy(() => import("@/components/TermsOfUsePage"));
 const HomePage = lazy(() => import("@/pages/HomePage"));
 const MonthlyWinnersPage = lazy(() => import("@/pages/MonthlyWinnersPage"));
@@ -41,7 +45,7 @@ const routes = [
   },
   {
     path: "/details",
-    element: <DetailsPage />,
+    element: <DetailsPageLatest />,
   },
   {
     path: "/leaderboard",
@@ -69,7 +73,7 @@ const routes = [
   },
   {
     path: "/terms",
-    element: <TermsOfUsePage />,
+    element: <TermsOfUseParent />,
   },
   {
     path: "/monthlyWinners",

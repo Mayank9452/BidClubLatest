@@ -36,7 +36,13 @@ let parsedAuth: AuthState = {
 };
 
 try {
-  if (savedAuth) parsedAuth.data = JSON.parse(savedAuth);
+  if (savedAuth) {
+    if (savedAuth.trim().startsWith("{")) {
+      parsedAuth.data = JSON.parse(savedAuth);
+    } else {
+      parsedAuth.data = { token: savedAuth };
+    }
+  }
 } catch (e) {
   console.error("Failed to parse auth from localStorage", e);
 }
@@ -142,13 +148,16 @@ const authSlice = createSlice({
   reducers: {
     setAuthData: (state, action) => {
       state.data = action.payload.data;
-      // localStorage.setItem(storage.auth, JSON.stringify(action.payload.data));
-      sessionStorage.setItem(storage.auth, JSON.stringify(action.payload.data));
+      const token = action.payload.data?.token || action.payload.data;
+      sessionStorage.setItem(storage.auth, typeof token === 'object' ? JSON.stringify(token) : token);
     },
     logout: (state) => {
       state.data = null;
       // localStorage.removeItem(storage.auth);
-      sessionStorage.removeItem(storage.auth);
+      sessionStorage.removeItem("auth");
+      sessionStorage.removeItem("user_phone");
+      sessionStorage.removeItem("userId");
+      sessionStorage.removeItem("portal_access_allowed");
     },
   },
   extraReducers(builder) {
@@ -256,12 +265,18 @@ const authSlice = createSlice({
         state.status = "succeeded";
         // ✅ If backend indicates redirect (no existing token)
         if (action.payload?.data) {
-          state.data = action.payload.data;
-          // localStorage.setItem(storage.auth, JSON.stringify(action.payload.data));
-          sessionStorage.setItem(
-            storage.auth,
-            JSON.stringify(action.payload.data),
-          );
+          const authData = {
+            token: action.payload.data.authToken,
+            phone: action.payload.data.userInfo?.user_phone,
+            userId: action.payload.data.userId,
+          };
+          state.data = authData;
+          sessionStorage.setItem("auth", authData.token);
+          sessionStorage.setItem("user_phone", authData.phone || "");
+          sessionStorage.setItem("userId", authData.userId || "");
+          if (action.payload.data.portal_access_allowed !== undefined) {
+            sessionStorage.setItem("portal_access_allowed", String(action.payload.data.portal_access_allowed));
+          }
         }
 
         if (action.payload?.redirectUrl) {
@@ -295,11 +310,18 @@ const authSlice = createSlice({
         state.status = "succeeded";
 
         if (action.payload?.data) {
-          state.data = action.payload.data;
-          sessionStorage.setItem(
-            storage.auth,
-            JSON.stringify(action.payload.data),
-          );
+          const authData = {
+            token: action.payload.data.authToken,
+            phone: action.payload.data.userInfo?.user_phone,
+            userId: action.payload.data.userId,
+          };
+          state.data = authData;
+          sessionStorage.setItem("auth", authData.token);
+          sessionStorage.setItem("user_phone", authData.phone || "");
+          sessionStorage.setItem("userId", authData.userId || "");
+          if (action.payload.data.portal_access_allowed !== undefined) {
+            sessionStorage.setItem("portal_access_allowed", String(action.payload.data.portal_access_allowed));
+          }
         }
 
         if (action.payload?.redirectUrl) {

@@ -88,9 +88,10 @@ const PopupNotJoinedLeaderboard = ({
 
                     <img
                       src="/assets/robotavatar/2.png"
-                      className="w-full h-full object-cover relative z-10 "
+                      className="w-full h-full object-cover relative z-10"
                       alt="Success Robot"
-                      loading="lazy"
+                      loading="eager"
+                      fetchPriority="high"
                     />
 
                     {/* Floating Sparkle Particles */}

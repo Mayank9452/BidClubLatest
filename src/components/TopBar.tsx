@@ -3,11 +3,12 @@
 import { useAppSelector } from "@/app/hooks"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Coins, Gem, User, Trophy } from "lucide-react"
+import { Coins, Gem, User, Trophy, Zap } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useLanguage } from "./context/LanguageContext"
 import PopupMonthlyWinner from "./PopupMonthlyWinner"
+import PopupSummerRewardUpdated from "./PopupSummerRewardUpdated"
 const formatCompactNumber = (number?: number) => {
   if (!number) return 0;
   if (number >= 100000) {
@@ -37,9 +38,16 @@ export function TopBar({
   const [coinOpen, setCoinOpen] = useState(false)
   const [isMonthlyWinnerPopupOpen, setIsMonthlyWinnerPopupOpen] = useState(false)
   const previousMonthRank = response?.data?.lastMonthLeaderBoardWinners?.currentUserRank?.rank ?? response?.data?.userInfo?.previous_month_rank;
+  const [showSummerPopup, setShowSummerPopup] = useState(false);
 
   const gemTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const coinTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const summerParticipantData = response?.data?.summerParticipantData;
+  const isEligibleForSummerPopup =
+    Number(summerParticipantData?.summer_participant_reward_claimed) !== 1 &&
+    Number(summerParticipantData?.summer_participant_reward_claim_allowed) === 1;
+
 
   useEffect(() => {
     if (gemOpen) {
@@ -85,13 +93,13 @@ export function TopBar({
             borderBottom: "1px solid hsl(240 6% 20%)",
           }}
         >
-          <div className="flex items-center justify-between w-full max-w-md mx-auto px-6">
+          <div className="flex items-center justify-between w-full px-2">
             {/* LEFT: LOGO */}
             <div className="flex items-center gap-2 cursor-pointer transform translate-y-0.5">
               <div className="rounded-lg flex items-center">
                 <img
-                  src="/assets/images/logo.png"
-                  className="w-[130px] sm:w-[140px] h-auto object-cover"
+                  src="/assets/images/bid-glow.jpeg"
+                  className="w-[160px] sm:w-[140px] h-auto object-cover"
                   style={{ aspectRatio: '500/111' }}
                   alt="Logo"
                   loading="lazy"
@@ -101,6 +109,17 @@ export function TopBar({
 
             {/* RIGHT: ACTIONS */}
             <div className="flex items-center gap-3">
+
+              {isEligibleForSummerPopup && (
+                <Button
+                  onClick={() => setShowSummerPopup(true)}
+                  className="border-yellow-400/80 bg-card/50 dark:bg-card/10 backdrop-blur-sm hover:bg-card/10 hover:dark:bg-card/20 transition-smooth px-[0.4rem]"
+                  size="sm"
+                  variant="outline"
+                >
+                  <Zap className="h-2 w-2 text-yellow-400 animate-pulse" />
+                </Button>
+              )}
               {/* COINS */}
               <Popover open={gemOpen} onOpenChange={setGemOpen}>
                 <PopoverTrigger asChild>
@@ -196,7 +215,7 @@ export function TopBar({
               </Popover> */}
 
               {/* TROPHY ICON */}
-              <Button
+              {/* <Button
                 variant="outline"
                 size="sm"
                 onClick={() => {
@@ -221,14 +240,14 @@ export function TopBar({
     before:pointer-events-none px-3 "
               >
                 <Trophy className="h-4 w-4 text-white animate-pulse" />
-              </Button>
+              </Button> */}
 
               {/* PROFILE ICON */}
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => navigate("/profile")}
-                className="relative bg-white dark:bg-card/10 backdrop-blur-sm hover:dark:bg-card/20 transition-all border border-white/40 rounded-xl h-7 w-7 p-0 flex items-center justify-center"
+                className="relative bg-white dark:bg-card/10 backdrop-blur-sm hover:dark:bg-card/20 transition-all border border-white/40 rounded-xl h-8 w-8 p-0 flex items-center justify-center"
               >
                 <User className="h-5 w-5 text-black dark:text-white" />
               </Button>
@@ -240,6 +259,11 @@ export function TopBar({
         isOpen={isMonthlyWinnerPopupOpen}
         onClose={() => setIsMonthlyWinnerPopupOpen(false)}
         rank={previousMonthRank}
+      />
+      <PopupSummerRewardUpdated
+        isShow={showSummerPopup}
+        participantId={summerParticipantData?.summer_participant_id}
+        onClose={() => setShowSummerPopup(false)}
       />
     </>
   );

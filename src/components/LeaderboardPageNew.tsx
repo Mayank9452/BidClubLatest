@@ -87,6 +87,8 @@ export default function LeaderboardPageNew() {
   }, [filters]);
 
   const handleTabChange = (tab: "weekly" | "monthly") => () => {
+    if (activeTab === tab) return;
+
     setActiveTab(tab);
     setExpandedUser(null);
 
@@ -126,7 +128,7 @@ export default function LeaderboardPageNew() {
 
       return {
         id: user.user_id,
-        name: maskPhone(user.user_phone),
+        name: user.user_phone,
         score: Number(user.points || 0),
         bids: user.bidsCount || 0,
         avatar: `${avatarIndex}.png`,

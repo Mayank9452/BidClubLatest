@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bell,
@@ -8,15 +8,18 @@ import {
   Gift,
   TrendingUp,
   Zap,
+  Gem,
+  MessageCircleX,
   X,
-  ChevronRight,
 } from "lucide-react";
 import { TopBar } from "./TopBar";
 import { BottomNavBar } from "./BottomNavBar";
 import { useLanguage } from "./context/LanguageContext";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { fetchNotification } from "@/features/notification/notificationSlice";
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import WaitLoader from "./Loader";
 
 const formatDateTime = (dateTimeString) => {
   const d = dayjs(dateTimeString);
@@ -27,84 +30,11 @@ const formatDateTime = (dateTimeString) => {
   };
 };
 
-// Mock notifications data
-const NOTIFICATIONS = [
-  {
-    id: 1,
-    bidName: "Bid Daily",
-    startDate: "2025-01-01",
-    startTime: "10:00 AM",
-    endDate: "2025-01-01",
-    endTime: "11:00 PM",
-    won: true,
-    prize: "4,350 Data Pack (MB)",
-    status: "completed",
-    timestamp: "2 hours ago",
-  },
-  {
-    id: 2,
-    bidName: "Bid Weekly",
-    startDate: "2024-12-28",
-    startTime: "09:00 AM",
-    endDate: "2024-12-31",
-    endTime: "11:59 PM",
-    won: false,
-    prize: null,
-    status: "completed",
-    timestamp: "5 hours ago",
-  },
-  {
-    id: 3,
-    bidName: "Bid Daily",
-    startDate: "2024-12-30",
-    startTime: "02:00 PM",
-    endDate: "2024-12-31",
-    endTime: "08:00 PM",
-    won: true,
-    prize: "10,000 Data Pack (MB)",
-    status: "completed",
-    timestamp: "1 day ago",
-  },
-  {
-    id: 4,
-    bidName: "Bid Daily",
-    startDate: "2024-12-29",
-    startTime: "12:00 PM",
-    endDate: "2024-12-29",
-    endTime: "06:00 PM",
-    won: false,
-    prize: null,
-    status: "completed",
-    timestamp: "2 days ago",
-  },
-  {
-    id: 5,
-    bidName: "Bid Daily",
-    startDate: "2024-12-28",
-    startTime: "08:00 AM",
-    endDate: "2024-12-28",
-    endTime: "10:00 PM",
-    won: true,
-    prize: "25,000 Data Pack (MB)",
-    status: "completed",
-    timestamp: "3 days ago",
-  },
-  {
-    id: 6,
-    bidName: "Bid Daily",
-    startDate: "2024-12-27",
-    startTime: "10:00 AM",
-    endDate: "2024-12-27",
-    endTime: "11:00 PM",
-    won: false,
-    prize: null,
-    status: "completed",
-    timestamp: "4 days ago",
-  },
-];
+
 
 export default function NotificationPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { list, status, hasMore, pageNo } = useAppSelector(
     (state) => state.notification,
@@ -117,7 +47,7 @@ export default function NotificationPage() {
     pageNo: 1,
   });
   const [selectedNotif, setSelectedNotif] = useState<number | null>(null);
-  const { t, language, changeLanguage } = useLanguage();
+  const { t } = useLanguage();
 
   useEffect(() => {
     dispatch(fetchNotification(filters));
@@ -151,43 +81,72 @@ export default function NotificationPage() {
     const hours = Math.floor(diff / 3600);
     const days = Math.floor(diff / 86400);
 
-    if (mins < 60) return `${mins} min ago`;
-    if (hours < 24) return `${hours} hrs ago`;
-    return `${days} days ago`;
+    if (mins < 60) {
+      return t.minAgo?.replace("{0}", mins.toString()) || `${mins} min ago`;
+    }
+    if (hours < 24) {
+      const key = hours === 1 ? "hrAgo" : "hrsAgo";
+      return t[key]?.replace("{0}", hours.toString()) || `${hours} ${hours === 1 ? "hr" : "hrs"} ago`;
+    }
+    const key = days === 1 ? "dayAgo" : "daysAgo";
+    return (
+      t[key]?.replace("{0}", days.toString()) ||
+      `${days} ${days === 1 ? "day" : "days"} ago`
+    );
   };
 
-  const formatNotification = (item: any) => {
-    const prize = Number(item.cycle_reward_prize);
+  const formatBidName = useCallback((bidName: string) => {
+    if (!bidName) return "";
+    const parts = bidName.split("+");
+    const type = parts[1]?.toLowerCase();
+    const cycle = parts[2] || "";
+
+    if (type === "daily") return t.bidNameDaily?.replace("{0}", cycle) || `Bid Daily ${cycle}`;
+    if (type === "weekly") return t.bidNameWeekly?.replace("{0}", cycle) || `Bid Weekly ${cycle}`;
+
+    return bidName.replace(/\+/g, " ");
+  }, [t]);
+
+  const formatPrize = useCallback((prizeText: string) => {
+    if (!prizeText || prizeText === "No prize won") return null;
+
+    // Extract amount like "5120 MB" from "You won 5120 MB Atom Data"
+    const match = prizeText.match(/([\d,.]+\s*(MB|GB|KB))/i);
+    if (match) {
+      const amount = match[0];
+      return t.youWonData?.replace("{0}", amount) || prizeText;
+    }
+
+    return prizeText;
+  }, [t]);
+
+  const formatNotification = useCallback((item: any) => {
     const start = formatDateTime(
       `${item.bid_start_date} ${item.bid_start_time}`,
     );
     const end = formatDateTime(`${item.bid_end_date} ${item.bid_end_time}`);
 
+    // Deterministic diamond credit based on batch_id
+    const diamondAmount = item.diamond_earned || 0;
+
     return {
       id: item.batch_id,
-
-      bidName: item.bid_name?.replace(/\+/g, " "),
-
+      bidName: formatBidName(item.bid_name),
       startDate: start.date,
       startTime: start.time,
       endDate: end.date,
       endTime: end.time,
-
-      won: item.reward_prize_text === "No prize won" ? false : true,
-
-      prize:
-        item.reward_prize_text !== "No prize won"
-          ? `${item.reward_prize_text}`
-          : null,
-
+      won: item.reward_prize_text !== "No prize won",
+      diamondAmount: diamondAmount,
+      diamondCredit: t.diamondEarned?.replace("{0}", diamondAmount.toString()) || `Diamond earned ${diamondAmount}`,
+      prize: formatPrize(item.reward_prize_text),
       timestamp: formatTimeAgo(item.batch_datetime),
-
       rank: Number(item.cycle_reward_rank),
       isRead: item.cycle_reward_seen === "1",
     };
-  };
+  }, [formatBidName, formatPrize, t]);
 
-  const notifications = list.map(formatNotification);
+  const notifications = useMemo(() => list.map(formatNotification), [list, formatNotification]);
 
   const handleFilterChange = (type: "all" | "won" | "lost") => {
     setFilter(type);
@@ -200,22 +159,24 @@ export default function NotificationPage() {
     });
   };
 
-  const filteredNotifications = notifications.filter((notif) => {
-    if (filter === "won") return notif.won;
-    if (filter === "lost") return !notif.won;
-    return true;
-  });
+  const filteredNotifications = useMemo(() => {
+    return notifications.filter((notif) => {
+      if (filter === "won") return notif.won;
+      if (filter === "lost") return !notif.won;
+      return true;
+    });
+  }, [notifications, filter]);
 
-  const wonCount = notifications.filter((n) => n.won).length;
-  const lostCount = notifications.filter((n) => !n.won).length;
+
 
   return (
     <>
       <TopBar />
-      <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-50 p-2">
+      <div className="p-2">
+
         {/* Header Section */}
         {/* <div className="rounded-xl relative bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 pt-6 pb-16 px-3 overflow-hidden"> */}
-        <div className="rounded-xl relative bg-gradient-to-r from-[#0a0f7ac4] to-pink-700 pt-6 pb-16 px-3 overflow-hidden">
+        <div className="rounded-xl relative gradient-home-section pt-6 pb-16 px-3 overflow-hidden">
           {/* Animated Background */}
           <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl" />
@@ -239,39 +200,72 @@ export default function NotificationPage() {
               </div> */}
             </div>
 
-            <p className="text-center text-white/80 text-xs font-semibold  mb-4">
+            <p className="text-center text-white/90 text-sm font-semibold  mb-4">
               {t.bidUpdates}
             </p>
 
             {/* Filter Tabs */}
-            <div className="flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-xl gap-1">
+            {/* <div className="flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-xl gap-1">
               <button
                 onClick={() => handleFilterChange("all")}
-                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${filter === "all"
-                  ? "bg-white text-violet-700 shadow-md"
-                  : "text-white/70"
-                  }`}
+                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${
+                  filter === "all"
+                    ? "bg-white text-violet-700 shadow-md"
+                    : "text-white/70"
+                }`}
               >
                 {t.all}
               </button>
               <button
                 onClick={() => handleFilterChange("won")}
-                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${filter === "won"
-                  ? "bg-white text-emerald-600 shadow-md"
-                  : "text-white/70"
-                  }`}
+                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${
+                  filter === "won"
+                    ? "bg-white text-emerald-600 shadow-md"
+                    : "text-white/70"
+                }`}
               >
                 {t.won}
               </button>
               <button
                 onClick={() => handleFilterChange("lost")}
-                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${filter === "lost"
-                  ? "bg-white text-gray-600 shadow-md"
-                  : "text-white/70"
-                  }`}
+                className={`flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${
+                  filter === "lost"
+                    ? "bg-white text-gray-600 shadow-md"
+                    : "text-white/70"
+                }`}
               >
                 {t.lost}
               </button>
+            </div> */}
+
+            {/* Filter Tabs */}
+            <div className="flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-xl gap-1">
+              {["all", "won", "lost"].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => handleFilterChange(tab as any)}
+                  className={`relative flex-1 px-3 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${filter === tab ? "text-violet-700" : "text-white"
+                    }`}
+                >
+                  {/* ✅ Sliding Background */}
+                  {filter === tab && (
+                    <motion.div
+                      layoutId="notificationTab"
+                      className="absolute inset-0 bg-white rounded-xl shadow-md"
+                      transition={{
+                        type: "spring",
+                        bounce: 0.25,
+                        duration: 0.5,
+                      }}
+                    />
+                  )}
+
+                  {/* ✅ Text */}
+                  <span className="relative text-sm font-semibold ">
+                    {tab === "all" ? t.all : tab === "won" ? t.won : t.lost}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -302,40 +296,65 @@ export default function NotificationPage() {
               ))}
             </AnimatePresence>
 
-            {filteredNotifications.length === 0 && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                  <Bell className="w-8 h-8 text-gray-400" />
-                </div>
-                <p className="text-gray-500 font-medium">{t.noNotifications}</p>
-              </div>
+            {/* Empty States */}
+            {status === "success" && (
+              <>
+                {(notifications.length === 0 || filteredNotifications.length === 0) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="relative overflow-hidden rounded-3xl bg-white/50 backdrop-blur-md border border-white/20 p-8 text-center shadow-xl mt-2"
+                  >
+                    {/* Decorative Elements */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-3xl -mr-16 -mt-16" />
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl -ml-16 -mb-16" />
+
+                    <div className="relative z-10">
+                      <div className="w-20 h-20 bg-gradient-to-br from-violet-100 to-purple-100 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner ring-4 ring-white">
+                        <Bell className="w-10 h-10 text-violet-400" />
+                      </div>
+
+                      <h3 className="text-lg font-bold text-gray-800 mb-2 ">
+                        {notifications.length === 0
+                          ? t.noNotifications
+                          : (filter === "won" ? t.noWonNotifications : t.noLostNotifications)}
+                      </h3>
+
+                      <p className="text-sm font-semibold text-gray-500 mb-4 px-4 font-medium leading-relaxed">
+                        {notifications.length === 0
+                          ? t.noNotificationsDesc
+                          : t.noFilterNotificationsDesc}
+                      </p>
+
+                      <button
+                        onClick={() => navigate("/")}
+                        className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 active:from-pink-600 active:to-rose-600 text-white font-bold py-2 rounded-xl text-sm  transition-colors duration-150 shadow-md active:shadow-lg"
+                      >
+                        <TrendingUp className="w-4.5 h-4.5" />
+                        {t.startBidding}
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </>
             )}
 
             {/* Loader */}
             {status === "loading" && (
               <p className="text-center text-sm text-gray-500 py-3">
-                Loading more...
+                {t.loadingMore}
               </p>
-            )}
-
-            {/* No Data */}
-            {notifications.length === 0 && status === "success" && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                  <Bell className="w-8 h-8 text-gray-400" />
-                </div>
-                <p className="text-gray-500 font-medium">{t.noNotifications}</p>
-              </div>
             )}
           </div>
         </div>
       </div>
       <BottomNavBar />
+      {status === "loading" && pageNo === 1 && <WaitLoader isOverlay />}
     </>
   );
 }
 
-function NotificationCard({ notification, isExpanded, onToggle }: any) {
+const NotificationCard = React.memo(({ notification, isExpanded, onToggle }: any) => {
   const {
     bidName,
     startDate,
@@ -344,9 +363,11 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
     endTime,
     won,
     prize,
+    diamondAmount,
+    diamondCredit,
     timestamp,
   } = notification;
-  const { t, language, changeLanguage } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <motion.button
@@ -355,74 +376,104 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
       whileTap={{ scale: 0.98 }}
     >
       <div
-        className={`relative bg-white rounded-xl shadow-md border-2 overflow-hidden transition-all duration-150 ${won
-          ? "border-blue-400/40 bg-gradient-to-br from-emerald-50/50 to-white"
+        className={`relative bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-150 ${won
+          ? "bg-gradient-to-br from-emerald-50/50 to-white"
           : "border-gray-200 active:border-violet-200"
           }`}
       >
         {/* Status Strip */}
         <div
           className={`absolute top-0 left-0 right-0 h-1 ${won
-            ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2]"
-            : "bg-gradient-to-r from-gray-300 to-gray-400 bg-gradient-to-r from-indigo-400 to-purple-400"
+            ? "gradient-notification-won"
+            : "gradient-loser-strip bg-gradient-to-r from-indigo-400 to-purple-400"
             }`}
         />
 
-        <div className="p-3.5">
+        <div className="p-3.5 ">
           {/* Header */}
           <div className="flex items-start justify-between mb-2.5">
             <div className="flex items-center gap-2.5">
               <div
                 className={`w-10 h-10 rounded-xl flex items-center justify-center ${won
-                  ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2]"
-                  : "bg-gradient-to-br from-gray-300 to-gray-400 "
+                  ? "gradient-notification-won"
+                  : "gradient-loser-strip bg-gradient-to-br from-gray-300 to-gray-400"
                   }`}
               >
                 {won ? (
                   <Trophy className="w-5 h-5 text-white" fill="currentColor" />
                 ) : (
-                  <X className="w-5 h-5 text-white" strokeWidth={3} />
+                  <MessageCircleX className="w-5 h-5 text-white" />
                 )}
               </div>
 
               <div>
-                <h3 className="text-base font-bold text-gray-800">{bidName}</h3>
-                <p className="text-[10px] text-gray-500 font-semibold ">
+                <h3 className="text-base font-bold text-gray-800 ">{bidName}</h3>
+                <p className="text-xs text-gray-500 font-semibold ">
                   {timestamp}
                 </p>
               </div>
             </div>
 
             {/* Win/Loss Badge */}
-            <div
-              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${won
-                ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2] text-white"
-                : "bg-gray-100 text-gray-600"
-                }`}
+            {/* <div
+              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${
+                won
+                  ? "bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2] text-white"
+                  : "bg-gray-100 text-gray-600"
+              }`}
             >
               {won ? t.wonBadge : t.lostBadge}
-            </div>
+            </div> */}
           </div>
 
           {/* Prize Info */}
           {won ? (
-            <div className="bg-[linear-gradient(90deg,_rgba(0,170,255,1)_0%,_rgb(75,195,255)_12%,_rgb(91,198,251)_29%,_rgba(0,170,255,1)_100%)] bg-gradient-to-br from-indigo-500 to-[#ff007cc2] rounded-lg p-2.5 mb-2.5">
+            <div className="gradient-notification-won rounded-xl p-2.5 mb-2.5">
               <div className="flex items-center gap-2 mb-1">
                 <Gift className="w-4 h-4 text-white" />
-                <p className="text-[10px] font-bold text-white/90 uppercase tracking-wider">
-                  {t.yourPrize}
+                <p className="text-sm font-semibold text-white/90 ">
+                  {/* {t.yourPrize} */}
+                  {prize}
                 </p>
               </div>
-              <p className="text-white text-sm font-bold">{prize}</p>
+
+              {diamondAmount !== 0 && <div className="flex items-center gap-2 mb-1">
+                <Gem className="w-4 h-4 text-white inline mr-1" />
+                <p className="text-white text-xs font-semibold ">
+                  {diamondCredit}
+                </p>
+              </div>}
             </div>
           ) : (
-            <div className="bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-pink-300 transition-all active:scale-[0.98] rounded-lg p-2.5 mb-2.5">
-              <div className="flex items-center gap-2">
+            <div className="bg-gradient-to-r from-indigo-100 to-purple-100 active:from-violet-50 active:to-purple-50 rounded-xl border border-violet-300 transition-all active:scale-[0.98] rounded-lg p-2.5 mb-2.5">
+              {/* <div className="flex items-center gap-2">
                 <div className="w-6 h-6 bg-gray-300 rounded-lg flex items-center justify-center">
                   <X className="w-3.5 h-3.5 text-gray-600" strokeWidth={3} />
                 </div>
-                <p className="text-sm font-bold text-gray-600">{t.noPrize}</p>
+                <div>
+                  <p className="text-sm font-bold text-gray-600">{t.noPrize}</p>
+                  <p className="text-pink-600 text-[10px] font-semibold ">
+                    <Gem className="w-4 h-4 text-pink-600 inline mr-1" />
+                    {diamondCredit}
+                  </p>
+                </div>
+              </div> */}
+              <div className="flex items-center gap-2 mb-1 text-gray-600">
+                <div className="w-5 h-5 bg-gray-300 rounded-lg flex items-center justify-center">
+                  <X className="w-4 h-4" strokeWidth={3} />
+                </div>
+                <p className="text-sm font-semibold ">
+                  {/* {t.yourPrize} */}
+                  {t.noPrize}
+                </p>
               </div>
+
+              {diamondAmount !== 0 && <div className="ms-0.5 flex items-center gap-1.5 mb-1 text-pink-600">
+                <Gem className="w-4 h-4 inline mr-1" />
+                <p className="text-xs font-semibold ">
+                  {diamondCredit}
+                </p>
+              </div>}
             </div>
           )}
 
@@ -431,27 +482,23 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
             <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-lg p-2 border border-violet-300">
               <div className="flex items-center gap-1 mb-0.5">
                 <Calendar className="w-3 h-3 text-violet-600" />
-                <span className="text-[9px] font-bold text-violet-600 uppercase">
+                <span className="text-xs  font-bold text-violet-600">
                   {t.start}
                 </span>
               </div>
-              <p className="text-[10px] font-bold text-gray-800">{startDate}</p>
-              <p className="text-[9px] text-gray-600 font-bold">
-                {startTime}
-              </p>
+              <p className="text-[11px] font-semibold text-gray-800 ">{startDate}</p>
+              <p className="text-[10px] text-gray-600 font-semibold ">{startTime}</p>
             </div>
 
             <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg p-2 border border-indigo-300">
               <div className="flex items-center gap-1 mb-0.5">
                 <Clock className="w-3 h-3 text-indigo-600" />
-                <span className="text-[9px] font-bold text-indigo-600 uppercase">
+                <span className="text-xs  font-bold text-indigo-600">
                   {t.end}
                 </span>
               </div>
-              <p className="text-[10px] font-bold text-gray-800">{endDate}</p>
-              <p className="text-[9px] text-gray-600 font-bold">
-                {endTime}
-              </p>
+              <p className="text-[11px] font-semibold text-gray-800 ">{endDate}</p>
+              <p className="text-[10px] text-gray-600 font-semibold ">{endTime}</p>
             </div>
           </div>
 
@@ -501,9 +548,9 @@ function NotificationCard({ notification, isExpanded, onToggle }: any) {
       </div>
     </motion.button>
   );
-}
+});
 
-function StatBox({ icon, label, value }: any) {
+const StatBox = React.memo(({ icon, label, value }: any) => {
   return (
     <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg p-2 text-center border border-gray-100">
       <div className="flex justify-center text-violet-600 mb-1">{icon}</div>
@@ -511,4 +558,4 @@ function StatBox({ icon, label, value }: any) {
       <p className="text-xs font-bold text-gray-800">{value}</p>
     </div>
   );
-}
+});

@@ -34,6 +34,11 @@ const homeSlice = createSlice({
       .addCase(fetchHomeData.fulfilled, (state, action) => {
         state.status = action?.payload?.status || "success";
         state.data = action.payload;
+
+        if (action.payload?.status === "success" && action.payload?.data?.restricted_access == 1) {
+          window.location.href = "https://bidblast.club/subscribe";
+        }
+
         // ✅ Extract authToken
         const token = action?.payload?.data?.authToken;
 

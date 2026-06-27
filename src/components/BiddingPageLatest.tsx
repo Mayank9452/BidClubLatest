@@ -146,7 +146,7 @@ export default function BiddingPageLatest() {
     const [selectedCycle, setSelectedCycle] = useState<number>(1);
     const [hasDismissedResultPopup, setHasDismissedResultPopup] = useState(false);
     const [duplicateTicketNumbers, setDuplicateTicketNumbers] = useState<string[]>([]);
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const cycleTabsRef = React.useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -362,6 +362,7 @@ export default function BiddingPageLatest() {
                         navigate={navigate}
                         bidName={bidName}
                         t={t}
+                        language={language}
                     />
 
                     <TimerSection endTime={bidInfo?.bid_end_timestamp} />
@@ -431,7 +432,7 @@ export default function BiddingPageLatest() {
                                                                     layoutId="historyTab"
                                                                     className="absolute inset-0 bg-white rounded-xl shadow-md"
                                                                     transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-                                                                 />
+                                                                />
                                                             )}
                                                             <span className="relative z-10">{t.cycle} {cycleNum}</span>
                                                         </button>
@@ -491,6 +492,7 @@ export default function BiddingPageLatest() {
                                     handleClearAll={handleClearAll}
                                     handleSubmit={handleSubmit}
                                     selectedTicketsCount={Object.keys(selectedTickets).length}
+                                    language={language}
                                 />
                             </>
                         )}
@@ -598,7 +600,9 @@ const TimerSection = React.memo(({ endTime }: { endTime: string | undefined }) =
 
 // ── Sub-components ───────────────────────────────────────────────────────────
 
-const HeaderSection = React.memo(({ navigate, bidName, t }: any) => (
+const HeaderSection = React.memo(({ navigate, bidName, t, language }: any) => (
+
+
     <div className="relative gradient-home-section py-4 px-3 pb-7 overflow-hidden rounded-xl mb-4 shadow-xl shadow-pink-200/20 flex flex-col justify-center items-center gap-2 transform-gpu translate-z-0">
         <button
             onClick={() => navigate(-1)}
@@ -612,7 +616,7 @@ const HeaderSection = React.memo(({ navigate, bidName, t }: any) => (
             <span className="text-[10px] font-bold text-red-600 uppercase tracking-wider">{t.live}</span>
         </div>
         <div className="relative z-10 max-w-md mx-auto text-center flex flex-col items-center gap-1">
-            <h1 className="text-xl font-bold text-white drop-shadow-md">
+            <h1 className={`${language === "my" ? "text-sm" : "text-xl"} font-bold text-white drop-shadow-md`}>
                 {bidName ? (
                     bidName.toLowerCase().includes("daily")
                         ? `${t.bidDaily} ${bidName.split(" ").pop()}`
@@ -776,7 +780,7 @@ const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handl
                             const isSelected = currentTicket === index;
                             const hasValue = selectedTickets[index];
                             const isDuplicate = hasValue && duplicateTicketNumbers.includes(hasValue);
-                            
+
                             const ticketColor = isDuplicate
                                 ? "bg-gradient-to-br from-rose-500 via-red-500 to-rose-600 shadow-[0_0_15px_rgba(239,68,68,0.5)] animate-pulse"
                                 : (hasValue ? "gradient-diamond" : "gradient-button-gold");
@@ -841,7 +845,7 @@ const TicketGridSection = React.memo(({ t, currentTicket, selectedTickets, handl
 
 const KeypadSection = React.memo(({
     t, currentTicket, inputValue, handleCancelInput, handleDelete,
-    handleConfirm, handleNumberClick, handleAutoPick, handleClearAll, handleSubmit, selectedTicketsCount
+    handleConfirm, handleNumberClick, handleAutoPick, handleClearAll, handleSubmit, selectedTicketsCount, language
 }: any) => (
     <div className="relative rounded-xl p-[4px] gradient-home-section shadow-2xl transform-gpu translate-z-0">
         <div className="border-2 border-dashed border-white/80 rounded-xl p-1">
@@ -875,7 +879,7 @@ const KeypadSection = React.memo(({
                                     return (
                                         <div
                                             key={i}
-                                            className={`w-12 h-14 rounded-xl border-2 flex items-center justify-center text-xl font-bold transition-all duration-300 transform-gpu translate-z-0
+                                            className={`w-12 h-12 rounded-xl border-2 flex items-center justify-center text-xl font-bold transition-all duration-300 transform-gpu translate-z-0
                               ${isFilled ? 'border-pink-500 text-pink-600 bg-pink-50/50 shadow-[0_0_10px_rgba(236,72,153,0.2)] scale-105' :
                                                     isNext ? 'border-indigo-500 text-indigo-600 bg-indigo-50 shadow-[0_0_15px_rgba(99,102,241,0.2)]' :
                                                         'border-indigo-300 text-slate-200 bg-slate-50'}`}
@@ -925,7 +929,7 @@ const KeypadSection = React.memo(({
                     <button
                         type="button"
                         onClick={handleAutoPick}
-                        className="py-4 bg-indigo-600 text-white font-semibold text-xs rounded-2xl shadow-xl active:scale-95 flex items-center justify-center gap-2 border border-white/10 transform-gpu translate-z-0"
+                        className={`${language === "my" ? "text-[10px]" : "text-sm"} py-4 bg-indigo-600 text-white font-semibold rounded-2xl shadow-xl active:scale-95 flex items-center justify-center gap-2 border border-white/10 transform-gpu translate-z-0`}
                     >
                         <Shuffle className="w-4 h-4" />
                         {t.autoPick}
@@ -933,7 +937,7 @@ const KeypadSection = React.memo(({
                     <button
                         type="button"
                         onClick={handleClearAll}
-                        className="py-4 bg-gradient-to-r from-orange-500 to-rose-600 text-white font-semibold text-xs rounded-2xl shadow-xl active:scale-95 flex items-center justify-center gap-2 border border-white/10 transform-gpu translate-z-0"
+                        className={`${language === "my" ? "text-[10px]" : "text-sm"} py-4 bg-gradient-to-r from-orange-500 to-rose-600 text-white font-semibold rounded-2xl shadow-xl active:scale-95 flex items-center justify-center gap-2 border border-white/10 transform-gpu translate-z-0`}
                     >
                         <Trash2 className="w-4 h-4" />
                         {t.clearAll}

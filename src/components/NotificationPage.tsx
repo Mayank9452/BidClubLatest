@@ -107,10 +107,35 @@ export default function NotificationPage() {
     return bidName.replace(/\+/g, " ");
   }, [t]);
 
-  const formatPrize = useCallback((prizeText: string) => {
+  const formatPrize = useCallback((prizeText: string, rewardType: any) => {
     if (!prizeText || prizeText === "No prize won") return null;
 
-    // Extract amount like "5120 MB" from "You won 5120 MB Atom Data"
+    const type = rewardType ? Number(rewardType) : null;
+
+    if (type === 1) {
+      const match = prizeText.match(/([\d,.]+)/);
+      const amount = match ? match[1] : prizeText.replace(/You won\s+/i, "").replace(/\s+Reward\s+Coins/i, "");
+      return t.youWonCoins?.replace("{0}", amount) || prizeText;
+    }
+
+    if (type === 2) {
+      const match = prizeText.match(/([\d,.]+\s*(MB|GB|KB))/i);
+      const amount = match ? match[0] : prizeText.replace(/You won\s+/i, "").replace(/\s+Atom\s+Data/i, "");
+      return t.youWonData?.replace("{0}", amount) || prizeText;
+    }
+
+    if (type === 3) {
+      const match = prizeText.match(/Ks\s+([\d,.]+)/i) || prizeText.match(/([\d,.]+)/);
+      const amount = match ? match[1] : prizeText.replace(/You won\s+Ks\s+/i, "").replace(/\s+mobile\s+balance/i, "");
+      return t.youWonTalktime?.replace("{0}", amount) || prizeText;
+    }
+
+    if (type === 4) {
+      const voucherName = prizeText.replace(/You won\s+/i, "");
+      return t.youWonVoucher?.replace("{0}", voucherName) || prizeText;
+    }
+
+    // Fallback: If rewardType is not set, try the regex-based data match
     const match = prizeText.match(/([\d,.]+\s*(MB|GB|KB))/i);
     if (match) {
       const amount = match[0];
@@ -139,7 +164,7 @@ export default function NotificationPage() {
       won: item.reward_prize_text !== "No prize won",
       diamondAmount: diamondAmount,
       diamondCredit: t.diamondEarned?.replace("{0}", diamondAmount.toString()) || `Diamond earned ${diamondAmount}`,
-      prize: formatPrize(item.reward_prize_text),
+      prize: formatPrize(item.reward_prize_text, item.bid_reward_type),
       timestamp: formatTimeAgo(item.batch_datetime),
       rank: Number(item.cycle_reward_rank),
       isRead: item.cycle_reward_seen === "1",
@@ -149,6 +174,8 @@ export default function NotificationPage() {
   const notifications = useMemo(() => list.map(formatNotification), [list, formatNotification]);
 
   const handleFilterChange = (type: "all" | "won" | "lost") => {
+    if (filter === type) return;
+
     setFilter(type);
 
     dispatch({ type: "notification/reset" }); // create this reducer

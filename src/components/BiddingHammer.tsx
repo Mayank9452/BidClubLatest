@@ -71,7 +71,7 @@ export const BiddingHammer = ({ className = "w-12 h-12" }: { className?: string 
       <div className="relative mt-[-15px]">
         <svg
           viewBox="0 0 100 40"
-          className="w-16 h-8 drop-shadow-md"
+          className="w-16 h-6 drop-shadow-md"
           xmlns="http://www.w3.org/2000/svg"
         >
           {/* Sound Block Base */}

@@ -18,7 +18,7 @@ import { OTHER_API_URL } from "@/config/config";
 export default function DetailsPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const renderTextWithDiamond = (text: string, isLight: boolean = false) => {
     if (!text) return null;
@@ -131,7 +131,7 @@ export default function DetailsPage() {
                     </div>
                     <div className="relative">
                       <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur-md opacity-50" />
-                      <span className="relative text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-full shadow-lg ">
+                      <span className={`${language === "my" ? "text-[10px]" : "text-xs"} relative font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 rounded-full `}>
                         🔥 {t.popular}
                       </span>
                     </div>
@@ -177,7 +177,7 @@ export default function DetailsPage() {
                     </div>
                     <div className="relative">
                       <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-md opacity-50" />
-                      <span className="relative text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1.5 rounded-full shadow-lg ">
+                      <span className={`${language === "my" ? "text-[10px]" : "text-xs"} relative font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1.5 rounded-full `}>
                         ⭐ {t.trending}
                       </span>
                     </div>

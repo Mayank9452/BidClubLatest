@@ -81,7 +81,7 @@ export default function TrendingGamesSlider() {
 
           {/* 🔹 SLIDER INSIDE GRADIENT */}
           <div className="relative overflow-hidden py-2">
-            <div className="flex gap-4 w-max px-2 animate-slide-right hover:[animation-play-state:paused] will-change-transform">
+            <div className="flex gap-4 w-max px-2 animate-slide-right will-change-transform">
               {[...availableCategories, ...availableCategories, ...availableCategories].map((category, index) => (
                 <CategoryCard
                   key={`${category.id}-${index}`}

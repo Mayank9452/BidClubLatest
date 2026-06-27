@@ -16,7 +16,7 @@ const PopupBannerUnsubscribe = ({
   confirmText,
 }) => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const dashboard = useAppSelector((state) => state?.dashboard);
   const is_freemium = dashboard?.data?.data?.user_is_freemium;
 
@@ -114,9 +114,10 @@ const PopupBannerUnsubscribe = ({
 
                         <img
                           src="/assets/robotavatar/3.png"
-                          className="w-full h-full object-cover relative z-10 "
+                          className="w-full h-full object-cover relative z-10"
                           alt="Success Robot"
-                          loading="lazy"
+                          loading="eager"
+                          fetchPriority="high"
                         />
 
                         {/* Floating Sparkle Particles */}
@@ -141,7 +142,7 @@ const PopupBannerUnsubscribe = ({
               </div>
 
               {data?.title && (
-                <h2 className="text-xl font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3">
+                <h2 className={`${language === "my" ? "text-base" : "text-xl"} font-bold bg-gradient-to-r from-pink-400 via-white to-pink-600 bg-clip-text text-transparent leading-tight mb-3`}>
                   {data.title}
                 </h2>
               )}

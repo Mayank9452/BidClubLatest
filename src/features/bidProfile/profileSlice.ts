@@ -71,6 +71,15 @@ const getProfileInfoSlice = createSlice({
           title: message,
           variant: "destructive",
         });
+      })
+      .addCase(unsubscribeUser.rejected, (state, action) => {
+        const errorPayload = action.payload as any;
+        const message = errorPayload?.message ?? "Unsubscription failed";
+        toast({
+          title: message,
+          variant: "destructive",
+          duration: 2000,
+        });
       });
   },
 });

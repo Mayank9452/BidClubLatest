@@ -39,10 +39,20 @@ export const unsubscribeUserAPI = async ({ getState }: { getState: any }): Promi
     },
   });
 
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error?.message ?? "Failed to unsubscribe. Please try again.");
+  let data;
+  try {
+    data = await res.json();
+  } catch (e) {
+    // ignore parse error to let !res.ok handle it
   }
 
-  return await res.json();
+  if (!res.ok) {
+    throw new Error(data?.message ?? data?.msg ?? "Failed to unsubscribe. Please try again.");
+  }
+
+  if (data && (data.status === "error" || data.status === "fail" || data.status === false)) {
+    throw new Error(data.message ?? data.msg ?? "Unsubscription failed");
+  }
+
+  return data;
 };

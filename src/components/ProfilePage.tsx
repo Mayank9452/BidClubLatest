@@ -40,16 +40,11 @@ const formatDateTime = (dateTimeString) => {
 const maskMSISDN = (phone: string) => {
   if (!phone || phone.length < 12) return phone;
 
-  // Remove first 2 digits (country code like 95)
-  const trimmed = phone.slice(2);
 
-  // Ensure it's 10 digits after trimming
-  if (trimmed.length !== 10) return phone;
+  const start = phone.slice(0, 2);
+  const end = phone.slice(-3);
 
-  const start = trimmed.slice(0, 3);
-  const end = trimmed.slice(-3);
-
-  return `${start}xxxx${end}`;
+  return `${start}xxxxxxxx${end}`;
 };
 
 export default function ProfilePage() {
@@ -93,7 +88,7 @@ export default function ProfilePage() {
   };
 
   const handleUnsubscribe = () => {
-    console.log("Unsubscribe clicked");
+    // console.log("Unsubscribe clicked");
     // Show confirmation dialog
     setShowUnsubscribePopup(true);
   };
@@ -105,7 +100,7 @@ export default function ProfilePage() {
       if (res?.status === "success" || res?.status === true) {
         dispatch(logout());
         // Redirect to billing URL
-        window.location.href = "/";
+        window.location.href = "https://bidblast.club/subscribe";
       }
     } catch (error) {
       console.error("Unsubscription failed:", error);
@@ -223,7 +218,7 @@ export default function ProfilePage() {
                     <FileText className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-base font-semibold text-gray-800 ">
+                    <h3 className={`${language === "my" ? "text-sm" : "text-base"} font-semibold text-gray-800`}>
                       {t.terms}
                     </h3>
                     <p className="text-sm text-gray-500 font-semibold ">
@@ -244,7 +239,7 @@ export default function ProfilePage() {
                     🌐
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-gray-800 ">
+                    <h3 className={`${language === "my" ? "text-sm" : "text-base"} font-semibold text-gray-800`}>
                       {t.language}
                     </h3>
                     <p className="text-sm text-gray-500 font-semibold ">
@@ -278,7 +273,7 @@ export default function ProfilePage() {
               {/* Subscribe Now (Only if no access and not suspended) */}
               {!hasAccess && user?.user_subscription_status?.toLowerCase() !== "suspend" && (
                 <button
-                  onClick={() => (window.location.href = "/")}
+                  onClick={() => (window.location.href = "https://bidblast.club/subscribe")}
                   className="w-full relative overflow-hidden group p-4 bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 rounded-[2rem] shadow-2xl transition-all duration-300 active:scale-[0.98] border border-white/10"
                 >
                   {/* Decorative Sparkles */}
@@ -354,7 +349,7 @@ export default function ProfilePage() {
                       <LogOut className="w-5 h-5 text-white" />
                     </div>
                     <div className="text-left">
-                      <h3 className="text-base font-bold text-gray-800">
+                      <h3 className={`${language === "my" ? "text-sm" : "text-base"} font-bold text-gray-800`}>
                         {t.unsubscribe}
                       </h3>
                       <p className="text-sm font-semibold text-gray-500">
@@ -393,6 +388,7 @@ export default function ProfilePage() {
               <InfoRow
                 label={t.memberSince}
                 value={formatDateTime(user?.user_added_on)?.date || "N/A"}
+                language={language}
               />
 
               <InfoRow
@@ -412,9 +408,10 @@ export default function ProfilePage() {
                       ? "bg-red-100 text-red-700"
                       : "bg-amber-100 text-amber-700"
                 }
+                language={language}
               />
               {hasAccess && data?.data?.subscriptionPlan && (
-                <InfoRow label={t.subscription} value={data?.data?.subscriptionPlan === "weekly" ? t.weeklyPack : t.dailyPack} />
+                <InfoRow label={t.subscription} value={data?.data?.subscriptionPlan === "weekly" ? t.weeklyPack : t.dailyPack} language={language} />
               )}
             </div>
           </div>
@@ -484,12 +481,12 @@ const StatCard = React.memo(({ label, value, icon, color }: any) => {
   );
 });
 
-const InfoRow = React.memo(({ label, value, badge = false, badgeClassName = "" }: any) => {
+const InfoRow = React.memo(({ label, value, badge = false, badgeClassName = "", language }: any) => {
   return (
     <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 ">
-      <span className="text-sm font-semibold text-white">{label}</span>
+      <span className={`${language === "my" ? "text-xs" : "text-sm"} font-semibold text-white`}>{label}</span>
       {badge ? (
-        <span className={`p-2 rounded-lg text-sm font-semibold ${badgeClassName || "bg-emerald-100 text-emerald-700"}`}>
+        <span className={`p-2 rounded-lg text-xs font-semibold ${badgeClassName || "bg-emerald-100 text-emerald-700"}`}>
           {value}
         </span>
       ) : (

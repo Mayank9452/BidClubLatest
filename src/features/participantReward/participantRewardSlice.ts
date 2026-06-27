@@ -80,7 +80,7 @@ const participantRewardSlice = createSlice({
         toast({
           title: message,
           variant: "destructive",
-          duration: 1000,
+          duration: 2000,
         });
       });
   },

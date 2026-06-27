@@ -90,7 +90,8 @@ const PopupBannerUpdated = () => {
                           src="/assets/robotavatar/4.png"
                           className="w-full h-full object-cover relative z-10"
                           alt="Welcome Robot"
-                          loading="lazy"
+                          loading="eager"
+                          fetchPriority="high"
                         />
 
                         {/* Sparkles */}

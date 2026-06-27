@@ -29,8 +29,8 @@ const GameCard = React.memo(({ game, index, bgClass, onPlay }: GameCardProps) =>
           src={`${OTHER_API_URL}uploads/games/${game.game_image}`}
           alt={game.Name}
           className="object-cover h-full w-full"
-          loading="lazy"
-          decoding="async"
+          loading="eager"
+          fetchPriority="high"
         />
         {game.isSuggested === "1" && (
           <span className="absolute top-2 left-2 bg-pink-600 text-[10px] px-2 py-0.5 rounded-full font-bold">

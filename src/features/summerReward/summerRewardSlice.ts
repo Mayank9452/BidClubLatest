@@ -57,11 +57,6 @@ const summerRewardSlice = createSlice({
         state.reward = action.payload?.reward ?? null; // ✅ FIXED
         state.message = action.payload?.message ?? null;
         state.error = null;
-
-        toast({
-          title: action.payload?.message ?? "Success",
-          duration: 1000,
-        });
       })
 
       .addCase(claimSummerReward.rejected, (state, action) => {
@@ -76,12 +71,6 @@ const summerRewardSlice = createSlice({
 
         state.error = message;
         state.reward = null;
-
-        toast({
-          title: message,
-          variant: "destructive",
-          duration: 1000,
-        });
       });
   },
 });

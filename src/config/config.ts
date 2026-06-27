@@ -1,3 +1,5 @@
+import { claimReward } from "@/features/spinnerRewards/spinnerRewardsSlice";
+
 const logoHigh = "/assets/images/logo-high.png";
 const logoLow = "/assets/images/logo.png";
 const logo = "/assets/images/logo.png";
@@ -15,6 +17,7 @@ const frontendAPI = {
   signup: `${API_URL}auth/register`,
   signupAtom: `${API_URL}auth/atomregister`,
   checkAuthByIP: `${API_URL}auth/check-ip`,
+  checkAuthByUserId: `${API_URL}auth/check-user-id`,
   unsubscribeUser: `${API_URL}auth/unsubscribe`,
   updateUser: `${API_URL}user/update`,
   profile: `${API_URL}profile`,
@@ -26,8 +29,8 @@ const frontendAPI = {
   stopGames: `${API_URL}user/other-games/stop`,
   userSpins: `${API_URL}user`,
   // ================= HOME =================
-  //   home: `${API_URL}HomeAPI`, // ✅ FIXED (removed extra slash)
-  home: (id: number) => `${API_URL}APIData/homeTest?id=${id}`, // ✅ dynamic
+  home: `${API_URL}HomeAPI`, 
+  userInfo: (userId?: string | number) => userId !== undefined && userId !== null ? `${API_URL}UserInfoAPI?user_id=${userId}` : `${API_URL}UserInfoAPI`,
 
   // ================= BIDBLAST APIs (NEW) =================
   bidInfo: (id: string) => `${API_URL}PlayBidAPI/${id}`, // ✅ dynamic
@@ -40,6 +43,7 @@ const frontendAPI = {
   playGames: `${API_URL}PlayGame`,
   setProfileImage: `${API_URL}SetProfileImage`,
   unsubAPI: `${API_URL}UnsubAPI`,
+  claimSummerReward: (phone: string | number) => `${BACKEND_URL}/getSummerRushJackpotInstantReward/${phone}`,
 };
 
 const gamesFrontendAPI = {

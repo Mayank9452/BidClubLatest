@@ -82,7 +82,8 @@ const PopupBannerForBidPage = ({
                                             src="/assets/robotavatar/4.png"
                                             className="w-full h-full object-cover relative z-10"
                                             alt="Bid Robot"
-                                            loading="lazy"
+                                            loading="eager"
+                                            fetchPriority="high"
                                         />
 
                                         {/* Floating Sparkle Particles */}

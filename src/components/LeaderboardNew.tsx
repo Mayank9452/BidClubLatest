@@ -51,7 +51,7 @@ export default function LeaderboardNew({
   monthlyUsers,
 }: LeaderboardProps) {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const [activeTab, setActiveTab] = useState<"weekly" | "monthly">("weekly");
   const formatUsers = useCallback((data: any) => {
@@ -66,7 +66,7 @@ export default function LeaderboardNew({
       return {
         id: user.user_id,
         name: `User ${user.user_id}`, // fallback name
-        phone: maskMSISDN(`${user.user_phone}`),
+        phone: user.user_phone,
         score: Number(user.points),
         bids: user.bidsCount || (Number(user.user_id) % 900) + 100, // stable pseudo-random
         avatar: `${avatarIndex}.png`,
@@ -99,7 +99,7 @@ export default function LeaderboardNew({
             <div className="space-y-1 w-1/2">
               <div className="flex items-center gap-2">
                 {/* <Zap className="w-5 h-5 text-indigo-600 fill-indigo-600" /> */}
-                <h2 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent ">
+                <h2 className={`${language === "my" ? "text-lg" : "text-xl"} font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent`}>
                   {t.rankings}
                 </h2>
               </div>

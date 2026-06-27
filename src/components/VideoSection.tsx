@@ -13,7 +13,8 @@ export default function VideoSection() {
       <div className="w-full" style={{ width: '90%' }}>
         <video
           className="w-full h-full object-cover rounded-lg"
-          src={`${OTHER_API_URL}assets/frontend/img/introduction.mp4`}
+          // src={`${OTHER_API_URL}assets/frontend/img/introduction_new.mp4`}
+          src={`/assets/images/introduction_new.mp4`}
           autoPlay
           muted
           loop
@@ -22,7 +23,7 @@ export default function VideoSection() {
       </div>
 
       <div className="w-full p-3 flex flex-col justify-center items-center gap-3">
-        <h3 className="text-lg font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight pt-3 pb-3 px-1">
+        <h3 className={`${language === "my" ? "text-base" : "text-lg"} font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight pt-3 pb-3 px-1`}>
           {t.aboutBidBlast}
         </h3>
 

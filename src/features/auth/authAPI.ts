@@ -4,7 +4,7 @@ import { frontendAPI, storage } from "@/config/config";
 export interface LoginResponse {
   data: any;     // You can replace `any` with actual user type if known
   redirectUrl?: string; // ✅ Added redirect support
-  ip? : string; // Optional IP field
+  ip?: string; // Optional IP field
 
 }
 
@@ -15,10 +15,10 @@ export const loginUser = async (credentials): Promise<LoginResponse> => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
-  
+
   if (!res.ok) {
     const error = await res.json(); // optional: detailed error
-    throw new Error(`${error?.message??error?.email??error?.password??"Login Failed!"}`);
+    throw new Error(`${error?.message ?? error?.email ?? error?.password ?? "Login Failed!"}`);
   }
 
   const data = await res.json();
@@ -31,10 +31,10 @@ export const registerUser = async (credentials): Promise<LoginResponse> => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
-  
+
   if (!res.ok) {
     const error = await res.json(); // optional: detailed error
-    throw new Error(`${error?.message??error?.email??error?.password??"Login Failed!"}`);
+    throw new Error(`${error?.message ?? error?.email ?? error?.password ?? "Login Failed!"}`);
   }
 
   const data = await res.json();
@@ -47,10 +47,10 @@ export const registerAtomUser = async (credentials): Promise<LoginResponse> => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
-  
+
   if (!res.ok) {
     const error = await res.json(); // optional: detailed error
-    throw new Error(`${error?.message??error?.email??error?.password??"Login Failed!"}`);
+    throw new Error(`${error?.message ?? error?.email ?? error?.password ?? "Login Failed!"}`);
   }
 
   const data = await res.json();
@@ -59,42 +59,86 @@ export const registerAtomUser = async (credentials): Promise<LoginResponse> => {
 };
 
 export const checkAuthByIP = async (credentials, { getState }): Promise<LoginResponse> => {
-  // console.log("🌐 checkAuthByIP API called"); // <--- ADD THIS
-  const savedAuth = sessionStorage.getItem(storage.auth);
-  const parsedAuth = savedAuth ? JSON.parse(savedAuth) : null;
-  const token = parsedAuth?.token || null;
-  // console.log("Using token:", token);
-  const res = await fetch(frontendAPI.checkAuthByIP, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", 'Authorization': token ? `Bearer ${token}` : '', },
+  const res = await fetch(frontendAPI.userInfo(), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Cookie": "bb_session=dqhr7eaat5s24fd5l6akaoljif9efm1a"
+    },
   });
 
-  // console.log(res);
-
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(`${error?.message ?? "Failed to check authentication"}`);
+  let data;
+  try {
+    data = await res.json();
+  } catch (e) {
+    // ignore json parse error to let !res.ok handle it
   }
 
-  const data = await res.json();
+  if (data && data.status === "error" && data.message === "User not found") {
+    window.location.href = "https://bidblast.club/subscribe";
+    throw new Error("User not found");
+  }
+
+  if (data?.data?.portal_access_allowed === 0 || data?.data?.portal_access_allowed === "0") {
+    window.location.href = "https://bidblast.club/subscribe";
+    throw new Error("Portal access not allowed");
+  } else if (data?.data?.portal_access_allowed === 1 || data?.data?.portal_access_allowed === "1") {
+    // proceed further, do not check user_subscription_status
+  } else {
+    // fallback if portal_access_allowed is not present in response
+    if (data?.data?.userInfo?.user_subscription_status === "unsub" || data?.data?.userInfo?.user_subscription_status === "unsusb") {
+      window.location.href = "https://bidblast.club/subscribe";
+      throw new Error("User is unsubscribed");
+    }
+  }
+
+  if (!res.ok) {
+    throw new Error(`${data?.message ?? "Failed to check authentication"}`);
+  }
+
   return data;
-  // return res.json();
 };
 
 // 🔑 Auth via userId from URL
-export const checkAuthByUserId = async (testId: string): Promise<LoginResponse> => {
-  const res = await fetch(frontendAPI.checkAuthByUserId, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ testId }),
+export const checkAuthByUserId = async (userId: string): Promise<LoginResponse> => {
+  const res = await fetch(frontendAPI.userInfo(userId), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Cookie": "bb_session=dqhr7eaat5s24fd5l6akaoljif9efm1a"
+    },
   });
 
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error?.message ?? "Failed to authenticate by userId");
+  let data;
+  try {
+    data = await res.json();
+  } catch (e) {
+    // ignore json parse error to let !res.ok handle it
   }
 
-  return res.json();
+  if (data && data.status === "error" && data.message === "User not found") {
+    window.location.href = "https://bidblast.club/subscribe";
+    throw new Error("User not found");
+  }
+
+  if (data?.data?.portal_access_allowed === 0 || data?.data?.portal_access_allowed === "0") {
+    window.location.href = "https://bidblast.club/subscribe";
+    throw new Error("Portal access not allowed");
+  } else if (data?.data?.portal_access_allowed === 1 || data?.data?.portal_access_allowed === "1") {
+    // proceed further, do not check user_subscription_status
+  } else {
+    // fallback if portal_access_allowed is not present in response
+    if (data?.data?.userInfo?.user_subscription_status === "unsub" || data?.data?.userInfo?.user_subscription_status === "unsusb") {
+      window.location.href = "https://bidblast.club/subscribe";
+      throw new Error("User is unsubscribed");
+    }
+  }
+
+  if (!res.ok) {
+    throw new Error(data?.message ?? "Failed to authenticate by userId");
+  }
+
+  return data;
 };
 
 
@@ -104,13 +148,13 @@ export const updateUser = async (credentials, { getState }) => {
   const token = state.auth.data.token || null;
   const res = await fetch(frontendAPI.updateUser, {
     method: 'POST',
-    headers: { 
+    headers: {
       'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : '', 
-     },
+      'Authorization': token ? `Bearer ${token}` : '',
+    },
     body: JSON.stringify(credentials),
   });
-  
+
   if (!res.ok) {
     const error = await res.json(); // optional: detailed error
     throw new Error(`${error?.message ?? "Login Failed!"}`);
@@ -127,11 +171,20 @@ export const unsubscribeUserAPI = async (user_msisdn: string): Promise<any> => {
     body: JSON.stringify({ user_msisdn }),
   });
 
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error?.message ?? "Failed to unsubscribe. Please try again.");
+  let data;
+  try {
+    data = await res.json();
+  } catch (e) {
+    // ignore parse error to let !res.ok handle it
   }
 
-  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data?.message ?? data?.msg ?? "Failed to unsubscribe. Please try again.");
+  }
+
+  if (data && (data.status === "error" || data.status === "fail" || data.status === false)) {
+    throw new Error(data.message ?? data.msg ?? "Unsubscription failed");
+  }
+
   return data; // returns { status, msg }
 };
